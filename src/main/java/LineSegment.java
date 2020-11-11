@@ -1,7 +1,7 @@
 import java.util.HashSet;
 
 public class LineSegment extends GeometryObject {
-    public LineSegment(HashSet<Point> points, DistanceFact distanceFact) {
+    public LineSegment(HashSet<Point> points, Distance distanceFact) {
         this.points = points;
         this.distanceFact = distanceFact;
     }
@@ -14,5 +14,5 @@ public class LineSegment extends GeometryObject {
     }
 
     public HashSet<Point> points;
-    public DistanceFact distanceFact;
+    public Distance distanceFact;
 }
