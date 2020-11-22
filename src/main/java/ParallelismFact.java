@@ -10,9 +10,14 @@ public class ParallelismFact extends GeometryFact {
     @Override
     public boolean checkFact(GeometryFact geometryFact) {
         for (GeometryObject object: ((ParallelismFact) geometryFact).geometryObjects) {
-            if (!geometryObjects.contains(object) && !(object instanceof AnyObject))
+            if (!geometryObjects.contains(object) && !(object.isAnyObject()))
                 return false;
         }
         return true;
+    }
+
+    @Override
+    public void fillInUnknowns(GeometryFact ruleFact) {
+        ((ParallelismFact) ruleFact).geometryObjects = this.geometryObjects;
     }
 }

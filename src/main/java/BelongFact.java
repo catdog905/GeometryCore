@@ -10,7 +10,13 @@ public class BelongFact extends GeometryFact {
 
     @Override
     public boolean checkFact(GeometryFact geometryFact) {
-        return (((BelongFact)geometryFact).object == object || ((BelongFact)geometryFact).object instanceof AnyObject)
-                && (((BelongFact)geometryFact).subject == subject || ((BelongFact)geometryFact).subject instanceof AnyObject);
+        return (((BelongFact)geometryFact).object == this.object || ((BelongFact)geometryFact).object.isAnyObject())
+                && (((BelongFact)geometryFact).subject == this.subject || ((BelongFact)geometryFact).subject.isAnyObject());
+    }
+
+    @Override
+    public void fillInUnknowns(GeometryFact ruleFact) {
+        ((BelongFact) ruleFact).object = this.object;
+        ((BelongFact) ruleFact).subject = this.subject;
     }
 }
