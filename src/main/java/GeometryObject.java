@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class GeometryObject {
     private boolean isAnyObject = false;
     public boolean isAnyObject(){
@@ -6,4 +8,5 @@ public class GeometryObject {
     public void setAnyObject() {
         isAnyObject = true;
     }
+    public ... getAllObject();
 }
