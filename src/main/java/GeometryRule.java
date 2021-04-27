@@ -16,7 +16,7 @@ public class GeometryRule {
         HashMap<GeometryObject, GeometryObject> matchingObjects = new HashMap<>();
         LinkedList<GeometryFact> newNamespaceFacts = applyModeNamespaceToRule(modelFacts);
         for (int i = 0; i < facts.size(); i++) {
-            matchingObjects.putAll(facts.get(i).getMatchingObjects(facts.get(i), newNamespaceFacts.get(i)));
+            matchingObjects.putAll(facts.get(i).getMatchingObjects(facts.get(i), newNamespaceFacts.get(i))); //TODO Problem place(+Helper class?)
         }
         for (GeometryFact fact: consequences) {
             LinkedList<GeometryObject> newSubObjects = new LinkedList<>();

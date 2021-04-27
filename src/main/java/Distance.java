@@ -6,4 +6,9 @@ public class Distance extends GeometryObject {
     public Distance(HashSet<GeometryObject> geometryObjects) {
         this.geometryObjects = geometryObjects;
     }
+
+    @Override
+    public HashSet<GeometryObject> getSubObjects() {
+        return new HashSet<>(geometryObjects);
+    }
 }

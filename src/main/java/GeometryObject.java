@@ -1,6 +1,7 @@
 import java.util.HashMap;
+import java.util.HashSet;
 
-public class GeometryObject {
+public abstract class GeometryObject {
     private boolean isAnyObject = false;
     public boolean isAnyObject(){
         return isAnyObject;
@@ -8,5 +9,5 @@ public class GeometryObject {
     public void setAnyObject() {
         isAnyObject = true;
     }
-    public ... getAllObject();
+    public abstract HashSet<GeometryObject> getSubObjects();
 }

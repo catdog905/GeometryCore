@@ -6,4 +6,9 @@ public class Angle extends GeometryObject {
     public Angle(HashSet<GeometryObject> geometryObjects) {
         this.geometryObjects = geometryObjects;
     }
+
+    @Override
+    public HashSet<GeometryObject> getSubObjects() {
+        return new HashSet<>(geometryObjects);
+    }
 }

@@ -9,6 +9,7 @@ import java.util.LinkedList;
 public class GeometryRuleTest {
     @Test
     public void applyModeNamespaceToRuleTest(){
+        //Rule
         Point A = new Point();
         A.setAnyObject();
         Point B = new Point();
@@ -20,6 +21,7 @@ public class GeometryRuleTest {
         LineSegment AD = new LineSegment(A, D);
         AD.setAnyObject();
 
+        //Model
         Point A2 = new Point();
         Point B2 = new Point();
         Point D2 = new Point();
