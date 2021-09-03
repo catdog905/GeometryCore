@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import GeometryCore.GeometryObjects.GeometryObject;
-import GeometryCore.GeometryObjects.Triangle;
 
 public class ExistFact extends Fact{
     public GeometryObject object;
@@ -21,6 +20,6 @@ public class ExistFact extends Fact{
 
     @Override
     public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new ExistFact(new Triangle(((Triangle)object).lineSegments).createNewSimilarObject(correspondence)); //TODO: fix hack
+        return new ExistFact(object.createNewSimilarObject(correspondence)); //TODO: fix hack
     }
 }
