@@ -9,6 +9,20 @@ public class Triangle extends GeometryObject {
     public Triangle(HashSet<LineSegment> lineSegments) {
         this.lineSegments = lineSegments;
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof Triangle))
+            return false;
+        Triangle triangleUnderQuestion = (Triangle)o;
+       // for (LineSegment mySegment:lineSegments) {
+       //     if (triangleUnderQuestion.lineSegments.contains())
+      //  }
+
+
+        return triangleUnderQuestion.lineSegments.containsAll(lineSegments);
+    }
 
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
