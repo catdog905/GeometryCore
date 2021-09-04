@@ -52,7 +52,7 @@ public class ExpertSystemTest{
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        Angle ACB = new Angle(new LinkedList(Arrays.asList(A, B, C)));
+        Angle ACB = new Angle(new LinkedList(Arrays.asList(AB, BC)));
         HashSet<Fact> facts = new HashSet<>();
         facts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)))));
         facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
