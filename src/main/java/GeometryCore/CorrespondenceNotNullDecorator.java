@@ -5,8 +5,8 @@ import java.util.Map;
 
 import GeometryCore.GeometryObjects.GeometryObject;
 
-public class CorrespondenceDecorator extends HashMap<GeometryObject, GeometryObject> {
-    public CorrespondenceDecorator(Map<GeometryObject, GeometryObject> correspondence) {
+public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, GeometryObject> {
+    public CorrespondenceNotNullDecorator(Map<GeometryObject, GeometryObject> correspondence) {
         super(correspondence);
     }
 

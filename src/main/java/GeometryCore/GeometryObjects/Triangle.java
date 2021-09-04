@@ -10,9 +10,6 @@ public class Triangle extends GeometryObject {
         this.lineSegments = lineSegments;
     }
 
-    public Triangle() {
-    }
-
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         HashSet<LineSegment> newObjects = new HashSet<>();
