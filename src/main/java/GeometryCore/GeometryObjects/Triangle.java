@@ -16,10 +16,6 @@ public class Triangle extends GeometryObject {
         if (!(o instanceof Triangle))
             return false;
         Triangle triangleUnderQuestion = (Triangle)o;
-       // for (LineSegment mySegment:lineSegments) {
-       //     if (triangleUnderQuestion.lineSegments.contains())
-      //  }
-
 
         return triangleUnderQuestion.lineSegments.containsAll(lineSegments);
     }
