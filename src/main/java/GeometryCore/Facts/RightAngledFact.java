@@ -6,21 +6,20 @@ import java.util.Map;
 
 import GeometryCore.GeometryObjects.GeometryObject;
 
-public class EqualityFact extends Fact {
-    public GeometryObject left, right;
+public class RightAngledFact extends Fact {
+    public GeometryObject object;
 
-    public EqualityFact(GeometryObject left, GeometryObject right) {
-        this.left = left;
-        this.right = right;
+    public RightAngledFact(GeometryObject object) {
+        this.object = object;
     }
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        return new LinkedList<>(Arrays.asList(left, right));
+        return new LinkedList<>(Arrays.asList(object));
     }
 
     @Override
     public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new EqualityFact(correspondence.get(left), correspondence.get(right));
+        return new RightAngledFact(correspondence.get(object));
     }
 }

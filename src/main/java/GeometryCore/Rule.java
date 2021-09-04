@@ -7,16 +7,17 @@ import java.util.Map;
 
 import GeometryCore.Facts.Fact;
 import GeometryCore.GeometryObjects.GeometryObject;
+import GeometryCore.GeometryObjects.NumberEnveloper;
 
 /*
 all consequences facts have to be from this.facts scope
  */
 public class Rule {
-    public LinkedList<Fact> facts;
+    public LinkedList<Fact> requiredFacts;
     public LinkedList<Fact> consequences;
 
-    public Rule(LinkedList<Fact> facts, LinkedList<Fact> consequences) {
-        this.facts = facts;
+    public Rule(LinkedList<Fact> requiredFacts, LinkedList<Fact> consequences) {
+        this.requiredFacts = requiredFacts;
         this.consequences = consequences;
     }
 
@@ -24,7 +25,7 @@ public class Rule {
         LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
                 new LinkedList<>(model.facts), new HashMap<>(), 0);
         for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
-            model.facts.addAll(createConsequencesFacts(new CorrespondenceDecorator(correspondence)));
+            model.facts.addAll(createConsequencesFacts(new CorrespondenceNotNullDecorator(correspondence)));
         }
     }
 
@@ -46,7 +47,7 @@ public class Rule {
      */
     private LinkedList<Map<GeometryObject, GeometryObject>> findAllMatchedFactsSequences(
             LinkedList<Fact> modelFacts, Map<GeometryObject, GeometryObject> factsCorrespondence, int ruleFactsIter) {
-        if (ruleFactsIter == this.facts.size() - 1)
+        if (ruleFactsIter == this.requiredFacts.size())
             return new LinkedList<>(Arrays.asList(factsCorrespondence));
         LinkedList<Fact> matchedFacts = getMatchedFactsForItemElem(modelFacts, factsCorrespondence, ruleFactsIter);
         LinkedList<Map<GeometryObject, GeometryObject>> possibleSolutions = new LinkedList<>();
@@ -64,12 +65,16 @@ public class Rule {
     private LinkedList<Fact> getMatchedFactsForItemElem(LinkedList<Fact> model, Map<GeometryObject, GeometryObject> factsCorrespondence, int ruleFactsIter) {
         LinkedList<Fact> matchedElements = new LinkedList<>();
         for (Fact curFact : model) {
-            if (!curFact.getClass().equals(facts.get(ruleFactsIter).getClass()))
+            if (!curFact.getClass().equals(requiredFacts.get(ruleFactsIter).getClass()))
                 continue;
             LinkedList<GeometryObject> curFactObjects = curFact.getAllSubObjects();
             Boolean isFit = true;
-            for (GeometryObject obj : facts.get(ruleFactsIter).getAllSubObjects()){
-                GeometryObject match = factsCorrespondence.get(obj);
+            for (GeometryObject obj : requiredFacts.get(ruleFactsIter).getAllSubObjects()){
+                GeometryObject match = null;
+                if (obj instanceof NumberEnveloper)
+                    match = obj;
+                else
+                    match = factsCorrespondence.get(obj);
                 if (match != null && !curFactObjects.contains(match)) {
                     isFit = false;
                     break;
@@ -83,7 +88,7 @@ public class Rule {
 
     private Map<GeometryObject, GeometryObject> updateCorrespondenceItemElem(Map<GeometryObject, GeometryObject> factsCorrespondence, Fact fact, int ruleFactsIter) {
         Map<GeometryObject, GeometryObject> newCorrespondence = new HashMap<>(factsCorrespondence);
-        LinkedList<GeometryObject> ruleFactObjects = facts.get(ruleFactsIter).getAllSubObjects();
+        LinkedList<GeometryObject> ruleFactObjects = requiredFacts.get(ruleFactsIter).getAllSubObjects();
         for (int i = 0; i < ruleFactObjects.size(); i++) {
             newCorrespondence.put(ruleFactObjects.get(i), fact.getAllSubObjects().get(i));
         }
