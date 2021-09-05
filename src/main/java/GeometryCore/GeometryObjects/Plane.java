@@ -13,6 +13,6 @@ public class Plane extends GeometryObject {
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        return null;
+        return new LinkedList<>();
     }
 }
