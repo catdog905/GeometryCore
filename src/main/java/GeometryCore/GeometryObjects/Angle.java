@@ -6,7 +6,11 @@ import java.util.Map;
 public class Angle extends GeometryObject {
     public LinkedList<GeometryObject> geometryObjects;
 
+
     public Angle(LinkedList<GeometryObject> geometryObjects) {
+        if (geometryObjects.size() != 2){
+            throw new RuntimeException("Illegal constructor for angle");
+        }
         this.geometryObjects = geometryObjects;
     }
 

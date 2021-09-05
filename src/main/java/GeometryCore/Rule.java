@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import GeometryCore.Facts.Fact;
 import GeometryCore.GeometryObjects.GeometryObject;
@@ -75,7 +76,8 @@ public class Rule {
                     match = obj;
                 else
                     match = factsCorrespondence.get(obj);
-                if (match != null && !curFactObjects.contains(match)) {
+                GeometryObject finalMatch = match;
+                if (match != null && curFactObjects.stream().noneMatch(x -> x == finalMatch)) {
                     isFit = false;
                     break;
                 }

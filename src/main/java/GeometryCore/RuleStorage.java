@@ -58,7 +58,7 @@ public class RuleStorage {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        Angle ACB = new Angle(new LinkedList(Arrays.asList(A, B, C)));
+        Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
         Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new ExistFact(triangle));

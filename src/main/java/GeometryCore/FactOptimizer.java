@@ -18,9 +18,12 @@ public class FactOptimizer {
             if (!newFacts.contains(fact))
                 continue;
 
-            List<Fact> allSimilarFacts =  newFacts.stream().filter(x -> x!=fact&&
+            List<Fact> allSimilarFacts =  newFacts.stream().filter
+                    (x -> x!=fact&&
                     x.getClass().equals(fact.getClass())&&
-                    fact.isTheSameFact(x)).collect(Collectors.toList());
+                    fact.isTheSameFact(x))
+                        .collect(Collectors.toList());
+
             newFacts.removeAll(allSimilarFacts);
         }
         model.facts=newFacts;
