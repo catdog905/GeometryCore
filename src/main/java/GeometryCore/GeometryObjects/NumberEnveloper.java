@@ -12,7 +12,7 @@ public class NumberEnveloper extends Factor{
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        return null;
+        return new LinkedList<>();
     }
 
     @Override

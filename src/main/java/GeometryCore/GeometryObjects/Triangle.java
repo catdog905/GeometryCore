@@ -7,6 +7,10 @@ import java.util.Map;
 public class Triangle extends GeometryObject {
     public HashSet<LineSegment> lineSegments;
     public Triangle(HashSet<LineSegment> lineSegments) {
+
+        if (lineSegments.size() != 3){
+            throw new RuntimeException("Illegal constructor for triangle");
+        }
         this.lineSegments = lineSegments;
     }
 
