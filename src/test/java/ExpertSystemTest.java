@@ -63,4 +63,24 @@ public class ExpertSystemTest{
 
         assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
     }
+
+    @Test
+    public void pythagoreanTheoremTest() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        Angle ACB = new Angle(new LinkedList(Arrays.asList(A, B, C)));
+        HashSet<Fact> facts = new HashSet<>();
+        facts.add(new RightAngledFact(new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)))));
+        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        //facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
+        //facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
+        Model model = new Model(facts);
+        ExpertSystem.ForwardPass(model);
+
+        assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
+    }
 }
