@@ -8,6 +8,9 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
     @Override
     public boolean equals(Object o) {
 
+        if (o == null)
+            return false;
+
         //Same link
         if (this == o)
             return true;

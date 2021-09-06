@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import GeometryCore.Facts.Fact;
 import GeometryCore.GeometryObjects.GeometryObject;
@@ -26,7 +25,8 @@ public class Rule {
         LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
                 new LinkedList<>(model.facts), new HashMap<>(), 0);
         for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
-            model.facts.addAll(createConsequencesFacts(new CorrespondenceNotNullDecorator(correspondence)));
+            model.facts.addAll(createConsequencesFacts(
+                    (new CorrespondenceNotNullDecorator(correspondence)).makeFull()));
         }
     }
 
