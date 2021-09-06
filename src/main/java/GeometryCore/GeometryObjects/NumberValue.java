@@ -16,7 +16,10 @@ public class NumberValue extends Monomial {
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        return new LinkedList<>(Arrays.asList(numberEnveloper, object));
+        LinkedList<GeometryObject> temp = new LinkedList<>(Arrays.asList(object));
+        if (numberEnveloper != null)
+            temp.add(numberEnveloper);
+        return temp;
     }
 
     @Override

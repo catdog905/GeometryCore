@@ -76,7 +76,8 @@ public class Rule {
                     match = obj;
                 else
                     match = factsCorrespondence.get(obj);
-                if (match != null && !curFactObjects.contains(match)) {
+                GeometryObject finalMatch = match;
+                if (match != null && curFactObjects.stream().noneMatch(x -> x == finalMatch)) {
                     isFit = false;
                     break;
                 }

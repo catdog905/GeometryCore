@@ -13,7 +13,7 @@ public class NumberEnveloper extends Monomial {
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        return new LinkedList();
+        return new LinkedList<>();
     }
 
     @Override
