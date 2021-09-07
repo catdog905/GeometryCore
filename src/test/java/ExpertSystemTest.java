@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
+import GeometryCore.AlgebraProcessor;
 import GeometryCore.ExpertSystem;
 import GeometryCore.Facts.BelongFact;
 import GeometryCore.Facts.EqualityFact;
@@ -16,9 +17,12 @@ import GeometryCore.Facts.Fact;
 import GeometryCore.Facts.RightAngledFact;
 import GeometryCore.GeometryObjects.Angle;
 import GeometryCore.GeometryObjects.Degree;
+import GeometryCore.GeometryObjects.GeometryNumber;
 import GeometryCore.GeometryObjects.GeometryObject;
 import GeometryCore.GeometryObjects.LineSegment;
+import GeometryCore.GeometryObjects.Monomial;
 import GeometryCore.GeometryObjects.NumberValue;
+import GeometryCore.GeometryObjects.Polynomial;
 import GeometryCore.GeometryObjects.RaisedInThePower;
 import GeometryCore.GeometryObjects.Triangle;
 import GeometryCore.GeometryObjects.Vertex;
@@ -47,6 +51,34 @@ public class ExpertSystemTest{
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AB) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(BC) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AC)));
+    }
+    @Test
+    public void ExpressorTest() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        EqualityFact equation =  new EqualityFact(
+                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new Polynomial(
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
+                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
+                ));
+        Monomial answerAB =  AlgebraProcessor.expressVariableFromEquation(ab,equation);
+        Monomial answerAC =  AlgebraProcessor.expressVariableFromEquation(ac,equation);
+        Monomial answerBC =  AlgebraProcessor.expressVariableFromEquation(bc,equation);
+
+        // AB equals something in the power of 1/2, so we expect the answer to be in power of some power (e.g. 2^(-1))
+        assertTrue(answerAB instanceof RaisedInThePower && ((Monomial)answerAB.getAllSubObjects().getLast()) instanceof RaisedInThePower);
+
+        // AC is multiplied by 2 UNDER the square, so we expect AC to be equal to some square root multiplied by 1/2
+        assertTrue(!(answerAC instanceof RaisedInThePower) && ! (answerAC instanceof Polynomial));
+
+        // BC equals something in the power of 1/2, so we expect the answer to be in power of some power (e.g. 2^(-1))
+        assertTrue(answerBC instanceof RaisedInThePower && ((Monomial)answerBC.getAllSubObjects().getLast()) instanceof RaisedInThePower);
     }
     @Test
     public void RepeatingTriangleFactsTest() {

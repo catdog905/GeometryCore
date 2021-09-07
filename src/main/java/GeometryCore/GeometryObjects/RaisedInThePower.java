@@ -18,7 +18,7 @@ public class RaisedInThePower extends Monomial {
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        LinkedList<GeometryObject> newList = new LinkedList<>(subObjects);
+        LinkedList<GeometryObject> newList = new LinkedList<>(super.getAllSubObjects());
         newList.add(power);
         return newList;
     }
@@ -26,7 +26,7 @@ public class RaisedInThePower extends Monomial {
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Monomial> newObjects = new LinkedList<>();
-        for (Monomial obj : subObjects) {
+        for (GeometryObject obj : super.getAllSubObjects()) {
             newObjects.add((Monomial) correspondence.get(obj));
         }
         return new RaisedInThePower(newObjects, (Monomial) correspondence.get(power));
