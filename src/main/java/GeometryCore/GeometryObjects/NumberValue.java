@@ -14,6 +14,10 @@ public class NumberValue extends Monomial {
         this.object = object;
     }
 
+    public NumberValue(GeometryObject obj) {
+        this(obj, null);
+    }
+
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
         LinkedList<GeometryObject> temp = new LinkedList<>(Arrays.asList(object));
@@ -23,7 +27,12 @@ public class NumberValue extends Monomial {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public NumberValue createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new NumberValue(correspondence.get(object), numberEnveloper);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return object.equals(o);
     }
 }

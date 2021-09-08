@@ -23,13 +23,20 @@ public class Monomial extends GeometryObject {
         subObjects = new LinkedList<>(Arrays.asList(factor1, factor2));
     }
 
-    @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
-        return new LinkedList<>(subObjects);
+    public Monomial(Monomial monomial, LinkedList<Monomial> subObjAddTo) {
+        LinkedList<Monomial> temp = new LinkedList<>();
+        temp.addAll(subObjAddTo);
+        temp.add(monomial);
+        subObjects = temp;
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public LinkedList<? extends GeometryObject> getAllSubObjects() {
+        return subObjects;
+    }
+
+    @Override
+    public Monomial createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Monomial> newObjects = new LinkedList<>();
         for (Monomial obj : subObjects) {
             newObjects.add((Monomial) correspondence.get(obj));

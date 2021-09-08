@@ -17,12 +17,12 @@ public class Polynomial extends Monomial{
     }
 
     @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
-        return new LinkedList<>(super.getAllSubObjects());
+    public LinkedList<Polynomial> getAllSubObjects() {
+        return (LinkedList<Polynomial>) super.getAllSubObjects();
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Polynomial createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Monomial> newObjects = new LinkedList<>();
         for (GeometryObject obj : super.getAllSubObjects()) {
             newObjects.add((Monomial) correspondence.get(obj));

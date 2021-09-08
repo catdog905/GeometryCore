@@ -12,12 +12,12 @@ public class NumberEnveloper extends Monomial {
     }
 
     @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
+    public LinkedList<NumberEnveloper> getAllSubObjects() {
         return new LinkedList<>();
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public NumberEnveloper createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new NumberEnveloper(number);
     }
 }

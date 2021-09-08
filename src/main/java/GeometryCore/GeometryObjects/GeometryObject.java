@@ -18,8 +18,8 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         if (!(o.getClass().equals(this.getClass())))
             return false;
 
-        LinkedList<GeometryObject> ourSubObjects = this.getAllSubObjects();
-        LinkedList<GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
+        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects();
+        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
 
 
         if (ourSubObjects.size() == 0 || ourSubObjects.size() != theirSubObjects.size()){

@@ -68,7 +68,7 @@ public class Rule {
         for (Fact curFact : model) {
             if (!curFact.getClass().equals(requiredFacts.get(ruleFactsIter).getClass()))
                 continue;
-            LinkedList<GeometryObject> curFactObjects = curFact.getAllSubObjects();
+            LinkedList<? extends GeometryObject> curFactObjects = curFact.getAllSubObjects();
             Boolean isFit = true;
             for (GeometryObject obj : requiredFacts.get(ruleFactsIter).getAllSubObjects()){
                 GeometryObject match = null;
@@ -90,7 +90,7 @@ public class Rule {
 
     private Map<GeometryObject, GeometryObject> updateCorrespondenceItemElem(Map<GeometryObject, GeometryObject> factsCorrespondence, Fact fact, int ruleFactsIter) {
         Map<GeometryObject, GeometryObject> newCorrespondence = new HashMap<>(factsCorrespondence);
-        LinkedList<GeometryObject> ruleFactObjects = requiredFacts.get(ruleFactsIter).getAllSubObjects();
+        LinkedList<? extends GeometryObject> ruleFactObjects = requiredFacts.get(ruleFactsIter).getAllSubObjects();
         for (int i = 0; i < ruleFactObjects.size(); i++) {
             newCorrespondence.put(ruleFactObjects.get(i), fact.getAllSubObjects().get(i));
         }
