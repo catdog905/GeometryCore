@@ -31,7 +31,7 @@ public class AlgebraProcessor {
             //Monomial
             for (GeometryObject term : equation.getAllSubObjects()) {
                 if (term instanceof NumberValue) {
-                    //FINALLY a number
+                    //A number, finally
                     NumberValue numberValueOfTerm = (NumberValue) term;
                     if (numberValueOfTerm.equals(variable)) {
                         whereToPut.add(numberValueOfTerm);
@@ -40,7 +40,7 @@ public class AlgebraProcessor {
                     }
 
                 } else {
-                    //Monomial inside of monomial (WHY)
+                    //Monomial inside of monomial
                     if (tryFindVariableAndPutItInHashSet(variable, (Monomial) term, whereToPut)) {
                         whereToPut.add(equation);
                         return true;
@@ -53,24 +53,6 @@ public class AlgebraProcessor {
 
     private static final boolean LEFT_SIDE = false, RIGHT_SIDE = true;
 
-    public static Monomial expressVariableFromEquation(NumberValue variable, EqualityFact equation) {
-
-        return expressVariableFromEquation(variable, (Monomial) equation.left, (Monomial) equation.right);
-    }
-
-    public static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight) {
-        HashSet<Monomial> monomialsWithVariable = new HashSet<>();
-        boolean equationSideWithVariable;
-        if (tryFindVariableAndPutItInHashSet(variable, equationRight, monomialsWithVariable)) {
-            equationSideWithVariable = RIGHT_SIDE;
-        } else if (tryFindVariableAndPutItInHashSet(variable, equationLeft, monomialsWithVariable)) {
-            equationSideWithVariable = LEFT_SIDE;
-        } else {
-            throw new RuntimeException("ALGEBRA PROCESSOR::EXPRESSOR ERROR: No variable in equation, can't express it");
-        }
-        return expressVariableFromEquation(variable, equationLeft, equationRight, monomialsWithVariable, equationSideWithVariable);
-    }
-
     private static Monomial uniteMonomialsIntoOne(LinkedList<Monomial> monomials) {
         if (monomials.size() >= 2) {
             return new Polynomial(monomials);
@@ -79,7 +61,75 @@ public class AlgebraProcessor {
         }
     }
 
-    //We assume that variable consist of only one object
+    private static Monomial ManageMonomialWithVariable(Monomial bigElementWithVariable,LinkedList<Monomial> dataForNewEquationRight,Monomial newRight, HashSet<Monomial> monomialsWithVariable){
+        var monomialsSubObjects = bigElementWithVariable.getAllSubObjects();
+        int iterationsToMake = monomialsSubObjects.size();
+        if (bigElementWithVariable instanceof RaisedInThePower) {
+            iterationsToMake--;
+            Monomial reverseRITP_power = new RaisedInThePower(new LinkedList<>(Collections.singletonList((Monomial) monomialsSubObjects.getLast())), GeometryNumber.createNumber(-1));
+            newRight = new RaisedInThePower(new LinkedList<>(Collections.singletonList(newRight)), reverseRITP_power);
+        }
+        dataForNewEquationRight.add(newRight);
+
+        for (GeometryObject term : monomialsSubObjects) {
+            if (iterationsToMake == 0)
+                break;
+            iterationsToMake--;
+            Monomial monomialTerm = (Monomial) term;
+            if (monomialsWithVariable.contains(monomialTerm)) {
+                bigElementWithVariable = monomialTerm;
+            } else {
+                dataForNewEquationRight.add(new RaisedInThePower(new LinkedList<>( Collections.singletonList(monomialTerm)), GeometryNumber.createNumber(-1)));
+            }
+        }
+        return bigElementWithVariable;
+    }
+
+    private static Monomial ManagePolynomialWithVariable(Polynomial sideWithVariable, HashSet<Monomial> monomialsWithVariable, LinkedList<Monomial> whereToPut){
+        Monomial bigElementWithVariable = null;
+        var monomialsSubObjects = sideWithVariable.getAllSubObjects();
+            for (GeometryObject term : monomialsSubObjects) {
+        Monomial monomialTerm = (Monomial) term;
+
+        if (monomialsWithVariable.contains(monomialTerm)) {
+            //This is a monomial with variable, so we leave it where it is
+            //We expect to see only one appearance of variable
+            assert (bigElementWithVariable==null);
+            bigElementWithVariable = monomialTerm;
+            continue;
+        }
+
+        LinkedList<Monomial> constructableMonomial = new LinkedList<>();
+        constructableMonomial.add(monomialTerm);
+        constructableMonomial.add(GeometryNumber.createNumber(-1));
+
+                whereToPut.add(new Monomial(constructableMonomial));
+    }
+            return bigElementWithVariable;
+    }
+
+
+    public static Monomial expressVariableFromEquation(NumberValue variable, EqualityFact equation) {
+
+        return expressVariableFromEquation(variable, (Monomial) equation.left, (Monomial) equation.right);
+    }
+
+    public static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight) {
+        HashSet<Monomial> monomialsWithVariable = new HashSet<>();
+        boolean equationSideWithVariable;
+
+        if (tryFindVariableAndPutItInHashSet(variable, equationRight, monomialsWithVariable)) {
+            equationSideWithVariable = RIGHT_SIDE;
+        } else if (tryFindVariableAndPutItInHashSet(variable, equationLeft, monomialsWithVariable)) {
+            equationSideWithVariable = LEFT_SIDE;
+        } else {
+            throw new RuntimeException("ALGEBRA PROCESSOR::EXPRESSOR ERROR: No variable in equation, can't express it");
+        }
+
+        return expressVariableFromEquation(variable, equationLeft, equationRight, monomialsWithVariable, equationSideWithVariable);
+    }
+
+
     public static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight, HashSet<Monomial> monomialsWithVariable, boolean equationSideWithVariable) {
 
         Monomial sideWithVariable, sideWithoutVariable;
@@ -90,6 +140,7 @@ public class AlgebraProcessor {
             sideWithVariable = (Monomial) equationRight;
             sideWithoutVariable = (Monomial) equationLeft;
         }
+
         LinkedList<Monomial> dataForNewEquationRight = new LinkedList<>();
         if (!(sideWithoutVariable instanceof Polynomial)){
             dataForNewEquationRight.add(sideWithoutVariable);
@@ -98,60 +149,29 @@ public class AlgebraProcessor {
                 dataForNewEquationRight.add((Monomial) term);
             }
         }
-        Monomial bigElementWithVariable = null;
-        if (sideWithVariable instanceof Polynomial) {
-            var monomialsSubObjects = sideWithVariable.getAllSubObjects();
-            int iterationsToMake = monomialsSubObjects.size();
-            if (sideWithVariable instanceof RaisedInThePower) {
-                iterationsToMake--;
-            }
-            for (GeometryObject term : monomialsSubObjects) {
-                if (iterationsToMake == 0)
-                    break;
-                iterationsToMake--;
 
-                Monomial monomialTerm = (Monomial) term;
-                if (monomialsWithVariable.contains(monomialTerm)) {
-                    //This is a monomial with variable, so we leave it where it is
-                    bigElementWithVariable = monomialTerm;
-                    continue;
-                }
-                LinkedList<Monomial> constructableMonomial = new LinkedList<>();
-                constructableMonomial.add(monomialTerm);
-                constructableMonomial.add(GeometryNumber.createNumber(-1));
-                dataForNewEquationRight.add(new Monomial(constructableMonomial));
-            }
+        Monomial bigElementWithVariable;
+
+        if (sideWithVariable instanceof Polynomial) {
+            bigElementWithVariable = ManagePolynomialWithVariable((Polynomial) sideWithVariable,monomialsWithVariable,dataForNewEquationRight);
         }else{
+            // If it's not polynomial, the whole monomial IS the big element with variable
             bigElementWithVariable=sideWithVariable;
+
         }
 
         Monomial newRight = uniteMonomialsIntoOne(dataForNewEquationRight);
 
         while (!(bigElementWithVariable instanceof NumberValue) && !(bigElementWithVariable instanceof Polynomial)) {
-            var monomialsSubObjects = bigElementWithVariable.getAllSubObjects();
-            int iterationsToMake = monomialsSubObjects.size();
-            if (bigElementWithVariable instanceof RaisedInThePower) {
-                iterationsToMake--;
-                Monomial reverseRITP_power = new RaisedInThePower(new LinkedList<>(Collections.singletonList((Monomial) monomialsSubObjects.getLast())), GeometryNumber.createNumber(-1));
-                newRight = new RaisedInThePower(new LinkedList<>(Collections.singletonList(newRight)), reverseRITP_power);
-            }
+            dataForNewEquationRight = new LinkedList<>();
 
-                dataForNewEquationRight = new LinkedList<>();
-                dataForNewEquationRight.add(newRight);
+            bigElementWithVariable =  ManageMonomialWithVariable(bigElementWithVariable,dataForNewEquationRight,newRight,monomialsWithVariable);
 
-                for (GeometryObject term : monomialsSubObjects) {
-                    if (iterationsToMake == 0)
-                        break;
-                    iterationsToMake--;
-                    Monomial monomialTerm = (Monomial) term;
-                    if (monomialsWithVariable.contains(monomialTerm)) {
-                        bigElementWithVariable = monomialTerm;
-                    } else {
-                        dataForNewEquationRight.add(new RaisedInThePower(new LinkedList<>( Collections.singletonList(monomialTerm)), GeometryNumber.createNumber(-1)));
-                    }
-                }
-                if (dataForNewEquationRight.size() != 1)
-                    newRight = new Monomial(dataForNewEquationRight);
+            if (dataForNewEquationRight.size() != 1)
+                newRight = new Monomial(dataForNewEquationRight);
+            else
+                newRight = dataForNewEquationRight.getFirst();
+
         }
 
         if (bigElementWithVariable instanceof NumberValue && ((NumberValue) bigElementWithVariable).equals(variable)) {
