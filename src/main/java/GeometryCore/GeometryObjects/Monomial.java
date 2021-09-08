@@ -7,6 +7,23 @@ import java.util.Map;
 public class Monomial extends GeometryObject {
     private LinkedList<Monomial> subObjects;
 
+
+    // Does NOT include values, only includes class names and parental relationships [the structure]
+    // This function is made for unit testing purposes, it's not recommended to use it anywhere else
+    public String getUniqueStructureString(){
+        String structureString = "";
+        structureString += getClass().toString();
+        structureString += "[";
+        for (GeometryObject term: getAllSubObjects()) {
+            if (term instanceof Monomial)
+                structureString += ((Monomial)term).getUniqueStructureString();
+            else
+                structureString += term.getClass().toString();
+        }
+        structureString += "]";
+        return structureString;
+    }
+
     public Monomial(LinkedList<Monomial> subObjects) {
         this.subObjects = subObjects;
     }
