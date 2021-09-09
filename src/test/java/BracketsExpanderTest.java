@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import GeometryCore.AlgebraProcessor;
+import GeometryCore.BracketsExpander;
 import GeometryCore.GeometryObjects.GeometryNumber;
 import GeometryCore.GeometryObjects.GeometryObject;
 import GeometryCore.GeometryObjects.LineSegment;
@@ -17,7 +17,7 @@ import GeometryCore.GeometryObjects.NumberValue;
 import GeometryCore.GeometryObjects.Polynomial;
 import GeometryCore.GeometryObjects.RaisedInThePower;
 
-public class AlgebraProcessorTest {
+public class BracketsExpanderTest {
     @Test
     public void expandBracketsTest() {
         LineSegment A = new LineSegment();
@@ -35,7 +35,7 @@ public class AlgebraProcessorTest {
                         new NumberValue(E, null)
                 )
         );
-        Monomial newExpression = AlgebraProcessor.simplifyExpression(expression);
+        Monomial newExpression = new BracketsExpander(expression).get();
 
         long count = 0L;
         for (GeometryObject x : newExpression.getAllSubObjects()) {
@@ -68,7 +68,7 @@ public class AlgebraProcessorTest {
                 new NumberValue(D, null),
                 new NumberValue(E, null)
         );
-        Monomial newExpression = AlgebraProcessor.simplifyExpression(expression);
+        Monomial newExpression = new BracketsExpander(expression).get();
 
         assertTrue(newExpression.getAllSubObjects().stream().map(x -> x.getAllSubObjects().get(0))
                 .collect(Collectors.toCollection(LinkedList::new)).containsAll(Arrays.asList(A, B, C, D, E)));
@@ -96,8 +96,7 @@ public class AlgebraProcessorTest {
                         )
                 )
         );
-        Monomial newExpression = AlgebraProcessor.simplifyExpression(expression);
-
+        Monomial newExpression = new BracketsExpander(expression).get();
         long count = 0L;
         for (GeometryObject x : newExpression.getAllSubObjects()) {
             List<List<GeometryObject>> bigList =
@@ -130,7 +129,7 @@ public class AlgebraProcessorTest {
                         GeometryNumber.createNumber(2)
                 )
         );
-        Monomial newExpression = AlgebraProcessor.simplifyExpression(expression);
+        Monomial newExpression = new BracketsExpander(expression).get();
 
         long count = 0L;
         for (GeometryObject x : newExpression.getAllSubObjects()) {
