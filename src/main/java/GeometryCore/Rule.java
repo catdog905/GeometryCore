@@ -25,8 +25,11 @@ public class Rule {
         LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
                 new LinkedList<>(model.facts), new HashMap<>(), 0);
         for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
-            model.facts.addAll(createConsequencesFacts(
-                    (new CorrespondenceNotNullDecorator(correspondence)).makeFull()));
+            CorrespondenceNotNullDecorator curCorrespodence =
+                    (new CorrespondenceNotNullDecorator(correspondence)).makeFull();
+            if (curCorrespodence == null)
+                continue;
+            model.facts.addAll(createConsequencesFacts(curCorrespodence));
         }
     }
 

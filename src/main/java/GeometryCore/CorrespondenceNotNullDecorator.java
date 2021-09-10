@@ -1,6 +1,5 @@
 package GeometryCore;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -38,7 +37,7 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
         LinkedList<Entry<GeometryObject, LinkedList<GeometryObject>>> sortedFullCorr =
             fullCorrespondence.entrySet().stream().sorted(Comparator.comparingInt(x -> x.getValue().size()))
                     .collect(Collectors.toCollection(LinkedList::new));
-        Collections.reverse(sortedFullCorr);
+        //Collections.reverse(sortedFullCorr);
         CorrespondenceNotNullDecorator correspondence = new CorrespondenceNotNullDecorator();
         for (int i = 0; i < sortedFullCorr.size(); i++) {
             HashMap<GeometryObject, Integer> count = new HashMap<>();
@@ -50,8 +49,12 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
             }
             GeometryObject correspondenceObj = count.entrySet().stream()
                     .max(Comparator.comparing(x -> x.getValue())).get().getKey();
-            for (int j = i + 1; j < sortedFullCorr.size(); j++)
+
+            for (int j = i + 1; j < sortedFullCorr.size(); j++) {
                 sortedFullCorr.get(j).getValue().remove(correspondenceObj);
+                if (sortedFullCorr.get(j).getValue().size() == 0)
+                    return null;
+            }
             correspondence.put(sortedFullCorr.get(i).getKey(), correspondenceObj);
         }
         return correspondence;
@@ -72,7 +75,9 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
         GeometryObject result = super.get(key);
         if (result == null) {
             try {
-                return ((GeometryObject)(((GeometryObject) key).clone())).createNewSimilarObject(this);
+                GeometryObject curObj = ((GeometryObject)(((GeometryObject) key).clone())).createNewSimilarObject(this);
+                super.put((GeometryObject) key, curObj);
+                return curObj;
             } catch (CloneNotSupportedException e) {
                 e.printStackTrace();
             }
