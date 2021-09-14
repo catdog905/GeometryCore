@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import GeometryCore.AlgebraProcessor;
+import GeometryCore.Expressor;
 import GeometryCore.Facts.EqualityFact;
 import GeometryCore.GeometryObjects.GeometryNumber;
 import GeometryCore.GeometryObjects.LineSegment;
@@ -90,10 +90,10 @@ public class ExpressorTest {
                 new Polynomial(
                         new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
                         new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));
-        Monomial answerAB =  AlgebraProcessor.expressVariableFromEquation(ab,equation);
-        Monomial answerAC =  AlgebraProcessor.expressVariableFromEquation(ac,equation);
-        Monomial answerBC =  AlgebraProcessor.expressVariableFromEquation(bc,equation);
+                ));// AB^2 = (2AC)^2+BC^2
+        Monomial answerAB =  Expressor.expressVariableFromEquation(ab,(Monomial) equation.left,(Monomial)equation.right);
+        Monomial answerAC =  Expressor.expressVariableFromEquation(ac,(Monomial) equation.left,(Monomial)equation.right);
+        Monomial answerBC =  Expressor.expressVariableFromEquation(bc,(Monomial) equation.left,(Monomial)equation.right);
 
         final String expectedStructureAB = "class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]"
                 ,expectedStructureAC = "class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]"
