@@ -7,6 +7,9 @@ import java.util.Map;
 public class Polynomial extends Monomial{
     public Polynomial(LinkedList<Monomial> subObjects) {
         super(subObjects);
+        if (subObjects.size() < 2){
+            throw new RuntimeException("Illegal constructor for polynomial");
+        }
     }
 
     public Polynomial(Monomial... subObjects) {
@@ -15,13 +18,13 @@ public class Polynomial extends Monomial{
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
-        return new LinkedList<>(subObjects);
+        return new LinkedList<>(super.getAllSubObjects());
     }
 
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Monomial> newObjects = new LinkedList<>();
-        for (Monomial obj : subObjects) {
+        for (GeometryObject obj : super.getAllSubObjects()) {
             newObjects.add((Monomial) correspondence.get(obj));
         }
         return new Polynomial(newObjects);

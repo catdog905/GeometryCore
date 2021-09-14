@@ -48,6 +48,7 @@ public class ExpertSystemTest{
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(BC) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AC)));
     }
+
     @Test
     public void RepeatingTriangleFactsTest() {
         Vertex A = new Vertex();
