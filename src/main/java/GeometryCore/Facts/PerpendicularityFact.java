@@ -1,22 +1,22 @@
 package GeometryCore.Facts;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import GeometryCore.GeometryObjects.GeometryObject;
 import GeometryCore.GeometryObjects.LineSegment;
 
 public class PerpendicularityFact extends Fact{
-    private HashSet<LineSegment> objects;
+    private LinkedList<LineSegment> objects;
 
-    public PerpendicularityFact(HashSet<LineSegment> objects) {
+    public PerpendicularityFact(LinkedList<LineSegment> objects) {
         this.objects = objects;
     }
 
     public PerpendicularityFact(LineSegment a, LineSegment lineSegment) {
-        this(new HashSet<>(Arrays.asList(a, lineSegment)));
+        this(new LinkedList<>(Arrays.asList(a, lineSegment)));
     }
 
     @Override
@@ -26,6 +26,12 @@ public class PerpendicularityFact extends Fact{
 
     @Override
     public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new PerpendicularityFact(objects);
+        try {
+            return new PerpendicularityFact(objects.stream().map(x -> (LineSegment) correspondence.get(x))
+                    .collect(Collectors.toCollection(LinkedList::new)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

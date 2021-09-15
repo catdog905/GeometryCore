@@ -1,5 +1,6 @@
 package GeometryCore.GeometryObjects;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import GeometryCore.SubObjectsEditor;
@@ -31,5 +32,24 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
+    }
+
+    public LinkedList<GeometryObject> getAllSubBasicObjects() {
+        if (getAllSubObjects().size() == 0)
+            return new LinkedList<>(Arrays.asList(this));
+        LinkedList<GeometryObject> list = new LinkedList<>();
+        for (GeometryObject curObj : getAllSubObjects())
+            list.addAll(curObj.getAllSubBasicObjects());
+        return list;
+    }
+
+    public LinkedList<GeometryObject> getAllSubObjectsInTree() {
+        if (getAllSubObjects().size() == 0)
+            return new LinkedList<>(Arrays.asList(this));
+        LinkedList<GeometryObject> list = new LinkedList<>();
+        for (GeometryObject curObj : getAllSubObjects())
+            list.addAll(curObj.getAllSubBasicObjects());
+        list.add(this);
+        return list;
     }
 }

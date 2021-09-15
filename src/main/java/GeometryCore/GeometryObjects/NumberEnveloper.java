@@ -18,6 +18,6 @@ public class NumberEnveloper extends Monomial {
 
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new NumberEnveloper(number);
+        return this;
     }
 }

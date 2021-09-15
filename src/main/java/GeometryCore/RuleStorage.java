@@ -37,6 +37,7 @@ public class RuleStorage {
         rules.add(belongingOfInnerSegmentsToOuter());
         rules.add(perpendicularityOfRadiusAndTouchedLineSegment());
         rules.add(touchedLineSegmentOfInscribedCircleInTriangle());
+        //rules.add(reversePythagoreanTheorem());
     }
 
     public static RuleStorage getInstance() {
@@ -206,14 +207,17 @@ public class RuleStorage {
         facts.add(new BelongFact(C, AB));
 
         LinkedList<Fact> consequences = new LinkedList<>();
+
         consequences.add(new BelongFact(AC, AB));
         consequences.add(new BelongFact(CB, AB));
         return new Rule(facts, consequences);
     }
 
     private Rule perpendicularityOfRadiusAndTouchedLineSegment() {
-        LineSegment a = new LineSegment();
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
         Vertex center = new Vertex();
+        LineSegment a = new LineSegment(A, B);
         Circle circle = new Circle(center);
         Vertex touchPlace = new Vertex();
 
@@ -253,6 +257,28 @@ public class RuleStorage {
         consequences.add(new TouchedFact(M, circle, BC));
         consequences.add(new TouchedFact(N, circle, AC));
 
+        return new Rule(facts, consequences);
+    }
+
+    private Rule reversePythagoreanTheorem() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
+        Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new RightAngledFact(triangle));
+        consequences.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new EqualityFact(
+                new RaisedInThePower(new NumberValue(AB, null), GeometryNumber.createNumber(2)),
+                new Polynomial(
+                        new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
+                        new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
+                )));
         return new Rule(facts, consequences);
     }
 }

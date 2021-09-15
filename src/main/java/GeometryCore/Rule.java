@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import GeometryCore.Facts.Fact;
 import GeometryCore.GeometryObjects.GeometryObject;
@@ -29,7 +30,11 @@ public class Rule {
                     (new CorrespondenceNotNullDecorator(correspondence)).makeFull();
             if (curCorrespodence == null)
                 continue;
-            model.facts.addAll(createConsequencesFacts(curCorrespodence));
+            LinkedList<Fact> newFacts = createConsequencesFacts(curCorrespodence);
+            for (Fact fact : newFacts)
+                if (model.facts.stream().map(x -> !fact.isTheSameFact(x))
+                        .reduce(true, (subtotal, el) -> subtotal && el))
+                    model.facts.add(fact);
         }
     }
 
@@ -69,8 +74,9 @@ public class Rule {
     private LinkedList<Fact> getMatchedFactsForItemElem(LinkedList<Fact> model, Map<GeometryObject, GeometryObject> factsCorrespondence, int ruleFactsIter) {
         LinkedList<Fact> matchedElements = new LinkedList<>();
         for (Fact curFact : model) {
-            if (!curFact.getClass().equals(requiredFacts.get(ruleFactsIter).getClass()))
+            if (!checkSimilarityOf2Facts(curFact, requiredFacts.get(ruleFactsIter)))
                 continue;
+
             LinkedList<GeometryObject> curFactObjects = curFact.getAllSubObjects();
             Boolean isFit = true;
             for (GeometryObject obj : requiredFacts.get(ruleFactsIter).getAllSubObjects()){
@@ -98,5 +104,31 @@ public class Rule {
             newCorrespondence.put(ruleFactObjects.get(i), fact.getAllSubObjects().get(i));
         }
         return newCorrespondence;
+    }
+
+    private Boolean checkSimilarityOf2Facts (Fact fact1 , Fact fact2) {
+        if (fact1.getClass() != fact2.getClass())
+            return false;
+        HashMap<Class<?>, Integer> fact1TypeCounter = new HashMap<>();
+        HashMap<Class<?>, Integer> fact2TypeCounter = new HashMap<>();
+        for (GeometryObject obj: fact1.getAllSubObjects()) {
+            Integer num = fact1TypeCounter.get(obj.getClass());
+            if (num == null)
+                fact1TypeCounter.put(obj.getClass(), 1);
+            else
+                fact1TypeCounter.put(obj.getClass(), num + 1);
+        }
+        for (GeometryObject obj: fact2.getAllSubObjects()) {
+            Integer num = fact2TypeCounter.get(obj.getClass());
+            if (num == null)
+                fact2TypeCounter.put(obj.getClass(), 1);
+            else
+                fact2TypeCounter.put(obj.getClass(), num + 1);
+        }
+        for (Entry<Class<?>, Integer> entry : fact1TypeCounter.entrySet()) {
+            if (!entry.getValue().equals(fact2TypeCounter.get(entry.getKey())))
+                return false;
+        }
+        return true;
     }
 }

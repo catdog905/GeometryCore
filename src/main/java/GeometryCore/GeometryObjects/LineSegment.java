@@ -15,9 +15,6 @@ public class LineSegment extends GeometryObject {
         this(new HashSet<>(Arrays.asList(first, second)));
     }
 
-    public LineSegment() {
-    }
-
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         HashSet<Vertex> newObjects = new HashSet<>();
@@ -29,6 +26,8 @@ public class LineSegment extends GeometryObject {
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
+        if (vertexes == null)
+            return new LinkedList<>();
         return new LinkedList<>(vertexes);
     }
 }
