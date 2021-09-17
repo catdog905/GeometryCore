@@ -22,6 +22,7 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
 
     public CorrespondenceNotNullDecorator makeFull() {
         HashSet<GeometryObject> allSubKeyObjects = new HashSet<>();
+        allSubKeyObjects.addAll(keySet());
         for (GeometryObject obj : keySet()) {
             allSubKeyObjects.addAll(obj.getAllSubObjects());
         }
@@ -36,13 +37,13 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
                 })).collect(Collectors.toCollection(LinkedList::new));
         Collections.reverse(allSubKeyObjectList);
         CorrespondenceNotNullDecorator correspondence = new CorrespondenceNotNullDecorator();
-        for (Entry<GeometryObject, GeometryObject> entry : entrySet()){
-            correspondence.put(entry.getKey(), entry.getValue());
-        }
         HashSet<GeometryObject> intersectionSet = new HashSet<>();
         for (GeometryObject obj : values()) {
             intersectionSet.addAll(obj.getAllSubObjects());
         }
+        intersectionSet.addAll(values());
+        if (allSubKeyObjectList.size() != intersectionSet.size())
+            return null;
         for (GeometryObject obj : allSubKeyObjectList) {
             LinkedList<GeometryObject> intersectionList = new LinkedList<>(intersectionSet);
             for (Entry<GeometryObject, GeometryObject> entry : entrySet()) {
@@ -56,7 +57,8 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
                 }
             }
             for (int i = 0; i < intersectionList.size(); i++) {
-                if (!correspondence.containsValue(intersectionList.get(i))) {
+                if (intersectionList.get(i).getClass() == obj.getClass()
+                    && !correspondence.containsValue(intersectionList.get(i))) {
                     correspondence.put(obj, intersectionList.get(i));
                     break;
                 }
@@ -65,50 +67,6 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
 
         }
         return correspondence;
-
-        //LinkedList<CorrespondencePair> allCorrespondence = new LinkedList<>();
-        //for(Entry<GeometryObject, GeometryObject> elem : super.entrySet()) {
-        //    allCorrespondence.addAll(makeFull(elem.getKey(), elem.getValue()));
-        //}
-        //HashMap<GeometryObject, LinkedList<GeometryObject>> fullCorrespondence = new HashMap<>();
-        //for (CorrespondencePair pair : allCorrespondence) {
-        //    LinkedList<GeometryObject> existElement = fullCorrespondence.get(pair.key);
-        //    if (existElement == null) {
-        //        LinkedList<GeometryObject> tempList = new LinkedList<>();
-        //        tempList.add(pair.value);
-        //        fullCorrespondence.put(pair.key, tempList);
-        //    } else {
-        //        if (!existElement.contains(pair.value))
-        //            existElement.add(pair.value);
-        //    }
-        //}
-        //LinkedList<Entry<GeometryObject, LinkedList<GeometryObject>>> sortedFullCorr =
-        //    fullCorrespondence.entrySet().stream().sorted(
-        //            Comparator.comparingInt(x -> x.getKey().getAllSubObjects().size()))
-        //            .collect(Collectors.toCollection(LinkedList::new));
-        ////Collections.reverse(sortedFullCorr);
-        //CorrespondenceNotNullDecorator correspondence = new CorrespondenceNotNullDecorator();
-        //for (int i = 0; i < sortedFullCorr.size(); i++) {
-        //    HashMap<GeometryObject, GeometryObject> curCorrespondence = getAllCorrespondenceOfSubObjects(
-        //            sortedFullCorr.get(i).getKey(), sortedFullCorr.get(i).getValue().get(0));
-//
-        //    for (int j = i + 1; j < sortedFullCorr.size(); j++) {
-        //        if (curCorrespondence.containsKey(sortedFullCorr.get(j).getKey())) {
-        //            sortedFullCorr.remove(j);
-        //            j--;
-        //            continue;
-        //        }
-        //        for (GeometryObject value : curCorrespondence.values())
-        //            sortedFullCorr.get(j).getValue().remove(value);
-        //        if (sortedFullCorr.get(j).getValue().size() == 0)
-        //            return null;
-        //    }
-        //    for (Entry<GeometryObject, GeometryObject> entry : curCorrespondence.entrySet()){
-        //        if (!correspondence.containsKey(entry.getKey()))
-        //            correspondence.put(entry.getKey(), entry.getValue());
-        //    }
-        //}
-        //return correspondence;
     }
 
     private HashMap<GeometryObject, GeometryObject> getAllCorrespondenceOfSubObjects(GeometryObject obj1, GeometryObject obj2){
@@ -143,13 +101,10 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
     public GeometryObject get(Object key) {
         GeometryObject result = super.get(key);
         if (result == null) {
-            //GeometryObject curObj = ((GeometryObject)(((GeometryObject) key).clone())).createNewSimilarObject(this);
-            GeometryObject curObj = ((GeometryObject)key).createNewSimilarObject(this);
+            GeometryObject curObj = ((GeometryObject)key).createNewSimilarCorrespondenceObject(this);
             super.put((GeometryObject) key, curObj);
             return curObj;
         }
         return result;
     }
-
-
 }

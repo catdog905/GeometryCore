@@ -16,7 +16,7 @@ public class LineSegment extends GeometryObject {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         HashSet<Vertex> newObjects = new HashSet<>();
         for (Vertex obj : vertexes) {
             newObjects.add((Vertex) correspondence.get(obj));

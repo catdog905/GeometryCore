@@ -241,7 +241,8 @@ public class RuleStorage {
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
         Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
-        Circle circle = new Circle();
+        Vertex center = new Vertex();
+        Circle circle = new Circle(center);
 
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new InscribedFact(circle, triangle));
@@ -270,8 +271,6 @@ public class RuleStorage {
         Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
         Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
         LinkedList<Fact> consequences = new LinkedList<>();
-        consequences.add(new RightAngledFact(triangle));
-        consequences.add(new EqualityFact(ACB, Degree.createNumber(90)));
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new EqualityFact(
                 new RaisedInThePower(new NumberValue(AB, null), GeometryNumber.createNumber(2)),
@@ -279,6 +278,8 @@ public class RuleStorage {
                         new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
                         new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
                 )));
+        consequences.add(new RightAngledFact(triangle));
+        consequences.add(new EqualityFact(ACB, Degree.createNumber(90)));
         return new Rule(facts, consequences);
     }
 }

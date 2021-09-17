@@ -2,6 +2,7 @@ package GeometryCore;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,24 +25,32 @@ public class Rule {
 
     public void applyToModel(Model model) {
         LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
-                new LinkedList<>(model.facts), new HashMap<>(), 0);
+                new LinkedList<>(model.getFacts()), new HashMap<>(), 0);
         for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
+            if (model.haveRuleAlreadyApplied(this, correspondence))
+                continue;
             CorrespondenceNotNullDecorator curCorrespodence =
                     (new CorrespondenceNotNullDecorator(correspondence)).makeFull();
+            //for (Entry<GeometryObject, GeometryObject> entry : curCorrespodence.entrySet())
+            //    if (curCorrespodence.entrySet().stream().anyMatch(
+            //            x -> x.getKey() != entry.getKey() && x.getValue() == entry.getValue())) {
+            //        curCorrespodence = null;
+            //        break;
+            //    }
             if (curCorrespodence == null)
                 continue;
             LinkedList<Fact> newFacts = createConsequencesFacts(curCorrespodence);
-            for (Fact fact : newFacts)
-                if (model.facts.stream().map(x -> !fact.isTheSameFact(x))
-                        .reduce(true, (subtotal, el) -> subtotal && el))
-                    model.facts.add(fact);
+            //for (Fact fact : newFacts)
+             //   if (model.getFacts().stream().map(x -> !fact.isTheSameFact(x))
+            //            .reduce(true, (subtotal, el) -> subtotal && el))
+            model.addSetOfFacts(new HashSet<>(newFacts), this, correspondence);
         }
     }
 
     private LinkedList<Fact> createConsequencesFacts(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Fact> consequenceFact = new LinkedList<>();
         for (Fact fact : consequences) {
-            consequenceFact.add(fact.createNewSimilarObject(correspondence));
+            consequenceFact.add(fact.createNewSimilarCorrespondenceObject(correspondence));
         }
         return consequenceFact;
     }
@@ -100,8 +109,14 @@ public class Rule {
     private Map<GeometryObject, GeometryObject> updateCorrespondenceItemElem(Map<GeometryObject, GeometryObject> factsCorrespondence, Fact fact, int ruleFactsIter) {
         Map<GeometryObject, GeometryObject> newCorrespondence = new HashMap<>(factsCorrespondence);
         LinkedList<GeometryObject> ruleFactObjects = requiredFacts.get(ruleFactsIter).getAllSubObjects();
+        LinkedList<GeometryObject> modelFactObjects = fact.getAllSubObjects();
         for (int i = 0; i < ruleFactObjects.size(); i++) {
-            newCorrespondence.put(ruleFactObjects.get(i), fact.getAllSubObjects().get(i));
+            int finalI = i;
+            GeometryObject correspondenceObj = modelFactObjects.stream()
+                    .filter(x -> x.getClass() == ruleFactObjects.get(finalI).getClass())
+                    .findAny().orElse(null);
+            modelFactObjects.remove(correspondenceObj);
+            newCorrespondence.put(ruleFactObjects.get(i), correspondenceObj);
         }
         return newCorrespondence;
     }

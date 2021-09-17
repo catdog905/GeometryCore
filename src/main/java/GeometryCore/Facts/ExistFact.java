@@ -19,8 +19,8 @@ public class ExistFact extends Fact{
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        GeometryObject newObj = object.createNewSimilarObject(correspondence);
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+        GeometryObject newObj = object.createNewSimilarCorrespondenceObject(correspondence);
         correspondence.put(object, newObj);
         return new ExistFact(newObj);
     }

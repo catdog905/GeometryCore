@@ -1,7 +1,6 @@
 package GeometryCore.Facts;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -9,16 +8,16 @@ import GeometryCore.GeometryObjects.GeometryObject;
 import GeometryCore.GeometryObjects.Vertex;
 
 public class TouchedFact extends Fact{
-    private HashSet<GeometryObject> objects;
+    private LinkedList<GeometryObject> objects;
     private Vertex touchPlace;
 
-    public TouchedFact(HashSet<GeometryObject> objects, Vertex touchPlace) {
+    public TouchedFact(LinkedList<GeometryObject> objects, Vertex touchPlace) {
         this.objects = objects;
         this.touchPlace = touchPlace;
     }
 
     public TouchedFact(Vertex touchPlace, GeometryObject... objects) {
-        this(new HashSet<>(Arrays.asList(objects)), touchPlace);
+        this(new LinkedList<>(Arrays.asList(objects)), touchPlace);
     }
 
     @Override
@@ -29,7 +28,10 @@ public class TouchedFact extends Fact{
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new TouchedFact(objects, touchPlace);
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+        LinkedList<GeometryObject> list = new LinkedList<>();
+        for (GeometryObject obj : objects)
+            list.add(correspondence.get(obj));
+        return new TouchedFact(list, (Vertex)correspondence.get(touchPlace));
     }
 }

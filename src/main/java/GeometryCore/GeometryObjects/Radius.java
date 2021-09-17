@@ -17,7 +17,7 @@ public class Radius extends GeometryObject {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new Radius(circle);
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+        return new Radius((Circle)correspondence.get(circle));
     }
 }

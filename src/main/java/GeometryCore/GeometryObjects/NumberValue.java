@@ -23,7 +23,7 @@ public class NumberValue extends Monomial {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new NumberValue(correspondence.get(object), numberEnveloper);
     }
 }

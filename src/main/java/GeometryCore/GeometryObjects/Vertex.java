@@ -13,7 +13,7 @@ public class Vertex extends GeometryObject {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new Vertex();
     }
 }

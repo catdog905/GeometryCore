@@ -1,15 +1,14 @@
 package GeometryCore.Facts;
 
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
 import GeometryCore.GeometryObjects.GeometryObject;
 
 public class ParallelismFact extends Fact {
-    public HashSet<GeometryObject> geometryObjects;
+    public LinkedList<GeometryObject> geometryObjects;
 
-    public ParallelismFact(HashSet<GeometryObject> geometryObjects) {
+    public ParallelismFact(LinkedList<GeometryObject> geometryObjects) {
         this.geometryObjects = geometryObjects;
     }
 
@@ -19,8 +18,8 @@ public class ParallelismFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        HashSet<GeometryObject> newObjects = new HashSet<>();
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+        LinkedList<GeometryObject> newObjects = new LinkedList<>();
         for (GeometryObject obj : geometryObjects) {
             newObjects.add(correspondence.get(obj));
         }

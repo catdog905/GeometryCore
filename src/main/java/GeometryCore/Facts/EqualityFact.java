@@ -20,7 +20,7 @@ public class EqualityFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new EqualityFact(correspondence.get(left), correspondence.get(right));
     }
 }

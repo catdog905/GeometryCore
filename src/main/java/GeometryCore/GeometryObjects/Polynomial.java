@@ -19,7 +19,7 @@ public class Polynomial extends Monomial{
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Monomial> newObjects = new LinkedList<>();
         for (Monomial obj : subObjects) {
             newObjects.add((Monomial) correspondence.get(obj));

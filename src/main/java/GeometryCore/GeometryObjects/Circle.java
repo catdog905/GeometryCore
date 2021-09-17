@@ -11,9 +11,6 @@ public class Circle extends GeometryObject{
         this.center = center;
     }
 
-    public Circle() {
-    }
-
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
         if (center != null) {
@@ -23,7 +20,7 @@ public class Circle extends GeometryObject{
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new Circle(center);
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+        return new Circle((Vertex)correspondence.get(center));
     }
 }

@@ -20,7 +20,7 @@ public class Triangle extends GeometryObject {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         HashSet<LineSegment> newObjects = new HashSet<>();
         for (LineSegment obj : lineSegments) {
             newObjects.add((LineSegment) correspondence.get(obj));

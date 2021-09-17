@@ -19,7 +19,7 @@ public class RightAngledFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new RightAngledFact(correspondence.get(object));
     }
 }

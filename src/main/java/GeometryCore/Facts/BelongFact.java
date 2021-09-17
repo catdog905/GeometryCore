@@ -23,7 +23,7 @@ public class BelongFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new BelongFact(correspondence.get(object),
                 correspondence.get(subject));
     }

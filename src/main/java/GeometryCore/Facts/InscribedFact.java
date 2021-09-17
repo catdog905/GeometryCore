@@ -20,7 +20,7 @@ public class InscribedFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new InscribedFact(object, inscribedIn);
+    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+        return new InscribedFact(correspondence.get(object), correspondence.get(inscribedIn));
     }
 }

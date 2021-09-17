@@ -7,5 +7,5 @@ import GeometryCore.GeometryObjects.GeometryObject;
 
 public interface SubObjectsEditor<T, E> {
     LinkedList<T> getAllSubObjects();
-    E createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence);
+    E createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence);
 }

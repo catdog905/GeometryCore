@@ -48,11 +48,12 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof ExistFact &&
+        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof ExistFact &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AB) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(BC) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AC)));
-    }
+    }//avoid repeating facts not works
+
     @Test
     public void RepeatingTriangleFactsTest() {
         Vertex A = new Vertex();
@@ -71,7 +72,7 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        assertEquals(1, model.facts.stream().filter(x -> x instanceof ExistFact &&
+        assertEquals(1, model.getFacts().stream().filter(x -> x instanceof ExistFact &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(AB) &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(BC) &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(AC)).collect(Collectors.toList()).size());
@@ -94,7 +95,7 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
+        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 
     @Test
@@ -118,7 +119,7 @@ public class ExpertSystemTest{
 
         int leftCount = 0;
         int rightCount = 0;
-        for (Fact fact : model.facts) {
+        for (Fact fact : model.getFacts()) {
             if (fact instanceof EqualityFact && ((EqualityFact)fact).left instanceof RaisedInThePower) {
                 if (((EqualityFact) fact).left.getAllSubObjects()
                         .stream().filter(x -> x instanceof NumberValue).findAny().get().getAllSubObjects().contains(AB))
@@ -155,7 +156,7 @@ public class ExpertSystemTest{
 
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
+        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 
     @Test
@@ -174,8 +175,8 @@ public class ExpertSystemTest{
 
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
-    }
+        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
+    } // проблема в определении треугольника в touchFact
 
     @Test
     public void sublineInLineTest() {
@@ -190,7 +191,7 @@ public class ExpertSystemTest{
         ExpertSystem.ForwardPass(model);
 
         int counter = 0;
-        for (Fact fact : model.facts) {
+        for (Fact fact : model.getFacts()) {
             if (fact instanceof BelongFact) {
                 Boolean check = false;
                 for (GeometryObject obj : fact.getAllSubObjects()) {
@@ -227,7 +228,7 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        for (Fact fact : model.facts) {
+        for (Fact fact : model.getFacts()) {
             if (fact instanceof BelongFact) {
                 if (fact.getAllSubObjects().contains(AB)) {
                     int counter = 0;
@@ -274,6 +275,6 @@ public class ExpertSystemTest{
 
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
+        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 }

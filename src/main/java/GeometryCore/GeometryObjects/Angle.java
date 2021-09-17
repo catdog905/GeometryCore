@@ -15,7 +15,7 @@ public class Angle extends GeometryObject {
     }
 
     @Override
-    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<GeometryObject> newObjects = new LinkedList<>();
         for (GeometryObject obj : geometryObjects) {
             newObjects.add(correspondence.get(obj));
