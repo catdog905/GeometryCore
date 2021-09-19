@@ -21,4 +21,5 @@ public abstract class Fact implements SubObjectsEditor<GeometryObject, Fact> {
         return theirSubObjects.size()==ourSubObjects.size()&&theirSubObjects.containsAll(ourSubObjects);
     }
 
+
 }
