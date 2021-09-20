@@ -37,6 +37,8 @@ public class RuleStorage {
         rules.add(belongingOfInnerSegmentsToOuter());
         rules.add(perpendicularityOfRadiusAndTouchedLineSegment());
         rules.add(touchedLineSegmentOfInscribedCircleInTriangle());
+        rules.add(equalsDistanceFromCenterToTouchedIntersectsLines());
+        rules.add(equalsDistanceFromCenterToTouchedNotIntersectsLines());
         //rules.add(reversePythagoreanTheorem());
     }
 
@@ -257,6 +259,51 @@ public class RuleStorage {
         consequences.add(new TouchedFact(P, circle, AB));
         consequences.add(new TouchedFact(M, circle, BC));
         consequences.add(new TouchedFact(N, circle, AC));
+
+        return new Rule(facts, consequences);
+    }
+
+    private Rule equalsDistanceFromCenterToTouchedIntersectsLines() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        Vertex center = new Vertex();
+        Circle circle = new Circle(center);
+        Vertex touchPlace1 = new Vertex();
+        Vertex touchPlace2 = new Vertex();
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new TouchedFact(touchPlace1, circle, AB));
+        facts.add(new TouchedFact(touchPlace2, circle, BC));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(
+                new LineSegment(touchPlace1, center), new LineSegment(touchPlace2, center)));
+
+        return new Rule(facts, consequences);
+    }
+
+    private Rule equalsDistanceFromCenterToTouchedNotIntersectsLines() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex D = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment DC = new LineSegment(D, C);
+        Vertex center = new Vertex();
+        Circle circle = new Circle(center);
+        Vertex touchPlace1 = new Vertex();
+        Vertex touchPlace2 = new Vertex();
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new TouchedFact(touchPlace1, circle, AB));
+        facts.add(new TouchedFact(touchPlace2, circle, DC));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(
+                new LineSegment(touchPlace1, center), new LineSegment(touchPlace2, center)));
 
         return new Rule(facts, consequences);
     }
