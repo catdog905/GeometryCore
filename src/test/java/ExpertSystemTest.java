@@ -7,26 +7,26 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import GeometryCore.ExpertSystem;
-import GeometryCore.Facts.BelongFact;
-import GeometryCore.Facts.EqualityFact;
-import GeometryCore.Facts.ExistFact;
-import GeometryCore.Facts.Fact;
-import GeometryCore.Facts.InscribedFact;
-import GeometryCore.Facts.PerpendicularityFact;
-import GeometryCore.Facts.RightAngledFact;
-import GeometryCore.Facts.TouchedFact;
-import GeometryCore.GeometryObjects.Angle;
-import GeometryCore.GeometryObjects.Circle;
-import GeometryCore.GeometryObjects.Degree;
-import GeometryCore.GeometryObjects.GeometryNumber;
-import GeometryCore.GeometryObjects.LineSegment;
-import GeometryCore.GeometryObjects.NumberValue;
-import GeometryCore.GeometryObjects.Polynomial;
-import GeometryCore.GeometryObjects.RaisedInThePower;
-import GeometryCore.GeometryObjects.Triangle;
-import GeometryCore.GeometryObjects.Vertex;
-import GeometryCore.Model;
+import core.ExpertSystem;
+import core.Model;
+import core.facts.BelongFact;
+import core.facts.EqualityFact;
+import core.facts.ExistFact;
+import core.facts.Fact;
+import core.facts.InscribedFact;
+import core.facts.PerpendicularityFact;
+import core.facts.RightAngledFact;
+import core.facts.TouchedFact;
+import core.objects.Angle;
+import core.objects.Circle;
+import core.objects.LineSegment;
+import core.objects.Polynomial;
+import core.objects.RaisedInThePower;
+import core.objects.Triangle;
+import core.objects.Vertex;
+import core.objects.numbers.Degree;
+import core.objects.numbers.GeometryNumber;
+import core.objects.numbers.NumberValue;
 
 public class ExpertSystemTest{
     @Test
