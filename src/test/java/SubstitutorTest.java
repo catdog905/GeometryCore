@@ -39,8 +39,8 @@ public class SubstitutorTest {
         substituteTable.put(ac,GeometryNumber.createNumber(33));
         Monomial answerAB =  new Substitutor((Monomial)(equation.left),substituteTable).getSubstituted();
         Monomial answerBC_and_AC =  new Substitutor((Monomial)(equation.right),substituteTable).getSubstituted();
-        String expectedStructureAB = "class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]",
-                expectedStructureBC_and_AC = "class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]";
+        String expectedStructureAB = "class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]",
+                expectedStructureBC_and_AC = "class core.objects.Polynomial[class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]";
         assertEquals(answerAB.getUniqueStructureString(),expectedStructureAB);
         assertEquals(answerBC_and_AC.getUniqueStructureString(),expectedStructureBC_and_AC);
     }
