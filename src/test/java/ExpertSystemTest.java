@@ -52,7 +52,7 @@ public class ExpertSystemTest{
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AB) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(BC) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AC)));
-    }//avoid repeating facts not works
+    }
 
     @Test
     public void RepeatingTriangleFactsTest() {

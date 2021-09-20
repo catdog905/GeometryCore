@@ -15,8 +15,7 @@ public class FactOptimizer {
 
             List<Fact> allSimilarFacts =  newFacts.stream().filter
                     (x -> x!=fact&&
-                    x.getClass().equals(fact.getClass())&&
-                    fact.isTheSameFact(x))
+                    x.equals(fact))
                         .collect(Collectors.toList());
 
             newFacts.removeAll(allSimilarFacts);
