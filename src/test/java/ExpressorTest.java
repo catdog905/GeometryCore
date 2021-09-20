@@ -16,6 +16,7 @@ import GeometryCore.GeometryObjects.NumberValue;
 import GeometryCore.GeometryObjects.Polynomial;
 import GeometryCore.GeometryObjects.RaisedInThePower;
 import GeometryCore.GeometryObjects.Vertex;
+import GeometryCore.Model;
 import GeometryCore.MonomialDeconstructor;
 import GeometryCore.PolynomialDeconstructor;
 import GeometryCore.UniqueVariableSeeker;
