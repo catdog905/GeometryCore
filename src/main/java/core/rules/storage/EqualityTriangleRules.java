@@ -12,6 +12,7 @@ import core.objects.Angle;
 import core.objects.LineSegment;
 import core.objects.Triangle;
 import core.objects.Vertex;
+import core.objects.numbers.Degree;
 
 public class EqualityTriangleRules {
     public HashSet<Rule> get() {
@@ -25,6 +26,14 @@ public class EqualityTriangleRules {
         rules.add(equalityTriangleFactBy3Sides());
         rules.add(equalityTriangleFactBy3SidesWithCommonSide());
         rules.add(equalityTriangleFactBy3SidesWithCommonSideInv());
+        rules.add(equalityTriangleFactByLegAndHypotenuse());
+        rules.add(equalityTriangleFactByLegAndHypotenuseWithCommonLeg());
+        rules.add(equalityTriangleFactByLegAndHypotenuseWithCommonLegInv());
+        rules.add(equalityTriangleFactByLegAndHypotenuseWithCommonHypotenuse());
+        rules.add(equalityTriangleFactByLegAndHypotenuseWithCommonHypotenuseInv());
+        rules.add(equalityTriangleFactByHypotenuseAndAcuteLeg());
+        rules.add(equalityTriangleFactByHypotenuseAndAcuteLegWithCommonLeg());
+        rules.add(equalityTriangleFactByHypotenuseAndAcuteLegWithCommonLegInv());
 
         return rules;
     }
@@ -58,7 +67,6 @@ public class EqualityTriangleRules {
         consequences.add(new EqualityFact(triangle, triangle1));
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy2SidesAndAngleBetweenWithCommonSide() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -86,7 +94,6 @@ public class EqualityTriangleRules {
 
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy2SidesAndAngleBetweenWithCommonSideInv() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -113,7 +120,6 @@ public class EqualityTriangleRules {
 
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy2AnglesAndLineBetween() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -145,7 +151,6 @@ public class EqualityTriangleRules {
         consequences.add(new EqualityFact(triangle, triangle1));
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy2AnglesAndLineBetweenWithCommonSide() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -173,7 +178,6 @@ public class EqualityTriangleRules {
 
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy2AnglesAndLineBetweenWithCommonSideInv() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -201,7 +205,6 @@ public class EqualityTriangleRules {
 
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy3Sides() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -229,7 +232,6 @@ public class EqualityTriangleRules {
         consequences.add(new EqualityFact(triangle, triangle1));
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy3SidesWithCommonSide() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -253,7 +255,6 @@ public class EqualityTriangleRules {
         consequences.add(new EqualityFact(triangle, triangle1));
         return new Rule(facts, consequences);
     }
-
     private Rule equalityTriangleFactBy3SidesWithCommonSideInv() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
@@ -272,6 +273,228 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, CD));
         facts.add(new EqualityFact(AD, BC));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByLegAndHypotenuse() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        Angle ACB = new Angle(AC, BC);
+        Triangle triangle = new Triangle(AB, BC, AC);
+        Vertex A1 = new Vertex();
+        Vertex B1 = new Vertex();
+        Vertex C1 = new Vertex();
+        LineSegment A1B1 = new LineSegment(A1, B1);
+        LineSegment B1C1 = new LineSegment(B1, C1);
+        LineSegment A1C1 = new LineSegment(A1, C1);
+        Angle A1C1B1 = new Angle(A1C1, B1C1);
+        Triangle triangle1 = new Triangle(A1B1, B1C1, A1C1);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AB, A1B1));
+        facts.add(new EqualityFact(BC, B1C1));
+        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(A1C1B1, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByLegAndHypotenuseWithCommonLeg() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment BD = new LineSegment(B, D);
+        Angle ADB = new Angle(AD, BD);
+        Angle CDB = new Angle(CD ,BD);
+        Triangle triangle = new Triangle(AB, BD, AD);
+        Triangle triangle1 = new Triangle(BD, BC, CD);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AB, BC));
+        facts.add(new EqualityFact(ADB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(CDB, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByLegAndHypotenuseWithCommonLegInv() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment BD = new LineSegment(B, D);
+        Angle ADB = new Angle(AD, BD);
+        Angle CBD = new Angle(BC, BD);
+        Triangle triangle = new Triangle(AB, BD, AD);
+        Triangle triangle1 = new Triangle(BD, BC, CD);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AB, CD));
+        facts.add(new EqualityFact(ADB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(CBD, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByLegAndHypotenuseWithCommonHypotenuse() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment BD = new LineSegment(B, D);
+        Angle BAD = new Angle(AB, AD);
+        Angle BCD = new Angle(BC, CD);
+        Triangle triangle = new Triangle(AB, BD, AD);
+        Triangle triangle1 = new Triangle(BC, BD, CD);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AB, BC));
+        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByLegAndHypotenuseWithCommonHypotenuseInv() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment BD = new LineSegment(B, D);
+        Angle BAD = new Angle(AB, AD);
+        Angle BCD = new Angle(BC, CD);
+        Triangle triangle = new Triangle(AB, BD, AD);
+        Triangle triangle1 = new Triangle(BC, BD, CD);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AB, CD));
+        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByHypotenuseAndAcuteLeg() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        Angle ACB = new Angle(AC, BC);
+        Angle ABC = new Angle(AB, BC);
+        Triangle triangle = new Triangle(AB, BC, AC);
+        Vertex A1 = new Vertex();
+        Vertex B1 = new Vertex();
+        Vertex C1 = new Vertex();
+        LineSegment A1B1 = new LineSegment(A1, B1);
+        LineSegment B1C1 = new LineSegment(B1, C1);
+        LineSegment A1C1 = new LineSegment(A1, C1);
+        Angle A1C1B1 = new Angle(A1C1, B1C1);
+        Angle A1B1C1 = new Angle(A1B1, B1C1);
+        Triangle triangle1 = new Triangle(A1B1, B1C1, A1C1);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AB, A1B1));
+        facts.add(new EqualityFact(ABC, A1B1C1));
+        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(A1C1B1, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByHypotenuseAndAcuteLegWithCommonLeg() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment BD = new LineSegment(B, D);
+        Angle BAD = new Angle(AB, AD);
+        Angle BCD = new Angle(BC, CD);
+        Angle ADB = new Angle(AD, BD);
+        Angle CDB = new Angle(CD, BD);
+        Triangle triangle = new Triangle(AB, AD, BD);
+        Triangle triangle1 = new Triangle(BD, BC, CD);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(ADB, CDB));
+        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new EqualityFact(triangle, triangle1));
+        return new Rule(facts, consequences);
+    }
+    private Rule equalityTriangleFactByHypotenuseAndAcuteLegWithCommonLegInv() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment BD = new LineSegment(B, D);
+        Angle BAD = new Angle(AB, AD);
+        Angle BCD = new Angle(BC, CD);
+        Angle ADB = new Angle(AD, BD);
+        Angle CBD = new Angle(BC, CD);
+        Triangle triangle = new Triangle(AB, AD, BD);
+        Triangle triangle1 = new Triangle(BD, BC, CD);
+
+        LinkedList<Fact> facts = new LinkedList<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(ADB, CBD));
+        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
