@@ -278,26 +278,26 @@ public class ExpertSystemTest{
         Vertex A = new Vertex();
         Vertex B = new Vertex();
         Vertex C = new Vertex();
-        LineSegment BC = new LineSegment(B, C);
+        Vertex D = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
         LineSegment AC = new LineSegment(A, C);
-        Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
-        Vertex A1 = new Vertex();
-        Vertex B1 = new Vertex();
-        Vertex C1 = new Vertex();
-        LineSegment AC1 = new LineSegment(A1, C1);
-        Angle ACB1 = new Angle(new LinkedList(Arrays.asList(AC1, BC)));
-
+        LineSegment AD = new LineSegment(A, D);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment BD = new LineSegment(B, D);
+        Angle BAC = new Angle(AB, AC);
+        Angle BAD = new Angle(AB, AD);
+        Triangle triangle = new Triangle(AC, BC, AB);
+        Triangle triangle1 = new Triangle(AB, BD, AD);
         HashSet<Fact> facts = new HashSet<>();
-        facts.add(new EqualityFact(AC, AC1));
-        facts.add(new EqualityFact(BC, BC));
-        facts.add(new EqualityFact(ACB, ACB1));
+        facts.add(new ExistFact(triangle));
+        facts.add(new ExistFact(triangle1));
+        facts.add(new EqualityFact(AC, AD));
+        facts.add(new EqualityFact(BAC, BAD));
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
         HashSet<Fact> checkFacts = new HashSet<>(facts);
-        checkFacts.add(new EqualityFact(
-                new Triangle(new LineSegment(A, B), BC, AC),
-                new Triangle(new LineSegment(A1, B1), BC, AC1)));
+        checkFacts.add(new EqualityFact(triangle, triangle1));
         Model checkModel = new Model(checkFacts);
         assertTrue(checkModel.isEquivalentTo(model));
     }

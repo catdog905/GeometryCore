@@ -29,12 +29,10 @@ public class RuleStorage {
     private static RuleStorage singleton = null;
 
     private RuleStorage() {
+        rules.addAll(new EqualityTriangleRules().get());
         rules.add(triangle());
         rules.add(rightTriangle());
         rules.add(pythagoreanTheorem());
-        rules.add(equalityTriangleFactBy2SidesAndAngleBetween());
-        rules.add(equalityTriangleFactBy2AnglesAndLineBetween());
-        rules.add(equalityTriangleFactBy3Sides());
         rules.add(belongingOfInnerSegmentsToOuter());
         rules.add(perpendicularityOfRadiusAndTouchedLineSegment());
         rules.add(touchedLineSegmentOfInscribedCircleInTriangle());
@@ -111,90 +109,6 @@ public class RuleStorage {
                         new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
                         new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
                 )));
-        return new Rule(facts, consequences);
-    }
-
-    private Rule equalityTriangleFactBy2SidesAndAngleBetween() {
-        Vertex A = new Vertex();
-        Vertex B = new Vertex();
-        Vertex C = new Vertex();
-        LineSegment AB = new LineSegment(A, B);
-        LineSegment BC = new LineSegment(B, C);
-        LineSegment AC = new LineSegment(A, C);
-        Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
-        Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
-        Vertex A1 = new Vertex();
-        Vertex B1 = new Vertex();
-        Vertex C1 = new Vertex();
-        LineSegment AB1 = new LineSegment(A1, B1);
-        LineSegment BC1 = new LineSegment(B1, C1);
-        LineSegment AC1 = new LineSegment(A1, C1);
-        Angle ACB1 = new Angle(new LinkedList(Arrays.asList(AC1, BC1)));
-        Triangle triangle1 = new Triangle(new HashSet<>(Arrays.asList(AB1, AC1, BC1)));
-
-        LinkedList<Fact> facts = new LinkedList<>();
-        facts.add(new EqualityFact(AC, AC1));
-        facts.add(new EqualityFact(BC, BC1));
-        facts.add(new EqualityFact(ACB, ACB1));
-
-        LinkedList<Fact> consequences = new LinkedList<>();
-        consequences.add(new EqualityFact(triangle, triangle1));
-        return new Rule(facts, consequences);
-    }
-
-    private Rule equalityTriangleFactBy2AnglesAndLineBetween() {
-        Vertex A = new Vertex();
-        Vertex B = new Vertex();
-        Vertex C = new Vertex();
-        LineSegment AB = new LineSegment(A, B);
-        LineSegment BC = new LineSegment(B, C);
-        LineSegment AC = new LineSegment(A, C);
-        Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
-        Angle BAC = new Angle(new LinkedList(Arrays.asList(AB, AC)));
-        Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
-        Vertex A1 = new Vertex();
-        Vertex B1 = new Vertex();
-        Vertex C1 = new Vertex();
-        LineSegment AB1 = new LineSegment(A1, B1);
-        LineSegment BC1 = new LineSegment(B1, C1);
-        LineSegment AC1 = new LineSegment(A1, C1);
-        Angle ACB1 = new Angle(new LinkedList(Arrays.asList(AC1, BC1)));
-        Angle BAC1 = new Angle(new LinkedList(Arrays.asList(AB1, AC1)));
-        Triangle triangle1 = new Triangle(new HashSet<>(Arrays.asList(AB1, AC1, BC1)));
-
-        LinkedList<Fact> facts = new LinkedList<>();
-        facts.add(new EqualityFact(AC, AC1));
-        facts.add(new EqualityFact(BAC, BAC1));
-        facts.add(new EqualityFact(ACB, ACB1));
-
-        LinkedList<Fact> consequences = new LinkedList<>();
-        consequences.add(new EqualityFact(triangle, triangle1));
-        return new Rule(facts, consequences);
-    }
-
-    private Rule equalityTriangleFactBy3Sides() {
-        Vertex A = new Vertex();
-        Vertex B = new Vertex();
-        Vertex C = new Vertex();
-        LineSegment AB = new LineSegment(A, B);
-        LineSegment BC = new LineSegment(B, C);
-        LineSegment AC = new LineSegment(A, C);
-        Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
-        Vertex A1 = new Vertex();
-        Vertex B1 = new Vertex();
-        Vertex C1 = new Vertex();
-        LineSegment AB1 = new LineSegment(A1, B1);
-        LineSegment BC1 = new LineSegment(B1, C1);
-        LineSegment AC1 = new LineSegment(A1, C1);
-        Triangle triangle1 = new Triangle(new HashSet<>(Arrays.asList(AB1, AC1, BC1)));
-
-        LinkedList<Fact> facts = new LinkedList<>();
-        facts.add(new EqualityFact(AC, AC1));
-        facts.add(new EqualityFact(BC, BC1));
-        facts.add(new EqualityFact(AB, AB1));
-
-        LinkedList<Fact> consequences = new LinkedList<>();
-        consequences.add(new EqualityFact(triangle, triangle1));
         return new Rule(facts, consequences);
     }
 

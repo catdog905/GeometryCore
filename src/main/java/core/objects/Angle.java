@@ -1,5 +1,6 @@
 package core.objects;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -12,6 +13,10 @@ public class Angle extends GeometryObject {
             throw new RuntimeException("Illegal constructor for angle");
         }
         this.geometryObjects = geometryObjects;
+    }
+
+    public Angle(LineSegment... objects) {
+        this(new LinkedList<>(Arrays.asList(objects)));
     }
 
     @Override
