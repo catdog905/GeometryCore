@@ -2,8 +2,10 @@ package core;
 
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import core.facts.Fact;
+
 
 public class Model {
     public HashSet<Fact> facts;
@@ -19,6 +21,13 @@ public class Model {
         ).EquivalenceFound();
     }
 
+    public LinkedList<Fact> getFactsOfType(Class<? extends Fact> classToFind){
+        return facts.stream().filter(x -> x.getClass().equals(classToFind)).collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    public boolean containsFactOfType(Class<? extends Fact> classToFind){
+        return getFactsOfType(classToFind).size()>0;
+    }
 
     @Override
     public boolean equals(Object o) {

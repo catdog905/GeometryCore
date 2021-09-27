@@ -12,7 +12,12 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         id = idGiver++;
     }
 
-
+    @Override
+    public String toString(){
+        String[] wordsInClass = getClass().toString().split(" ");
+        wordsInClass = wordsInClass[wordsInClass.length-1].split("\\.");
+        return wordsInClass[wordsInClass.length-1]+"#"+Integer.toString(id);
+    }
     public static void idRestart(){
         idGiver=0;
     }

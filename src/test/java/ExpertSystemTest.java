@@ -94,7 +94,7 @@ public class ExpertSystemTest{
                 Model model = new Model(facts);
                 ExpertSystem.ForwardPass(model);
 
-                assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
+                assertTrue(model.containsFactOfType(RightAngledFact.class));
             }
     }
 
