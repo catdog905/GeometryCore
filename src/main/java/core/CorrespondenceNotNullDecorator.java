@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import core.facts.Fact;
 import core.objects.GeometryObject;
 
 public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, GeometryObject> {
@@ -19,7 +20,10 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
         super();
     }
 
-    public CorrespondenceNotNullDecorator makeFull() {
+    public CorrespondenceNotNullDecorator makeFull(LinkedList<Fact> consequences) {
+        if (consequences.stream().filter(x -> !keySet().contains(x)).findAny().orElse(null)
+                == null)
+            return this;
         HashSet<GeometryObject> allSubKeyObjects = new HashSet<>();
         allSubKeyObjects.addAll(keySet());
         for (GeometryObject obj : keySet()) {
@@ -68,8 +72,7 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
 
         }
 
-
-        return correspondence.makeFull();
+        return correspondence.makeFull(consequences);
     }
 
     private HashMap<GeometryObject, GeometryObject> getAllCorrespondenceOfSubObjects(GeometryObject obj1, GeometryObject obj2){

@@ -30,7 +30,7 @@ public class Rule {
             if (model.haveRuleAlreadyApplied(this, correspondence))
                 continue;
             CorrespondenceNotNullDecorator curCorrespodence =
-                    (new CorrespondenceNotNullDecorator(correspondence)).makeFull();
+                    (new CorrespondenceNotNullDecorator(correspondence)).makeFull(consequences);
             //for (Entry<GeometryObject, GeometryObject> entry : curCorrespodence.entrySet())
             //    if (curCorrespodence.entrySet().stream().anyMatch(
             //            x -> x.getKey() != entry.getKey() && x.getValue() == entry.getValue())) {
