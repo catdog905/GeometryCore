@@ -10,8 +10,8 @@ import core.objects.GeometryObject;
 
 public class Model {
     private HashSet<Fact> facts;
-    private HashMap<Rule, Map<GeometryObject, GeometryObject>> checkedRuleRequiredFactCases
-            = new HashMap<>();
+    private HashSet<Pair<Rule, Map<GeometryObject, GeometryObject>>> checkedRuleRequiredFactCases
+            = new HashSet<>();
 
     public boolean isEquivalentTo(Model model){
         if (model.facts.size() != facts.size())
@@ -87,16 +87,16 @@ public class Model {
     public void addSetOfFacts(
             HashSet<Fact> facts, Rule rule , Map<GeometryObject, GeometryObject> ruleCase) {
         this.facts.addAll(facts);
-        checkedRuleRequiredFactCases.put(rule, ruleCase);
+        checkedRuleRequiredFactCases.add(new Pair(rule, ruleCase));
     }
 
     public boolean haveRuleAlreadyApplied(Rule rule, Map<GeometryObject, GeometryObject> ruleCase) {
-        for (Map.Entry<Rule, Map<GeometryObject, GeometryObject>> caseEntry :
-                checkedRuleRequiredFactCases.entrySet())
-            if (rule == caseEntry.getKey())
-                if (caseEntry.getValue().entrySet().stream()
+        for (Pair<Rule, Map<GeometryObject, GeometryObject>> caseEntry :
+                checkedRuleRequiredFactCases)
+            if (rule == caseEntry.first)
+                if (caseEntry.second.entrySet().stream()
                         .filter(x -> ruleCase.get(x.getKey()) == x.getValue())
-                        .count() == caseEntry.getValue().size())
+                        .count() == caseEntry.second.size())
                     return true;
         return false;
     }

@@ -138,6 +138,43 @@ public class ExpertSystemTest{
         Circle circle = new Circle(center);
         HashSet<Fact> facts = new HashSet<>();
         facts.add(new InscribedFact(circle, triangle));
+        facts.add(new ExistFact(new LineSegment(A, center)));
+        facts.add(new ExistFact(new LineSegment(B, center)));
+        facts.add(new ExistFact(new LineSegment(C, center)));
+
+        Model model = new Model(facts);
+        ExpertSystem.ForwardPass(model);
+        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
+    }
+
+    @Test
+    public void equalTrianglesInBigTriangleWithInscribedCircleCenter() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex O = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        LineSegment AO = new LineSegment(A, O);
+        LineSegment BO = new LineSegment(B, O);
+        LineSegment CO = new LineSegment(C, O);
+        Vertex M = new Vertex();
+        Vertex N = new Vertex();
+        Vertex K = new Vertex();
+        Triangle triangle = new Triangle(AB, BC, AC);
+
+        HashSet<Fact> facts = new HashSet<>();
+        facts.add(new ExistFact(triangle));
+        facts.add(new EqualityFact(AO, BO));
+        facts.add(new EqualityFact(AO, CO));
+        facts.add(new EqualityFact(CO, BO));
+        facts.add(new BelongFact(M, AB));
+        facts.add(new BelongFact(N, BC));
+        facts.add(new BelongFact(K, AC));
+        facts.add(new PerpendicularityFact(new LineSegment(M, O), AB));
+        facts.add(new PerpendicularityFact(new LineSegment(N, O), BC));
+        facts.add(new PerpendicularityFact(new LineSegment(K, O), AC));
 
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);

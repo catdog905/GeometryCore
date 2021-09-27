@@ -25,6 +25,8 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
         for (GeometryObject obj : keySet()) {
             allSubKeyObjects.addAll(obj.getAllSubObjects());
         }
+        if (keySet().containsAll(allSubKeyObjects))
+            return this;
         LinkedList<GeometryObject> allSubKeyObjectList = new LinkedList<>(allSubKeyObjects).stream()
                 .sorted(Comparator.comparingInt(x -> {
                     int counter = 0;
@@ -65,7 +67,9 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
             }
 
         }
-        return correspondence;
+
+
+        return correspondence.makeFull();
     }
 
     private HashMap<GeometryObject, GeometryObject> getAllCorrespondenceOfSubObjects(GeometryObject obj1, GeometryObject obj2){
