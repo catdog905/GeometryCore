@@ -1,4 +1,5 @@
 package core.facts;
+
 import core.SubObjectsEditor;
 import core.objects.GeometryObject;
 

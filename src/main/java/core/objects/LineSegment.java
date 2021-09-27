@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public class LineSegment extends GeometryObject {
-    public HashSet<Vertex> vertexes;
+    public LinkedList<Vertex> vertexes;
     public LineSegment(HashSet<Vertex> vertexes) {
-        this.vertexes = vertexes;
+        this.vertexes = new LinkedList<>(vertexes);
     }
 
     public LineSegment(Vertex first, Vertex second) {

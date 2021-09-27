@@ -1,27 +1,27 @@
 package core.objects;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import core.SubObjectsEditor;
 
 public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>, Cloneable {
-    public boolean isEquivalentTo(GeometryObject object){
-        if (!getClass().equals(object.getClass()))
-            return false;
-        LinkedList<GeometryObject> ourSubObjects = getAllSubObjects(), theirSubObjects = object.getAllSubObjects();
-        if (ourSubObjects.size() != theirSubObjects.size())
-            return false;
-        for (Iterator<GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
-            var ourSubject = ourObjectIterator.next();
-            var theirSubject = theirObjectIterator.next();
-            if (!ourSubject.isEquivalentTo(theirSubject))
-                return false;
-        }
-        return true;
+
+    static int idGiver = 0;
+    public int id = 0;
+    public GeometryObject(){
+        id = idGiver++;
     }
 
+    @Override
+    public String toString(){
+        String[] wordsInClass = getClass().toString().split(" ");
+        wordsInClass = wordsInClass[wordsInClass.length-1].split("\\.");
+        return wordsInClass[wordsInClass.length-1]+"#"+Integer.toString(id);
+    }
+    public static void idRestart(){
+        idGiver=0;
+    }
     @Override
     public boolean equals(Object o) {
 
