@@ -8,21 +8,21 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-import GeometryCore.ExpertSystem;
-import GeometryCore.Facts.BelongFact;
-import GeometryCore.Facts.EqualityFact;
-import GeometryCore.Facts.ExistFact;
-import GeometryCore.Facts.Fact;
-import GeometryCore.Facts.RightAngledFact;
-import GeometryCore.GeometryObjects.Angle;
-import GeometryCore.GeometryObjects.Degree;
-import GeometryCore.GeometryObjects.GeometryObject;
-import GeometryCore.GeometryObjects.LineSegment;
-import GeometryCore.GeometryObjects.NumberValue;
-import GeometryCore.GeometryObjects.RaisedInThePower;
-import GeometryCore.GeometryObjects.Triangle;
-import GeometryCore.GeometryObjects.Vertex;
-import GeometryCore.Model;
+import core.ExpertSystem;
+import core.facts.BelongFact;
+import core.facts.EqualityFact;
+import core.facts.ExistFact;
+import core.facts.Fact;
+import core.facts.RightAngledFact;
+import core.objects.Angle;
+import core.objects.numbers.Degree;
+import core.objects.GeometryObject;
+import core.objects.LineSegment;
+import core.objects.numbers.NumberValue;
+import core.objects.RaisedInThePower;
+import core.objects.Triangle;
+import core.objects.Vertex;
+import core.Model;
 
 public class ExpertSystemTest{
     @Test
