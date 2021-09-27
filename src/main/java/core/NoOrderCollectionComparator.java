@@ -1,14 +1,12 @@
-package GeometryCore;
+package core;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class NoOrderCollectionComparator extends CollectionComparator{
+public class NoOrderCollectionComparator extends CollectionComparator {
     @Override
     public <V,U extends Collection<V>> boolean compare(BiFunction<V,V,Boolean> comparator, U collection1, U collection2, Function<V,Boolean> toSkip ){
         if (collection1.size()!=collection2.size())

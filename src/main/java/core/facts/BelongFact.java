@@ -1,13 +1,14 @@
 package core.facts;
+/*
+object \in subject
+ */
+
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
 import core.objects.GeometryObject;
-/*
-object \in subject
- */
 
 public class BelongFact extends Fact {
     public GeometryObject object, subject;

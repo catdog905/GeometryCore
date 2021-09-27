@@ -1,59 +1,25 @@
 package core;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.facts.Fact;
-import core.objects.GeometryObject;
 
 public class Model {
     public HashSet<Fact> facts;
-
     public boolean isEquivalentTo(Model model){
-        if (model.facts.size() != facts.size())
-            return false;
-        HashSet<Fact> theirFacts = new HashSet<>( model.facts);
-        ModelEquivalenceMaster modelEquivalenceMaster = new ModelEquivalenceMaster(getObjectToFactsHashMap(), model.getObjectToFactsHashMap());
-        for(Fact ourFact : facts){
-            boolean equivalenceFound = false;
-            if (modelEquivalenceMaster.equivalenceToFactFound(ourFact))
-                continue;
-            LinkedList<GeometryObject> ourSubObjects =  ourFact.getAllSubObjects();
-            for (Fact theirFact : theirFacts){
-                if (modelEquivalenceMaster.equivalenceToFactFound(theirFact))
-                    continue;
-                if (modelEquivalenceMaster.isOurFactEquivalentToTheir(ourFact,theirFact,ourSubObjects))
-                {
-                    equivalenceFound=true;
-                    break;
-                }
-            }
-
-            if (!equivalenceFound)
-                return false;
-        }
-
-
-
-        return true;
+        return isEquivalentTo(model,0);
     }
 
-    private HashMap<GeometryObject,LinkedList<Fact>> getObjectToFactsHashMap(){
-        HashMap<GeometryObject,LinkedList<Fact>> answer = new HashMap<>();
-        for (Fact fact:facts) {
-            for (var subObject:fact.getAllSubObjects()){
-                if (!answer.containsKey(subObject)){
-                    LinkedList<Fact> list = new LinkedList<>();
-                    list.add(fact);
-                    answer.put(subObject,list);
-                }else{
-                    answer.get(subObject).add(fact);
-                }
-            }
-        }
-        return answer;
+    public boolean isEquivalentTo(Model model,int rec){
+        HashSet<Fact> ourFacts = facts;
+        HashSet<Fact> theirFacts = model.facts;
+        return new IndependentFactSetComparison(
+                ourFacts,theirFacts
+        ).EquivalenceFound();
     }
+
+
     @Override
     public boolean equals(Object o) {
 
@@ -78,6 +44,6 @@ public class Model {
                 ourFacts.containsAll(theirFacts);
     }
     public Model(HashSet<Fact> facts) {
-        this.facts = facts;
+        this.facts = new HashSet<>(facts);
     }
 }

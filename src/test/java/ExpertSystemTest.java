@@ -9,20 +9,20 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import core.ExpertSystem;
+import core.Model;
 import core.facts.BelongFact;
 import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
 import core.facts.RightAngledFact;
 import core.objects.Angle;
-import core.objects.numbers.Degree;
 import core.objects.GeometryObject;
 import core.objects.LineSegment;
-import core.objects.numbers.NumberValue;
 import core.objects.RaisedInThePower;
 import core.objects.Triangle;
 import core.objects.Vertex;
-import core.Model;
+import core.objects.numbers.Degree;
+import core.objects.numbers.NumberValue;
 
 public class ExpertSystemTest{
     @Test

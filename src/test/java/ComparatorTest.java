@@ -1,34 +1,26 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
-import GeometryCore.ExpertSystem;
-import GeometryCore.Expressor;
-import GeometryCore.Facts.BelongFact;
-import GeometryCore.Facts.EqualityFact;
-import GeometryCore.Facts.ExistFact;
-import GeometryCore.Facts.Fact;
-import GeometryCore.GeometryObjects.GeometryNumber;
-import GeometryCore.GeometryObjects.GeometryObject;
-import GeometryCore.GeometryObjects.LineSegment;
-import GeometryCore.GeometryObjects.Monomial;
-import GeometryCore.GeometryObjects.NumberValue;
-import GeometryCore.GeometryObjects.Polynomial;
-import GeometryCore.GeometryObjects.RaisedInThePower;
-import GeometryCore.GeometryObjects.Triangle;
-import GeometryCore.GeometryObjects.Vertex;
-import GeometryCore.Model;
-import GeometryCore.MonomialDeconstructor;
-import GeometryCore.PolynomialDeconstructor;
-import GeometryCore.UniqueVariableSeeker;
+import core.ExpertSystem;
+import core.Model;
+import core.facts.BelongFact;
+import core.facts.EqualityFact;
+import core.facts.ExistFact;
+import core.facts.Fact;
+import core.objects.GeometryObject;
+import core.objects.LineSegment;
+import core.objects.Polynomial;
+import core.objects.RaisedInThePower;
+import core.objects.Triangle;
+import core.objects.Vertex;
+import core.objects.numbers.GeometryNumber;
+import core.objects.numbers.NumberValue;
 
 public class ComparatorTest {
     @Test

@@ -7,19 +7,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import GeometryCore.Expressor;
-import GeometryCore.Facts.EqualityFact;
-import GeometryCore.GeometryObjects.GeometryNumber;
-import GeometryCore.GeometryObjects.LineSegment;
-import GeometryCore.GeometryObjects.Monomial;
-import GeometryCore.GeometryObjects.NumberValue;
-import GeometryCore.GeometryObjects.Polynomial;
-import GeometryCore.GeometryObjects.RaisedInThePower;
-import GeometryCore.GeometryObjects.Vertex;
-import GeometryCore.Model;
-import GeometryCore.MonomialDeconstructor;
-import GeometryCore.PolynomialDeconstructor;
-import GeometryCore.UniqueVariableSeeker;
+import core.Expressor;
+import core.MonomialDeconstructor;
+import core.PolynomialDeconstructor;
+import core.UniqueVariableSeeker;
+import core.facts.EqualityFact;
+import core.objects.LineSegment;
+import core.objects.Monomial;
+import core.objects.Polynomial;
+import core.objects.RaisedInThePower;
+import core.objects.Vertex;
+import core.objects.numbers.GeometryNumber;
+import core.objects.numbers.NumberValue;
 
 public class ExpressorTest {
     @Test
@@ -61,8 +60,8 @@ public class ExpressorTest {
             HashSet<Monomial> mon = new HashSet<>();
             mon.add((Monomial) variable);
             PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor(left, right, mon);
-            String expectedStructureLeft = "class GeometryCore.GeometryObjects.GeometryNumber[]",
-                    expectedStructureRight = "class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]";
+            String expectedStructureLeft = "class GeometryNumber[]",
+                    expectedStructureRight = "class Polynomial[class GeometryNumber[]class GeometryNumber[]class Monomial[class GeometryNumber[]class GeometryNumber[]]]";
             assertEquals(expectedStructureLeft, polynomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
             assertEquals(expectedStructureRight, polynomialDeconstructor.getOppositeSide().getUniqueStructureString());
         }
@@ -76,8 +75,8 @@ public class ExpressorTest {
             HashSet<Monomial> mon = new HashSet<>();
             mon.add((Monomial) variable);
             MonomialDeconstructor monomialDeconstructor = new MonomialDeconstructor(left, right, mon);
-            String expectedStructureLeft = "class GeometryCore.GeometryObjects.GeometryNumber[]",
-                    expectedStructureRight = "class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]";
+            String expectedStructureLeft = "class GeometryNumber[]",
+                    expectedStructureRight = "class Monomial[class Polynomial[class GeometryNumber[]class GeometryNumber[]]class RaisedInThePower[class GeometryNumber[]class GeometryNumber[]]]";
             assertEquals(expectedStructureLeft, monomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
             assertEquals(expectedStructureRight, monomialDeconstructor.getOppositeSide().getUniqueStructureString());
 
@@ -103,7 +102,7 @@ public class ExpressorTest {
             Monomial answerAC = Expressor.expressVariableFromEquation(ac, (Monomial) equation.left, (Monomial) equation.right);
             Monomial answerBC = Expressor.expressVariableFromEquation(bc, (Monomial) equation.left, (Monomial) equation.right);
 
-            final String expectedStructureAB = "class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]", expectedStructureAC = "class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]", expectedStructureBC = "class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.Polynomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.Monomial[class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.NumberValue[class GeometryCore.GeometryObjects.LineSegment]class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]class GeometryCore.GeometryObjects.GeometryNumber[]]]class GeometryCore.GeometryObjects.RaisedInThePower[class GeometryCore.GeometryObjects.GeometryNumber[]class GeometryCore.GeometryObjects.GeometryNumber[]]]";
+            final String expectedStructureAB = "class RaisedInThePower[class Polynomial[class RaisedInThePower[class NumberValue[class LineSegment]class GeometryNumber[]class GeometryNumber[]]class RaisedInThePower[class NumberValue[class LineSegment]class GeometryNumber[]]]class RaisedInThePower[class GeometryNumber[]class GeometryNumber[]]]", expectedStructureAC = "class Monomial[class RaisedInThePower[class Polynomial[class RaisedInThePower[class NumberValue[class LineSegment]class GeometryNumber[]]class Monomial[class RaisedInThePower[class NumberValue[class LineSegment]class GeometryNumber[]]class GeometryNumber[]]]class RaisedInThePower[class GeometryNumber[]class GeometryNumber[]]]class RaisedInThePower[class GeometryNumber[]class GeometryNumber[]]]", expectedStructureBC = "class RaisedInThePower[class Polynomial[class RaisedInThePower[class NumberValue[class LineSegment]class GeometryNumber[]]class Monomial[class RaisedInThePower[class NumberValue[class LineSegment]class GeometryNumber[]class GeometryNumber[]]class GeometryNumber[]]]class RaisedInThePower[class GeometryNumber[]class GeometryNumber[]]]";
 
             assertEquals(expectedStructureAB, answerAB.getUniqueStructureString());
 

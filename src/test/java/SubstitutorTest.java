@@ -1,28 +1,20 @@
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 
-import GeometryCore.Expressor;
-import GeometryCore.Facts.EqualityFact;
-import GeometryCore.GeometryObjects.GeometryNumber;
-import GeometryCore.GeometryObjects.LineSegment;
-import GeometryCore.GeometryObjects.Monomial;
-import GeometryCore.GeometryObjects.NumberValue;
-import GeometryCore.GeometryObjects.Polynomial;
-import GeometryCore.GeometryObjects.RaisedInThePower;
-import GeometryCore.GeometryObjects.Vertex;
-import GeometryCore.Model;
-import GeometryCore.MonomialDeconstructor;
-import GeometryCore.PolynomialDeconstructor;
-import GeometryCore.Substitutor;
-import GeometryCore.UniqueVariableSeeker;
+import core.Substitutor;
+import core.facts.EqualityFact;
+import core.objects.LineSegment;
+import core.objects.Monomial;
+import core.objects.Polynomial;
+import core.objects.RaisedInThePower;
+import core.objects.Vertex;
+import core.objects.numbers.GeometryNumber;
+import core.objects.numbers.NumberValue;
 
 public class SubstitutorTest {
     @Test

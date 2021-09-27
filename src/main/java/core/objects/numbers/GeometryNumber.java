@@ -1,4 +1,4 @@
-package GeometryCore.GeometryObjects;
+package core.objects.numbers;
 
 public class GeometryNumber extends NumberEnveloper {
     private GeometryNumber(Number number) {

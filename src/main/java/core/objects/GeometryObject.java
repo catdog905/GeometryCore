@@ -1,9 +1,8 @@
-package GeometryCore.GeometryObjects;
+package core.objects;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 
-import GeometryCore.SubObjectsEditor;
+import core.SubObjectsEditor;
 
 public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>, Cloneable {
 

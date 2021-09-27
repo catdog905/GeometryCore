@@ -1,10 +1,10 @@
-package GeometryCore;
+package core;
 
 import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public class SameOrderCollectionComparator extends CollectionComparator{
+public class SameOrderCollectionComparator extends CollectionComparator {
     @Override
     public <V,U extends Collection<V>> boolean compare(BiFunction<V,V,Boolean> comparator, U collection1, U collection2, Function<V,Boolean> toSkip ){
         if (collection1.size()!=collection2.size())

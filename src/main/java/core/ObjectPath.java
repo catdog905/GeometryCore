@@ -1,12 +1,12 @@
-package GeometryCore;
+package core;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import GeometryCore.Facts.Fact;
-import GeometryCore.GeometryObjects.GeometryObject;
+import core.facts.Fact;
+import core.objects.GeometryObject;
 
 public class ObjectPath {
     public Fact fact;

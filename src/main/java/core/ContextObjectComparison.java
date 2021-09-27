@@ -1,14 +1,11 @@
-package GeometryCore;
+package core;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 
-import GeometryCore.Facts.Fact;
-import GeometryCore.GeometryObjects.GeometryNumber;
-import GeometryCore.GeometryObjects.GeometryObject;
-import GeometryCore.GeometryObjects.RaisedInThePower;
+import core.facts.Fact;
+import core.objects.GeometryObject;
+import core.objects.RaisedInThePower;
+import core.objects.numbers.GeometryNumber;
 
 public class ContextObjectComparison {
 
