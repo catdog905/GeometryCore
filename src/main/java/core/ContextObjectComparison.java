@@ -73,9 +73,9 @@ public class ContextObjectComparison {
             LinkedList<GeometryObject> lowLevelObjectPends = new LinkedList<>();
             LinkedList<Fact> lowLevelFactPends = new LinkedList<>();
             if (new ContextFactComparison(context, lowLevelFactPends, lowLevelObjectPends).compare(ourObjectPath.fact, theirObjectPath.fact)) {
-                if (new SameOrderCollectionComparator().compare((obj1, obj2) -> {
-                    return new ContextObjectComparison(context, lowLevelFactPends, lowLevelObjectPends).compare(obj1, obj2);
-                }, ourObjectPath.objectPath, theirObjectPath.objectPath)) {
+                if (new SameOrderCollectionComparator().compare((obj1, obj2) ->
+                        new ContextObjectComparison(context, lowLevelFactPends, lowLevelObjectPends).compare(obj1, obj2)
+                        , ourObjectPath.objectPath, theirObjectPath.objectPath)) {
                     fatherPendingObjects.addAll(lowLevelObjectPends);
                     fatherPendingFacts.addAll(lowLevelFactPends);
                     return true;
