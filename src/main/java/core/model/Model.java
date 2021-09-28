@@ -1,4 +1,4 @@
-package core;
+package core.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -9,6 +9,10 @@ import core.objects.GeometryObject;
 
 public class Model {
     public HashSet<Fact> facts;
+
+    public Model(HashSet<Fact> facts) {
+        this.facts = facts;
+    }
 
     public boolean isEquivalentTo(Model model){
         if (model.facts.size() != facts.size())
@@ -76,8 +80,5 @@ public class Model {
 
         return ourFacts.size()==theirFacts.size()&&
                 ourFacts.containsAll(theirFacts);
-    }
-    public Model(HashSet<Fact> facts) {
-        this.facts = facts;
     }
 }

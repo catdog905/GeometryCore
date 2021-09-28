@@ -1,5 +1,6 @@
 package core;
 
+import core.model.Model;
 import core.rules.storage.RuleStorage;
 
 public class ExpertSystem {

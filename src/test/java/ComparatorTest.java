@@ -15,7 +15,7 @@ import core.objects.numbers.NumberValue;
 import core.objects.Polynomial;
 import core.objects.RaisedInThePower;
 import core.objects.Vertex;
-import core.Model;
+import core.model.Model;
 
 public class ComparatorTest {
     @Test

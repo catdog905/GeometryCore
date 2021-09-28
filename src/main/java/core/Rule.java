@@ -9,6 +9,7 @@ import core.correspondence.CorrespondenceWithoutNullElements;
 import core.correspondence.FactMatcher;
 import core.correspondence.FullCorrespondence;
 import core.facts.Fact;
+import core.model.Model;
 import core.objects.GeometryObject;
 
 /*
@@ -35,7 +36,8 @@ public class Rule {
     private LinkedList<Fact> createConsequencesFacts(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<Fact> consequenceFact = new LinkedList<>();
         for (Fact fact : consequences) {
-            consequenceFact.add(fact.createNewSimilarObject(correspondence));
+            consequenceFact.add(fact.createNewSimilarObject(
+                    new CorrespondenceWithoutNullElements(correspondence)));
         }
         return consequenceFact;
     }

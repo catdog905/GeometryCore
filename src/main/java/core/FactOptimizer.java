@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import core.facts.Fact;
+import core.model.Model;
 
 public class FactOptimizer {
     public static void deleteRepeatingFacts(Model model){

@@ -22,7 +22,7 @@ import core.objects.numbers.NumberValue;
 import core.objects.RaisedInThePower;
 import core.objects.Triangle;
 import core.objects.Vertex;
-import core.Model;
+import core.model.Model;
 
 public class ExpertSystemTest{
     @Test
