@@ -10,16 +10,16 @@ import java.util.stream.Collectors;
 
 import core.ExpertSystem;
 import core.facts.BelongFact;
-import core.facts.EqualityFact;
+import core.facts.equation.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
 import core.facts.RightAngledFact;
 import core.objects.Angle;
-import core.objects.numbers.Degree;
+import core.objects.expression.Degree;
 import core.objects.GeometryObject;
 import core.objects.LineSegment;
-import core.objects.numbers.NumberValue;
-import core.objects.RaisedInThePower;
+import core.objects.expression.NumberValue;
+import core.objects.expression.RaisedInThePower;
 import core.objects.Triangle;
 import core.objects.Vertex;
 import core.model.Model;
@@ -43,7 +43,7 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof ExistFact &&
+        assertTrue(model.facts().stream().anyMatch(x -> x instanceof ExistFact &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AB) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(BC) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AC)));
@@ -67,7 +67,7 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        assertEquals(1, model.facts.stream().filter(x -> x instanceof ExistFact &&
+        assertEquals(1, model.facts().stream().filter(x -> x instanceof ExistFact &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(AB) &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(BC) &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(AC)).collect(Collectors.toList()).size());
@@ -90,7 +90,7 @@ public class ExpertSystemTest{
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        assertTrue(model.facts.stream().anyMatch(x -> x instanceof RightAngledFact));
+        assertTrue(model.facts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 
     @Test
@@ -114,7 +114,7 @@ public class ExpertSystemTest{
 
         int leftCount = 0;
         int rightCount = 0;
-        for (Fact fact : model.facts) {
+        for (Fact fact : model.facts()) {
             if (fact instanceof EqualityFact && ((EqualityFact)fact).left instanceof RaisedInThePower) {
                 if (((EqualityFact) fact).left.getAllSubObjects()
                         .stream().filter(x -> x instanceof NumberValue).findAny().get().getAllSubObjects().contains(AB))

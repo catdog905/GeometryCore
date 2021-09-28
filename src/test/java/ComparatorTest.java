@@ -6,16 +6,16 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
-import core.objects.numbers.GeometryNumber;
-import core.objects.LineSegment;
-import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
-import core.objects.RaisedInThePower;
-import core.objects.Vertex;
+import core.facts.equation.EqualityFact;
 import core.model.Model;
+import core.objects.LineSegment;
+import core.objects.Vertex;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.NumberValue;
 
 public class ComparatorTest {
     @Test

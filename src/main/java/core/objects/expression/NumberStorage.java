@@ -1,6 +1,8 @@
-package core.objects.numbers;
+package core.objects.expression;
 
 import java.util.HashSet;
+
+import core.objects.numbers.NumberEnveloper;
 
 public class NumberStorage {
     public HashSet<NumberEnveloper> numbers = new HashSet<>();

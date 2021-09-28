@@ -67,7 +67,7 @@ public class ModelEquivalenceMaster {
 
     }
 
-    public boolean isOurFactEquivalentToTheir(Fact ourFact, Fact theirFact, LinkedList<GeometryObject> ourSubObjects) {
+    public boolean isOurFactEquivalentToTheir(Fact ourFact, Fact theirFact, LinkedList<? extends GeometryObject> ourSubObjects) {
         if (!theirFact.getClass().equals(ourFact.getClass()))
             return false;
         if (ourFactToTheirNonequivalentFacts.containsKey(ourFact)
@@ -78,7 +78,7 @@ public class ModelEquivalenceMaster {
         } else if (factToEquivalentFact.containsKey(theirFact)) {
             return false;
         }
-        LinkedList<GeometryObject> theirSubObjects = theirFact.getAllSubObjects();
+        LinkedList<? extends GeometryObject> theirSubObjects = theirFact.getAllSubObjects();
         if (theirSubObjects.size() != ourSubObjects.size()) {
             certifyNonequivalency(ourFact, theirFact);
             return false;
@@ -86,7 +86,7 @@ public class ModelEquivalenceMaster {
         factToEquivalentFact.put(ourFact, theirFact);
         factToEquivalentFact.put(theirFact, ourFact);
         LinkedList<GeometryObject> ourObjectPends = new LinkedList<>();
-        for (Iterator<GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
+        for (Iterator<? extends GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
             var ourObject = ourObjectIterator.next();
             var theirObject = theirObjectIterator.next();
             if (isOurObjectEquivalentToTheir(ourObject,theirObject)){

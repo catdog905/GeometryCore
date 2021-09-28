@@ -18,7 +18,7 @@ public class FactMatcher {
     public Boolean checkMatch(Fact curFact) {
         if (!curFact.getClass().equals(ruleFact.getClass()))
             return false;
-        LinkedList<GeometryObject> curFactSubObjects = curFact.getAllSubObjects();
+        LinkedList<? extends GeometryObject> curFactSubObjects = curFact.getAllSubObjects();
         for (GeometryObject obj : ruleFact.getAllSubObjects()){
             GeometryObject match = null;
             if (obj instanceof NumberEnveloper)

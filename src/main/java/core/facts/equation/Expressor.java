@@ -1,15 +1,16 @@
-package core;
+package core.facts.equation;
 
 import java.util.HashSet;
 
-import core.objects.Monomial;
+import core.UniqueVariableSeeker;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
 import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
 
 public class Expressor {
 
 
-    public static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight) {
+    static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight) {
 
         // New equation left = our variable
         Monomial newLeft;

@@ -3,9 +3,9 @@ package core;
 import java.util.HashSet;
 
 import core.objects.GeometryObject;
-import core.objects.Monomial;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
 import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
 
 public class UniqueVariableSeeker {
 

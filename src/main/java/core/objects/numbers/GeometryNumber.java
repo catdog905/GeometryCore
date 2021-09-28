@@ -1,6 +1,10 @@
 package core.objects.numbers;
 
+import java.util.HashMap;
+
 import core.objects.GeometryObject;
+import core.objects.expression.Monomial;
+import core.objects.expression.NumberStorage;
 
 public class GeometryNumber extends NumberEnveloper {
     private GeometryNumber(Number number) {
@@ -21,5 +25,10 @@ public class GeometryNumber extends NumberEnveloper {
             return obj;
         }
         return search;
+    }
+
+    @Override
+    public Monomial substitute(HashMap<Monomial, Monomial> substituteTable) {
+        return this;
     }
 }

@@ -1,11 +1,12 @@
 package core.objects.numbers;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
 import core.objects.GeometryObject;
-import core.objects.Monomial;
+import core.objects.expression.Monomial;
 
 public class NumberValue extends Monomial {
     private NumberEnveloper numberEnveloper;
@@ -18,8 +19,8 @@ public class NumberValue extends Monomial {
     }
 
     @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
-        LinkedList<GeometryObject> temp = new LinkedList<>(Arrays.asList(object));
+    public LinkedList<Monomial> getAllSubObjects() {
+        LinkedList<Monomial> temp = new LinkedList<>(Arrays.asList(object));
         if (numberEnveloper != null)
             temp.add(numberEnveloper);
         return temp;
@@ -28,5 +29,10 @@ public class NumberValue extends Monomial {
     @Override
     public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new NumberValue(correspondence.get(object), numberEnveloper);
+    }
+
+    @Override
+    public Monomial substitute(HashMap<Monomial, Monomial> substituteTable) {
+        return this;
     }
 }

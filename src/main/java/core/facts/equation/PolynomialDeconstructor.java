@@ -1,12 +1,12 @@
-package core;
+package core.facts.equation;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import core.objects.numbers.GeometryNumber;
 import core.objects.GeometryObject;
-import core.objects.Monomial;
-import core.objects.Polynomial;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
+import core.objects.expression.GeometryNumber;
 
 public class PolynomialDeconstructor {
     private LinkedList<Monomial> monomialsForNewOppositeSide;

@@ -1,5 +1,7 @@
 package core.objects.numbers;
 
+import core.objects.expression.NumberStorage;
+
 public class Degree extends NumberEnveloper {
 
     private Degree(Number number) {

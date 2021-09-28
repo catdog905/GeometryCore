@@ -7,18 +7,18 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import core.Expressor;
-import core.facts.EqualityFact;
-import core.objects.numbers.GeometryNumber;
-import core.objects.LineSegment;
-import core.objects.Monomial;
-import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
-import core.objects.RaisedInThePower;
-import core.objects.Vertex;
-import core.MonomialDeconstructor;
-import core.PolynomialDeconstructor;
 import core.UniqueVariableSeeker;
+import core.facts.equation.EqualityFact;
+import core.facts.equation.ExpressedVariableFromEquation;
+import core.facts.equation.MonomialDeconstructor;
+import core.facts.equation.PolynomialDeconstructor;
+import core.objects.LineSegment;
+import core.objects.Vertex;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.NumberValue;
 
 public class ExpressorTest {
     @Test
@@ -57,8 +57,8 @@ public class ExpressorTest {
         HashSet<Monomial> mon = new HashSet<>();
         mon.add((Monomial)variable);
         PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor(left,right,mon);
-        String expectedStructureLeft = "class core.objects.numbers.GeometryNumber[]",
-                expectedStructureRight = "class core.objects.Polynomial[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]class core.objects.Monomial[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]";
+        String expectedStructureLeft = "class core.objects.expression.numbers.GeometryNumber[]",
+                expectedStructureRight = "class core.objects.expression.Polynomial[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.Monomial[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]";
         assertEquals(expectedStructureLeft,polynomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
         assertEquals(expectedStructureRight,polynomialDeconstructor.getOppositeSide().getUniqueStructureString());
     }
@@ -70,8 +70,8 @@ public class ExpressorTest {
         HashSet<Monomial> mon = new HashSet<>();
         mon.add((Monomial)variable);
         MonomialDeconstructor monomialDeconstructor = new MonomialDeconstructor(left,right,mon);
-        String expectedStructureLeft = "class core.objects.numbers.GeometryNumber[]",
-                expectedStructureRight = "class core.objects.Monomial[class core.objects.Polynomial[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]";
+        String expectedStructureLeft = "class core.objects.expression.numbers.GeometryNumber[]",
+                expectedStructureRight = "class core.objects.expression.Monomial[class core.objects.expression.Polynomial[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]";
         assertEquals(expectedStructureLeft,monomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
         assertEquals(expectedStructureRight,monomialDeconstructor.getOppositeSide().getUniqueStructureString());
 
@@ -91,13 +91,13 @@ public class ExpressorTest {
                         new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
                         new RaisedInThePower(bc, GeometryNumber.createNumber(2))
                 ));// AB^2 = (2AC)^2+BC^2
-        Monomial answerAB =  Expressor.expressVariableFromEquation(ab,(Monomial) equation.left,(Monomial)equation.right);
-        Monomial answerAC =  Expressor.expressVariableFromEquation(ac,(Monomial) equation.left,(Monomial)equation.right);
-        Monomial answerBC =  Expressor.expressVariableFromEquation(bc,(Monomial) equation.left,(Monomial)equation.right);
+        Monomial answerAB = (Monomial) new ExpressedVariableFromEquation(equation, ab).right;
+        Monomial answerAC = (Monomial) new ExpressedVariableFromEquation(equation, ac).right;
+        Monomial answerBC = (Monomial) new ExpressedVariableFromEquation(equation, bc).right;
 
-        final String expectedStructureAB = "class core.objects.RaisedInThePower[class core.objects.Polynomial[class core.objects.RaisedInThePower[class core.objects.numbers.NumberValue[class core.objects.LineSegment]class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]class core.objects.RaisedInThePower[class core.objects.numbers.NumberValue[class core.objects.LineSegment]class core.objects.numbers.GeometryNumber[]]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]"
-                ,expectedStructureAC = "class core.objects.Monomial[class core.objects.RaisedInThePower[class core.objects.Polynomial[class core.objects.RaisedInThePower[class core.objects.numbers.NumberValue[class core.objects.LineSegment]class core.objects.numbers.GeometryNumber[]]class core.objects.Monomial[class core.objects.RaisedInThePower[class core.objects.numbers.NumberValue[class core.objects.LineSegment]class core.objects.numbers.GeometryNumber[]]class core.objects.numbers.GeometryNumber[]]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]"
-                ,expectedStructureBC = "class core.objects.RaisedInThePower[class core.objects.Polynomial[class core.objects.RaisedInThePower[class core.objects.numbers.NumberValue[class core.objects.LineSegment]class core.objects.numbers.GeometryNumber[]]class core.objects.Monomial[class core.objects.RaisedInThePower[class core.objects.numbers.NumberValue[class core.objects.LineSegment]class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]class core.objects.numbers.GeometryNumber[]]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]";
+        final String expectedStructureAB = "class core.objects.expression.RaisedInThePower[class core.objects.expression.Polynomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.NumberValue[class core.objects.LineSegment]class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.NumberValue[class core.objects.LineSegment]class core.objects.expression.numbers.GeometryNumber[]]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]"
+                ,expectedStructureAC = "class core.objects.expression.Monomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.Polynomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.NumberValue[class core.objects.LineSegment]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.Monomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.NumberValue[class core.objects.LineSegment]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.numbers.GeometryNumber[]]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]"
+                ,expectedStructureBC = "class core.objects.expression.RaisedInThePower[class core.objects.expression.Polynomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.NumberValue[class core.objects.LineSegment]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.Monomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.NumberValue[class core.objects.LineSegment]class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.numbers.GeometryNumber[]]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]";
 
         assertEquals(expectedStructureAB, answerAB.getUniqueStructureString());
 

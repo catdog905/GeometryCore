@@ -1,11 +1,14 @@
-package core.objects;
+package core.objects.expression;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-public class Monomial extends GeometryObject {
-    private LinkedList<Monomial> subObjects;
+import core.objects.GeometryObject;
+
+public class Monomial extends GeometryObject implements Substitutable {
+    LinkedList<Monomial> subObjects;
 
 
     // Does NOT include values, only includes class names and parental relationships [the structure]
@@ -41,7 +44,7 @@ public class Monomial extends GeometryObject {
     }
 
     @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
+    public LinkedList<Monomial> getAllSubObjects() {
         return new LinkedList<>(subObjects);
     }
 
@@ -52,5 +55,18 @@ public class Monomial extends GeometryObject {
             newObjects.add((Monomial) correspondence.get(obj));
         }
         return new Monomial(newObjects);
+    }
+
+    @Override
+    public Monomial substitute(HashMap<Monomial, Monomial> substituteTable) {
+        if (substituteTable.containsKey(this)) {
+            return substituteTable.get(this);
+        }
+        LinkedList<Monomial> newMonomialContents = new LinkedList<>();
+        for (GeometryObject term : getAllSubObjects()) {
+            Monomial monomialTerm = (Monomial) term;
+            newMonomialContents.add(monomialTerm.substitute(substituteTable));
+        }
+        return new Monomial(newMonomialContents);
     }
 }

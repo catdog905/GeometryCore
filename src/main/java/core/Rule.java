@@ -26,9 +26,9 @@ public class Rule {
 
     public void applyToModel(Model model) {
         LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
-                new LinkedList<>(model.facts), new CorrespondenceWithoutNullElements(), 0);
+                new LinkedList<>(model.facts()), new CorrespondenceWithoutNullElements(), 0);
         for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
-            model.facts.addAll(createConsequencesFacts(
+            model.facts().addAll(createConsequencesFacts(
                     (new FullCorrespondence(correspondence))));
         }
     }
@@ -76,7 +76,7 @@ public class Rule {
 
     private CorrespondenceWithoutNullElements updateCorrespondenceItemElem(Map<GeometryObject, GeometryObject> factsCorrespondence, Fact fact, int ruleFactsIter) {
         CorrespondenceWithoutNullElements newCorrespondence = new CorrespondenceWithoutNullElements(factsCorrespondence);
-        LinkedList<GeometryObject> ruleFactObjects = requiredFacts.get(ruleFactsIter).getAllSubObjects();
+        LinkedList<? extends GeometryObject> ruleFactObjects = requiredFacts.get(ruleFactsIter).getAllSubObjects();
         for (int i = 0; i < ruleFactObjects.size(); i++) {
             newCorrespondence.put(ruleFactObjects.get(i), fact.getAllSubObjects().get(i));
         }

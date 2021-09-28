@@ -6,15 +6,14 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import core.facts.EqualityFact;
-import core.objects.numbers.GeometryNumber;
+import core.facts.equation.EqualityFact;
 import core.objects.LineSegment;
-import core.objects.Monomial;
-import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
-import core.objects.RaisedInThePower;
 import core.objects.Vertex;
-import core.Substitutor;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
+import core.objects.numbers.GeometryNumber;
+import core.objects.numbers.NumberValue;
 
 public class SubstitutorTest {
     @Test
@@ -34,13 +33,13 @@ public class SubstitutorTest {
                         new RaisedInThePower(bc, GeometryNumber.createNumber(2))
                 ));// AB^2 = (2AC)^2+BC^2
         HashMap<Monomial,Monomial> substituteTable = new HashMap<>();
-        substituteTable.put(ab,GeometryNumber.createNumber(11));
+        substituteTable.put(ab, GeometryNumber.createNumber(11));
         substituteTable.put(bc,GeometryNumber.createNumber(22));
         substituteTable.put(ac,GeometryNumber.createNumber(33));
-        Monomial answerAB =  new Substitutor((Monomial)(equation.left),substituteTable).getSubstituted();
-        Monomial answerBC_and_AC =  new Substitutor((Monomial)(equation.right),substituteTable).getSubstituted();
-        String expectedStructureAB = "class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]",
-                expectedStructureBC_and_AC = "class core.objects.Polynomial[class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]class core.objects.RaisedInThePower[class core.objects.numbers.GeometryNumber[]class core.objects.numbers.GeometryNumber[]]]";
+        Monomial answerAB =  ((Monomial)equation.left).substitute(substituteTable);
+        Monomial answerBC_and_AC = ((Monomial)equation.right).substitute(substituteTable);
+        String expectedStructureAB = "class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]",
+                expectedStructureBC_and_AC = "class core.objects.expression.Polynomial[class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]class core.objects.expression.RaisedInThePower[class core.objects.expression.numbers.GeometryNumber[]class core.objects.expression.numbers.GeometryNumber[]]]";
         assertEquals(answerAB.getUniqueStructureString(),expectedStructureAB);
         assertEquals(answerBC_and_AC.getUniqueStructureString(),expectedStructureBC_and_AC);
     }
