@@ -1,4 +1,4 @@
-package core;
+package core.correspondence;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import core.objects.GeometryObject;
+import core.objects.Vertex;
 
 public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, GeometryObject> {
     public CorrespondenceNotNullDecorator(Map<GeometryObject, GeometryObject> correspondence) {
@@ -25,13 +26,12 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
         }
         HashMap<GeometryObject, LinkedList<GeometryObject>> fullCorrespondence = new HashMap<>();
         for (CorrespondencePair pair : allCorrespondence) {
-            LinkedList<GeometryObject> existElement = fullCorrespondence.get(pair.key);
-            if (existElement == null) {
+            if (!fullCorrespondence.containsKey(pair.key)) {
                 LinkedList<GeometryObject> tempList = new LinkedList<>();
                 tempList.add(pair.value);
                 fullCorrespondence.put(pair.key, tempList);
             } else {
-                existElement.add(pair.value);
+                fullCorrespondence.get(pair.key).add(pair.value);
             }
         }
         LinkedList<Entry<GeometryObject, LinkedList<GeometryObject>>> sortedFullCorr =
@@ -47,8 +47,14 @@ public class CorrespondenceNotNullDecorator extends HashMap<GeometryObject, Geom
                 else
                     count.put(predict, 1);
             }
-            GeometryObject correspondenceObj = count.entrySet().stream()
-                    .max(Comparator.comparing(x -> x.getValue())).get().getKey();
+            GeometryObject correspondenceObj = new Vertex();
+            try {
+                correspondenceObj = count.entrySet().stream()
+                        .max(Comparator.comparing(x -> x.getValue())).get().getKey();
+            }catch(Exception e)
+            {
+                return null;
+            }
             for (int j = i + 1; j < sortedFullCorr.size(); j++)
                 sortedFullCorr.get(j).getValue().remove(correspondenceObj);
             correspondence.put(sortedFullCorr.get(i).getKey(), correspondenceObj);
