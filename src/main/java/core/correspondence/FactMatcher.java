@@ -8,9 +8,9 @@ import core.objects.numbers.NumberEnveloper;
 
 public class FactMatcher {
     private Fact ruleFact;
-    private CorrespondenceNotNullDecorator correspondence;
+    private CorrespondenceWithoutNullElements correspondence;
 
-    public FactMatcher(Fact ruleFact, CorrespondenceNotNullDecorator correspondence) {
+    public FactMatcher(Fact ruleFact, CorrespondenceWithoutNullElements correspondence) {
         this.ruleFact = ruleFact;
         this.correspondence = correspondence;
     }
