@@ -5,12 +5,11 @@ import java.util.HashSet;
 import core.UniqueVariableSeeker;
 import core.objects.expression.Monomial;
 import core.objects.expression.Polynomial;
-import core.objects.numbers.NumberValue;
 
 public class Expressor {
 
 
-    static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight) {
+    static Monomial expressVariableFromEquation(Monomial variable, Monomial equationLeft, Monomial equationRight) {
 
         // New equation left = our variable
         Monomial newLeft;
@@ -35,7 +34,7 @@ public class Expressor {
             newRight = equationRight;
         }
 
-        while (!(newLeft instanceof NumberValue)) {
+        while (!(newLeft.getAllSubObjects().size() == 0)) {
 
             if (newLeft instanceof Polynomial) {
                 PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor((Polynomial) newLeft,newRight,monomialsWithVariable);

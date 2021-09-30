@@ -1,5 +1,6 @@
 package core.objects.expression;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -43,6 +44,28 @@ public class Monomial extends GeometryObject implements Substitutable {
         subObjects = new LinkedList<>(Arrays.asList(factor1, factor2));
     }
 
+    public static <T, E extends MonomialEnveloper> E buildOf(T toEnvelop, Class<T> tClass, Class<E> eClass) {
+        E search = (E) MonomialStorage.getInstance().monomials.stream()
+                .filter(x -> x.getClass() == eClass && x.toEnvelop().equals(toEnvelop)).findAny().orElse(null);
+        if (search == null) {
+            E obj = null;
+            try {
+                obj = eClass.getDeclaredConstructor((Class<T>) tClass).newInstance(toEnvelop);
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                obj = (E)MonomialEnveloper.returnNewObject(toEnvelop);
+            }
+            MonomialStorage.getInstance().monomials.add(obj);
+            return obj;
+        }
+        return search;
+    }
+
     @Override
     public LinkedList<Monomial> getAllSubObjects() {
         return new LinkedList<>(subObjects);
@@ -68,5 +91,10 @@ public class Monomial extends GeometryObject implements Substitutable {
             newMonomialContents.add(monomialTerm.substitute(substituteTable));
         }
         return new Monomial(newMonomialContents);
+    }
+
+    @Override
+    public Monomial getMonomial() {
+        return this;
     }
 }

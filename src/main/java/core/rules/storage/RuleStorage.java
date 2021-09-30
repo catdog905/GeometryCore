@@ -14,11 +14,10 @@ import core.objects.Angle;
 import core.objects.LineSegment;
 import core.objects.Triangle;
 import core.objects.Vertex;
+import core.objects.expression.Degree;
+import core.objects.expression.GeometryNumber;
 import core.objects.expression.Polynomial;
 import core.objects.expression.RaisedInThePower;
-import core.objects.numbers.Degree;
-import core.objects.numbers.GeometryNumber;
-import core.objects.numbers.NumberValue;
 
 public class RuleStorage {
     public HashSet<Rule> rules = new HashSet<>();
@@ -68,7 +67,7 @@ public class RuleStorage {
         Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new ExistFact(triangle));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new RightAngledFact(triangle));
@@ -86,14 +85,15 @@ public class RuleStorage {
         Triangle triangle = new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)));
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new RightAngledFact(triangle));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
 
+        GeometryNumber num2 = GeometryNumber.get(2);
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(
-                new RaisedInThePower(new NumberValue(AB, null), GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
+                        new RaisedInThePower(AC.getMonomial(), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
                 )));
         return new Rule(facts, consequences);
     }

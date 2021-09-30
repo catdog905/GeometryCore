@@ -6,8 +6,6 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import core.objects.GeometryObject;
-import core.objects.numbers.GeometryNumber;
-import core.objects.numbers.NumberValue;
 
 public class RaisedInThePower extends Monomial implements Substitutable {
     private Monomial power;
@@ -17,8 +15,8 @@ public class RaisedInThePower extends Monomial implements Substitutable {
         this.power = power;
     }
 
-    public RaisedInThePower(NumberValue value, GeometryNumber number) {
-        this(new LinkedList<>(Arrays.asList(value)), number);
+    public RaisedInThePower(Monomial value, Monomial power) {
+        this(new LinkedList<>(Arrays.asList(value)), power);
     }
 
     @Override

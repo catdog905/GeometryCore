@@ -5,7 +5,8 @@ import java.util.LinkedList;
 
 import core.SubObjectsEditor;
 
-public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>, Cloneable {
+public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>,
+        AbleToBeMonomial, Cloneable {
     public boolean isEquivalentTo(GeometryObject object){
         if (!getClass().equals(object.getClass()))
             return false;

@@ -3,10 +3,10 @@ package core.facts.equation;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import core.objects.expression.GeometryNumber;
 import core.objects.GeometryObject;
 import core.objects.expression.Monomial;
 import core.objects.expression.Polynomial;
-import core.objects.expression.GeometryNumber;
 
 public class PolynomialDeconstructor {
     private LinkedList<Monomial> monomialsForNewOppositeSide;
@@ -53,7 +53,7 @@ public class PolynomialDeconstructor {
                 continue;
             }
 
-            monomialsForNewOppositeSide.add(new Monomial(monomialTerm, GeometryNumber.createNumber(-1)));
+            monomialsForNewOppositeSide.add(new Monomial(monomialTerm, GeometryNumber.get(-1)));
         }
         leftoversOfDeconstructable = elementWithVariable;
         if (monomialsForNewOppositeSide.size() == 1) {
