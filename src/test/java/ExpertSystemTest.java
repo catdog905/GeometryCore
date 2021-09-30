@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import core.ExpertSystem;
+import core.Rule;
 import core.facts.BelongFact;
 import core.facts.EqualityFact;
 import core.facts.ExistFact;
@@ -23,6 +24,7 @@ import core.objects.RaisedInThePower;
 import core.objects.Triangle;
 import core.objects.Vertex;
 import core.Model;
+import core.rules.storage.RuleStorage;
 
 public class ExpertSystemTest{
     @Test
@@ -42,7 +44,7 @@ public class ExpertSystemTest{
         facts.add(new BelongFact(C, BC));
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
-
+        RuleStorage.getInstance().rules.stream().filter(x ->((Rule)x).name.equals("pythagorean theorem") ).findFirst().get().outputBenchmarks();
         assertTrue(model.facts.stream().anyMatch(x -> x instanceof ExistFact &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(AB) &&
                 ((Triangle)((ExistFact)x).object).lineSegments.contains(BC) &&

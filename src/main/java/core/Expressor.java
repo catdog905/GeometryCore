@@ -7,8 +7,6 @@ import core.objects.numbers.NumberValue;
 import core.objects.Polynomial;
 
 public class Expressor {
-
-
     public static Monomial expressVariableFromEquation(NumberValue variable, Monomial equationLeft, Monomial equationRight) {
 
         // New equation left = our variable
@@ -52,5 +50,4 @@ public class Expressor {
 
         return newRight;
     }
-
 }

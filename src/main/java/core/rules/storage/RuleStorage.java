@@ -95,6 +95,6 @@ public class RuleStorage {
                         new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
                         new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
                 )));
-        return new Rule(facts, consequences);
+        return new Rule(facts, consequences,"pythagorean theorem");
     }
 }

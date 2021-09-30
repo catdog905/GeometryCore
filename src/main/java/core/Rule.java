@@ -7,27 +7,49 @@ import java.util.Map;
 
 import core.facts.Fact;
 import core.objects.GeometryObject;
+import core.objects.benchmark.Benchmarkable;
 import core.objects.numbers.NumberEnveloper;
 
 /*
 all consequences facts have to be from this.facts scope
  */
-public class Rule {
+public class Rule implements Benchmarkable {
     public LinkedList<Fact> requiredFacts;
     public LinkedList<Fact> consequences;
-
-    public Rule(LinkedList<Fact> requiredFacts, LinkedList<Fact> consequences) {
+    public String name;
+    public Rule(LinkedList<Fact> requiredFacts, LinkedList<Fact> consequences, String name) {
         this.requiredFacts = requiredFacts;
         this.consequences = consequences;
+        this.name=name;
     }
 
+    public Rule(LinkedList<Fact> requiredFacts, LinkedList<Fact> consequences) {
+        this(requiredFacts,consequences,"Untitled rule");
+    }
+
+    @Override
+    public void outputBenchmarks(){
+
+        System.out.println();
+        System.out.println("---------------");
+        System.out.println(name);
+        System.out.println("");
+
+        Benchmarkable.super.outputBenchmarks();
+
+
+        System.out.println("---------------");
+        System.out.println();
+    }
     public void applyToModel(Model model) {
+        startExecution("applying rule");
         LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
                 new LinkedList<>(model.facts), new HashMap<>(), 0);
         for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
             model.facts.addAll(createConsequencesFacts(
                     (new CorrespondenceNotNullDecorator(correspondence)).makeFull()));
         }
+        endExecution("applying rule");
     }
 
     private LinkedList<Fact> createConsequencesFacts(Map<GeometryObject, GeometryObject> correspondence) {
@@ -48,6 +70,7 @@ public class Rule {
      */
     private LinkedList<Map<GeometryObject, GeometryObject>> findAllMatchedFactsSequences(
             LinkedList<Fact> modelFacts, Map<GeometryObject, GeometryObject> factsCorrespondence, int ruleFactsIter) {
+        increaseCriterion("findAllMatchedSequences");
         if (ruleFactsIter == this.requiredFacts.size())
             return new LinkedList<>(Arrays.asList(factsCorrespondence));
         LinkedList<Fact> matchedFacts = getMatchedFactsForItemElem(modelFacts, factsCorrespondence, ruleFactsIter);
