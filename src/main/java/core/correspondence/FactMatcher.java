@@ -16,11 +16,11 @@ public class FactMatcher {
     }
 
     public Boolean checkMatch(Fact curFact) {
-        if (!curFact.getClass().equals(ruleFact.getClass()))
+        if (!curFact.getClass().equals(ruleFact.getClass()) ||
+                curFact.getAllSubObjects().size() != ruleFact.getAllSubObjects().size())
             return false;
         LinkedList<? extends GeometryObject> curFactSubObjects = curFact.getAllSubObjects();
         for (GeometryObject obj : ruleFact.getAllSubObjects()){
-            GeometryObject match = null;
             if (obj instanceof GeometryNumber)
                 if (curFactSubObjects.contains(obj))
                     continue;

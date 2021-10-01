@@ -44,7 +44,7 @@ public class RaisedInThePower extends Monomial implements Substitutable {
         int iterationsToDo = subObjects.size() - 1;
         var newSubObjects = new LinkedList<Monomial>();
         Monomial newPower = subObjects.getLast();
-        if (newPower instanceof Monomial)
+        if (newPower != null)
             newPower = newPower.substitute(substituteTable);
         for (var subObject : subObjects) {
             if (iterationsToDo == 0)
