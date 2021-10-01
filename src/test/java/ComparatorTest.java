@@ -9,7 +9,9 @@ import java.util.LinkedList;
 
 import core.ExpertSystem;
 import core.Model;
+import core.Rule;
 import core.facts.BelongFact;
+import core.facts.DebugEquivalenceFact;
 import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
@@ -318,24 +320,15 @@ public class ComparatorTest {
             Model model = new Model(facts);
             ExpertSystem.ForwardPass(model);
 
+            LinkedList<Fact> requiredFacts = new LinkedList<>();
+            requiredFacts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(AC, BC, AB)))));
 
-            facts = new HashSet<>();
-            A = new Vertex();
-            B = new Vertex();
-            C = new Vertex();
-            AB = new LineSegment(A, B);
-            BC = new LineSegment(B, C);
-            AC = new LineSegment(A, C);
-            facts.add(new BelongFact(A, AB));
-            facts.add(new BelongFact(B, AB));
-            facts.add(new BelongFact(A, AC));
-            facts.add(new BelongFact(B, BC));
-            facts.add(new BelongFact(C, AC));
-            facts.add(new BelongFact(C, BC));
-            facts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(AC, BC, AB)))));
-            Model checkModel = new Model(facts);
-            boolean a = checkModel.isEquivalentTo(model, 0);
-            assertTrue(a);
+            LinkedList<Fact> consequences =  new LinkedList<>();
+            consequences.add(new DebugEquivalenceFact());
+
+            new Rule(requiredFacts,consequences).applyToModel(model);
+
+            assertTrue(model.containsFactOfType(DebugEquivalenceFact.class));
 
         }
     }
