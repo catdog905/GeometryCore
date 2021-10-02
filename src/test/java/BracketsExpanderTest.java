@@ -8,14 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import GeometryCore.BracketsExpander;
-import GeometryCore.GeometryObjects.GeometryNumber;
-import GeometryCore.GeometryObjects.GeometryObject;
-import GeometryCore.GeometryObjects.LineSegment;
-import GeometryCore.GeometryObjects.Monomial;
-import GeometryCore.GeometryObjects.NumberValue;
-import GeometryCore.GeometryObjects.Polynomial;
-import GeometryCore.GeometryObjects.RaisedInThePower;
+import core.objects.expression.BracketsExpander;
+import core.objects.GeometryObject;
+import core.objects.LineSegment;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
 
 public class BracketsExpanderTest {
     @Test
@@ -26,15 +25,10 @@ public class BracketsExpanderTest {
         LineSegment D = new LineSegment();
         LineSegment E = new LineSegment();
         Monomial expression = new Monomial(
-                new NumberValue(A, null),
-                new Polynomial(
-                        new NumberValue(B, null),
-                        new NumberValue(C, null)),
-                new Polynomial(
-                        new NumberValue(D, null),
-                        new NumberValue(E, null)
-                )
-        );
+               A.getMonomial(),
+                new Polynomial(B.getMonomial(),C.getMonomial(),
+                    new Polynomial(D.getMonomial(),E.getMonomial())
+        ));
         Monomial newExpression = new BracketsExpander(expression).get();
 
         long count = 0L;
@@ -62,11 +56,11 @@ public class BracketsExpanderTest {
         LineSegment D = new LineSegment();
         LineSegment E = new LineSegment();
         Monomial expression = new Monomial(
-                new NumberValue(A, null),
-                new NumberValue(B, null),
-                new NumberValue(C, null),
-                new NumberValue(D, null),
-                new NumberValue(E, null)
+                A.getMonomial(),
+                B.getMonomial(),
+                C.getMonomial(),
+                D.getMonomial(),
+                E.getMonomial()
         );
         Monomial newExpression = new BracketsExpander(expression).get();
 
@@ -84,15 +78,15 @@ public class BracketsExpanderTest {
         LineSegment F = new LineSegment();
         LineSegment G = new LineSegment();
         Monomial expression = new Monomial(
-                new NumberValue(A, null),
+                A.getMonomial(),
                 new Polynomial(
-                        new NumberValue(B, null),
-                        new NumberValue(C, null)),
+                        B.getMonomial(),
+                        C.getMonomial()),
                 new Polynomial(
-                        new NumberValue(D, null),
+                        D.getMonomial(),
                         new Polynomial(
-                                new NumberValue(F, null),
-                                new NumberValue(G, null)
+                                F.getMonomial(),
+                                G.getMonomial()
                         )
                 )
         );
@@ -123,10 +117,10 @@ public class BracketsExpanderTest {
         Monomial expression = new Monomial(
                 new RaisedInThePower(
                         new Monomial(
-                                new NumberValue(A),
-                                new NumberValue(B)
+                                A.getMonomial(),
+                                B.getMonomial()
                         ),
-                        GeometryNumber.createNumber(2)
+                        GeometryNumber.get(2)
                 )
         );
         Monomial newExpression = new BracketsExpander(expression).get();
