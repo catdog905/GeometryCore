@@ -6,16 +6,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
-import core.objects.numbers.GeometryNumber;
+import core.facts.equation.EqualityFact;
+import core.model.Model;
 import core.objects.LineSegment;
-import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
-import core.objects.RaisedInThePower;
 import core.objects.Vertex;
-import core.Model;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
 
 public class ComparatorTest {
     @Test
@@ -27,19 +26,19 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        GeometryNumber num2 = GeometryNumber.get(2);
         EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), GeometryNumber.get(2)),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation2 =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
 
         assertEquals(equation,equation2);
     }
@@ -52,25 +51,25 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        GeometryNumber num2 = GeometryNumber.get(2);
         EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation2 =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(22))
-                ));// AB^2 = (2AC)^2+BC^22
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), GeometryNumber.get(22)
+                )));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^22
         EqualityFact equation3 =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(ac, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+AC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(AC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+AC.getMonomial()^2
         assert (!equation.equals(equation2));
         assert (!equation2.equals(equation3));
         assert (!equation.equals(equation3));
@@ -84,25 +83,25 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        GeometryNumber num2 = GeometryNumber.get(3);
         EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation2 =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation3 =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(ac, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+AC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(AC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+AC.getMonomial()^2
         HashSet<Fact> first = new HashSet<>(),second = new HashSet<>(),third = new HashSet<>();
         first.add(equation);
         second.add(equation2);
@@ -122,28 +121,24 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
-
-
-
-
-        RaisedInThePower mine = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        GeometryNumber num2 = GeometryNumber.get(2);
+        RaisedInThePower mine = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation =  new EqualityFact(
                 mine,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
 
 
-        RaisedInThePower yours = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower yours = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact2 = new ExistFact(yours);
 
 
@@ -164,28 +159,25 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        GeometryNumber num2 = GeometryNumber.get(2);
 
-
-
-
-        RaisedInThePower mine = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower mine = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation =  new EqualityFact(
                 mine,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
 
 
-        RaisedInThePower yours = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower yours = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(3))
-                ));// AB^2 = (2AC)^2+BC^3
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), GeometryNumber.get(3))
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^3
         ExistFact existFact2 = new ExistFact(yours);
 
 
@@ -206,29 +198,26 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        GeometryNumber num2 = GeometryNumber.get(2);
 
-
-
-
-        RaisedInThePower mine = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower mine = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation =  new EqualityFact(
                 mine,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
 
 
-        RaisedInThePower yours = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower yours = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact2 = new ExistFact(yours);
 
 
@@ -249,28 +238,27 @@ public class ComparatorTest {
         LineSegment AB = new LineSegment(A, B);
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
-        NumberValue ac = new NumberValue(AC, null),bc = new NumberValue(BC, null),ab = new NumberValue(AB, null);
+        GeometryNumber num2 = GeometryNumber.get(2);
 
 
 
-
-        RaisedInThePower mine = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower mine = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(ab, GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
 
 
-        RaisedInThePower yours = new RaisedInThePower(ab, GeometryNumber.createNumber(2));
+        RaisedInThePower yours = new RaisedInThePower(AB.getMonomial(), num2);
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(ac,GeometryNumber.createNumber(2))), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(bc, GeometryNumber.createNumber(2))
-                ));// AB^2 = (2AC)^2+BC^2
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact2 = new ExistFact(yours);
 
 

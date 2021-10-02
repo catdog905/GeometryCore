@@ -4,6 +4,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
+import core.objects.expression.Monomial;
+import core.objects.expression.MonomialEnveloper;
+
 public class Triangle extends GeometryObject {
     public HashSet<LineSegment> lineSegments;
     public Triangle(HashSet<LineSegment> lineSegments) {
@@ -26,5 +29,10 @@ public class Triangle extends GeometryObject {
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
         return new LinkedList<>(lineSegments);
+    }
+
+    @Override
+    public Monomial getMonomial() {
+        return Monomial.buildOf(this, Triangle.class, MonomialEnveloper.class);
     }
 }

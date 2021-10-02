@@ -5,14 +5,15 @@ import java.util.LinkedList;
 
 import core.SubObjectsEditor;
 
-public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>, Cloneable {
+public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>,
+        AbleToBeMonomial, Cloneable {
     public boolean isEquivalentTo(GeometryObject object){
         if (!getClass().equals(object.getClass()))
             return false;
-        LinkedList<GeometryObject> ourSubObjects = getAllSubObjects(), theirSubObjects = object.getAllSubObjects();
+        LinkedList<? extends GeometryObject> ourSubObjects = getAllSubObjects(), theirSubObjects = object.getAllSubObjects();
         if (ourSubObjects.size() != theirSubObjects.size())
             return false;
-        for (Iterator<GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
+        for (Iterator<? extends GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
             var ourSubject = ourObjectIterator.next();
             var theirSubject = theirObjectIterator.next();
             if (!ourSubject.isEquivalentTo(theirSubject))
@@ -34,8 +35,8 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         if (!(o.getClass().equals(this.getClass())))
             return false;
 
-        LinkedList<GeometryObject> ourSubObjects = this.getAllSubObjects();
-        LinkedList<GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
+        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects();
+        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
 
 
         if (ourSubObjects.size() == 0 || ourSubObjects.size() != theirSubObjects.size()){

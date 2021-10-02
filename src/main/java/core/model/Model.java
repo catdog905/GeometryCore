@@ -1,14 +1,24 @@
-package core;
+package core.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import core.facts.Fact;
 import core.objects.GeometryObject;
 
 public class Model {
-    public HashSet<Fact> facts;
+    private HashSet<Fact> facts;
+
+    public Model(HashSet<Fact> facts) {
+        this.facts = facts;
+    }
+
+    public HashSet<Fact> facts() {
+        return facts;
+    }
 
     public boolean isEquivalentTo(Model model){
         if (model.facts.size() != facts.size())
@@ -19,7 +29,7 @@ public class Model {
             boolean equivalenceFound = false;
             if (modelEquivalenceMaster.equivalenceToFactFound(ourFact))
                 continue;
-            LinkedList<GeometryObject> ourSubObjects =  ourFact.getAllSubObjects();
+            LinkedList<? extends GeometryObject> ourSubObjects =  ourFact.getAllSubObjects();
             for (Fact theirFact : theirFacts){
                 if (modelEquivalenceMaster.equivalenceToFactFound(theirFact))
                     continue;
@@ -77,7 +87,20 @@ public class Model {
         return ourFacts.size()==theirFacts.size()&&
                 ourFacts.containsAll(theirFacts);
     }
-    public Model(HashSet<Fact> facts) {
-        this.facts = facts;
+
+    public void deleteRepeatingFacts(){
+        HashSet<Fact> newFacts = new HashSet<>(facts);
+        for (Fact fact: facts) {
+            if (!newFacts.contains(fact))
+                continue;
+
+            List<Fact> allSimilarFacts =  newFacts.stream().filter
+                    (x -> x!=fact&&
+                            x.equals(fact))
+                    .collect(Collectors.toList());
+
+            newFacts.removeAll(allSimilarFacts);
+        }
+       facts=newFacts;
     }
 }

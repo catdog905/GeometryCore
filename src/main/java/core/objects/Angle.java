@@ -3,6 +3,9 @@ package core.objects;
 import java.util.LinkedList;
 import java.util.Map;
 
+import core.objects.expression.Monomial;
+import core.objects.expression.MonomialEnveloper;
+
 public class Angle extends GeometryObject {
     public LinkedList<GeometryObject> geometryObjects;
 
@@ -26,5 +29,10 @@ public class Angle extends GeometryObject {
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
         return geometryObjects;
+    }
+
+    @Override
+    public Monomial getMonomial() {
+        return Monomial.buildOf(this, Angle.class, MonomialEnveloper.class);
     }
 }
