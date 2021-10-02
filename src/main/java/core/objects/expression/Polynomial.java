@@ -1,8 +1,11 @@
-package core.objects;
+package core.objects.expression;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import core.objects.GeometryObject;
 
 public class Polynomial extends Monomial{
     public Polynomial(LinkedList<Monomial> subObjects) {
@@ -17,7 +20,7 @@ public class Polynomial extends Monomial{
     }
 
     @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
+    public LinkedList<Monomial> getAllSubObjects() {
         return new LinkedList<>(super.getAllSubObjects());
     }
 
@@ -28,5 +31,18 @@ public class Polynomial extends Monomial{
             newObjects.add((Monomial) correspondence.get(obj));
         }
         return new Polynomial(newObjects);
+    }
+
+    @Override
+    public Monomial substitute(HashMap<Monomial, Monomial> substituteTable) {
+        if (substituteTable.containsKey(this)) {
+            return substituteTable.get(this);
+        }
+        LinkedList<Monomial> newPolynomialContents = new LinkedList<>();
+        for (GeometryObject term : getAllSubObjects()) {
+            Monomial monomialTerm = (Monomial) term;
+            newPolynomialContents.add(monomialTerm.substitute(substituteTable));
+        }
+        return new Polynomial(newPolynomialContents);
     }
 }

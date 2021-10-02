@@ -1,9 +1,10 @@
-package core.facts;
+package core.facts.equation;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
+import core.facts.Fact;
 import core.objects.GeometryObject;
 
 public class EqualityFact extends Fact {

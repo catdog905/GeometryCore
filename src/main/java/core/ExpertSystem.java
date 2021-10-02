@@ -1,5 +1,6 @@
 package core;
 
+import core.model.Model;
 import core.rules.storage.RuleStorage;
 
 public class ExpertSystem {
@@ -8,7 +9,7 @@ public class ExpertSystem {
         //while (lastFactsAmount != model.facts.size()) {
             for (Rule rule : RuleStorage.getInstance().rules) {
                 rule.applyToModel(model);
-                FactOptimizer.deleteRepeatingFacts(model);
+                model.deleteRepeatingFacts();
             }
         //}
     }

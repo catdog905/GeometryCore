@@ -1,13 +1,13 @@
-package core;
+package core.facts.equation;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import core.objects.numbers.GeometryNumber;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.Monomial;
+import core.objects.expression.RaisedInThePower;
 import core.objects.GeometryObject;
-import core.objects.Monomial;
-import core.objects.RaisedInThePower;
 
 public class MonomialDeconstructor {
 
@@ -37,14 +37,14 @@ public class MonomialDeconstructor {
         return oppositeSide;
     }
 
-    public void deconstruct() {
-        LinkedList<GeometryObject> monomialsOnDeconstructableSide = equationSideToDeconstruct.getAllSubObjects();
+    private void deconstruct() {
+        LinkedList<? extends GeometryObject> monomialsOnDeconstructableSide = equationSideToDeconstruct.getAllSubObjects();
         int iterationsToMake = monomialsOnDeconstructableSide.size();
 
         if (equationSideToDeconstruct instanceof RaisedInThePower) {
             Monomial reverseRITP_power = new RaisedInThePower(
                     new LinkedList<>(Collections.singletonList((Monomial) monomialsOnDeconstructableSide.getLast()))
-                    , GeometryNumber.createNumber(-1)
+                    , GeometryNumber.get(-1)
             );
             initialOppositeSide = new RaisedInThePower(
                     new LinkedList<>(Collections.singletonList(initialOppositeSide)), reverseRITP_power
@@ -65,7 +65,7 @@ public class MonomialDeconstructor {
             } else {
                 monomialsForNewOppositeSide.add(new RaisedInThePower(
                         new LinkedList<>(Collections.singletonList(monomialTerm)),
-                        GeometryNumber.createNumber(-1))
+                        GeometryNumber.get(-1))
                 );
             }
             iterationsToMake--;
