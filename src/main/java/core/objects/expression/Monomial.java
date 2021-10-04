@@ -16,13 +16,28 @@ public class Monomial extends GeometryObject implements Substitutable {
     // This function is made for unit testing purposes, it's not recommended to use it anywhere else
     public String getUniqueStructureString(){
         String structureString = "";
-        structureString += getClass().toString();
+        String[] temp;
+        temp = getClass().toString().split(" ");
+        temp = temp[temp.length-1].split("\\.");
+        structureString += temp[temp.length-1];
+        if (getAllSubObjects().size() == 0){
+            return structureString;
+        }
         structureString += "[";
+        boolean isFirst =true;
         for (GeometryObject term: getAllSubObjects()) {
+            if (!isFirst){
+                structureString += ", ";
+            }
+            isFirst=false;
             if (term instanceof Monomial)
                 structureString += ((Monomial)term).getUniqueStructureString();
-            else
-                structureString += term.getClass().toString();
+            else {
+
+                temp = term.getClass().toString().split(" ");
+                temp = temp[temp.length-1].split("\\.");
+                structureString += temp;
+            }
         }
         structureString += "]";
         return structureString;
