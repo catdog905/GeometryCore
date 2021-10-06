@@ -2,9 +2,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 import core.facts.ExistFact;
 import core.facts.Fact;
@@ -13,6 +11,7 @@ import core.model.Model;
 import core.objects.LineSegment;
 import core.objects.Vertex;
 import core.objects.expression.GeometryNumber;
+import core.objects.expression.Monomial;
 import core.objects.expression.Polynomial;
 import core.objects.expression.RaisedInThePower;
 
@@ -30,13 +29,13 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), GeometryNumber.get(2)),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation2 =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
 
@@ -55,19 +54,19 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation2 =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), GeometryNumber.get(22)
                 )));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^22
         EqualityFact equation3 =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(AC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+AC.getMonomial()^2
         assert (!equation.equals(equation2));
@@ -87,19 +86,19 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation2 =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         EqualityFact equation3 =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(AC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+AC.getMonomial()^2
         HashSet<Fact> first = new HashSet<>(),second = new HashSet<>(),third = new HashSet<>();
@@ -126,7 +125,7 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 mine,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
@@ -136,7 +135,7 @@ public class ComparatorTest {
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact2 = new ExistFact(yours);
@@ -165,7 +164,7 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 mine,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
@@ -175,7 +174,7 @@ public class ComparatorTest {
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), GeometryNumber.get(3))
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^3
         ExistFact existFact2 = new ExistFact(yours);
@@ -204,7 +203,7 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 mine,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2+BC.getMonomial()^2
@@ -215,7 +214,7 @@ public class ComparatorTest {
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact2 = new ExistFact(yours);
@@ -246,7 +245,7 @@ public class ComparatorTest {
         EqualityFact equation =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact1 = new ExistFact(mine);
@@ -256,7 +255,7 @@ public class ComparatorTest {
         EqualityFact equation2 =  new EqualityFact(
                 yours,
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
         ExistFact existFact2 = new ExistFact(yours);

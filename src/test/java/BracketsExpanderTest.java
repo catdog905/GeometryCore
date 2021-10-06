@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import core.objects.expression.BracketsExpander;
+import core.objects.expression.AllBracketsExpandedMonomial;
 import core.objects.GeometryObject;
 import core.objects.LineSegment;
 import core.objects.expression.GeometryNumber;
@@ -29,7 +29,7 @@ public class BracketsExpanderTest {
                 new Polynomial(B.getMonomial(),C.getMonomial(),
                     new Polynomial(D.getMonomial(),E.getMonomial())
         ));
-        Monomial newExpression = new BracketsExpander(expression).get();
+        Monomial newExpression = new AllBracketsExpandedMonomial(expression);
 
         long count = 0L;
         for (GeometryObject x : newExpression.getAllSubObjects()) {
@@ -62,7 +62,7 @@ public class BracketsExpanderTest {
                 D.getMonomial(),
                 E.getMonomial()
         );
-        Monomial newExpression = new BracketsExpander(expression).get();
+        Monomial newExpression = new AllBracketsExpandedMonomial(expression);
 
         assertTrue(newExpression.getAllSubObjects().stream().map(x -> x.getAllSubObjects().get(0))
                 .collect(Collectors.toCollection(LinkedList::new)).containsAll(Arrays.asList(A, B, C, D, E)));
@@ -90,7 +90,7 @@ public class BracketsExpanderTest {
                         )
                 )
         );
-        Monomial newExpression = new BracketsExpander(expression).get();
+        Monomial newExpression = new AllBracketsExpandedMonomial(expression);
         long count = 0L;
         for (GeometryObject x : newExpression.getAllSubObjects()) {
             List<List<GeometryObject>> bigList =
@@ -123,7 +123,7 @@ public class BracketsExpanderTest {
                         GeometryNumber.get(2)
                 )
         );
-        Monomial newExpression = new BracketsExpander(expression).get();
+        Monomial newExpression = new AllBracketsExpandedMonomial(expression);
 
         long count = 0L;
         for (GeometryObject x : newExpression.getAllSubObjects()) {

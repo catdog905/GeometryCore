@@ -4,21 +4,17 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class MultiplyThis {
-    private LinkedList<Monomial> factors;
-    private Monomial result = null;
+public class MultipliedMonomial extends Monomial {
 
-    public MultiplyThis(LinkedList<Monomial> factors) {
-        this.factors = factors;
+    public MultipliedMonomial(LinkedList<Monomial> factors) {
+        super(multiplyFactors(factors));
     }
 
-    public Monomial get() {
-        if (result == null)
-            result = multiplyFactors(factors);
-        return result;
+    public MultipliedMonomial(Monomial... factors) {
+        this(new LinkedList<>(Arrays.asList(factors)));
     }
 
-    private Monomial multiplyFactors(LinkedList<Monomial> factors) {
+    private static Monomial multiplyFactors(LinkedList<Monomial> factors) {
         if (factors.size() == 0)
             throw new RuntimeException("Monomial must contain at least 1 subObject");
         Monomial result = factors.get(0);
@@ -28,15 +24,15 @@ public class MultiplyThis {
         return result;
     }
 
-    private Monomial multiplyFactors(Monomial factor1, Monomial factor2) {
+    private static Monomial multiplyFactors(Monomial factor1, Monomial factor2) {
         if (!(factor1 instanceof Polynomial) && !(factor2 instanceof Polynomial)) {
             LinkedList<Monomial> toCreate = new LinkedList<>();
-            if (factor1 instanceof GeometryNumber || factor1 instanceof GeometryNumber) {
+            if (factor1.getAllSubObjects().size() == 0) {
                 toCreate.add(factor1);
             } else {
                 toCreate.addAll((LinkedList<Monomial>)factor1.getAllSubObjects());
             }
-            if (factor2 instanceof GeometryNumber || factor2 instanceof GeometryNumber) {
+            if (factor2.getAllSubObjects().size() == 0) {
                 toCreate.add(factor2);
             } else {
                 toCreate.addAll((LinkedList<Monomial>)factor2.getAllSubObjects());
@@ -59,7 +55,7 @@ public class MultiplyThis {
         return new Polynomial(summands);
     }
 
-    private LinkedList<Monomial> multiplyMonomialWithPolynomial(Monomial monomial, Polynomial polynomial) {
+    private static LinkedList<Monomial> multiplyMonomialWithPolynomial(Monomial monomial, Polynomial polynomial) {
         LinkedList<Monomial> subObjAddTo = monomial instanceof GeometryNumber || monomial instanceof GeometryNumber
                 ? new LinkedList<>(Arrays.asList(monomial)) : (LinkedList<Monomial>) monomial.getAllSubObjects();
         return polynomial.getAllSubObjects().stream().map((Monomial x) -> {

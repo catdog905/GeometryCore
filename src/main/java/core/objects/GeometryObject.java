@@ -16,8 +16,12 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         for (Iterator<? extends GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
             var ourSubject = ourObjectIterator.next();
             var theirSubject = theirObjectIterator.next();
-            if (!ourSubject.isEquivalentTo(theirSubject))
-                return false;
+            try {
+                if (!ourSubject.isEquivalentTo(theirSubject))
+                    return false;
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
         }
         return true;
     }
