@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 public class AllBracketsExpandedMonomial extends Monomial{
 
     public AllBracketsExpandedMonomial(Monomial monomial) {
-        super(expandAllBrackets(monomial));
+        super(expandAllBrackets(monomial).getAllSubObjects());
     }
 
     private static Monomial expandAllBrackets(Monomial expression) {

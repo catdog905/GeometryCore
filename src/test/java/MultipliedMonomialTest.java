@@ -12,5 +12,5 @@ public class MultipliedMonomialTest {
                 GeometryNumber.get(3));
         Monomial monomial = new Monomial(GeometryNumber.get(1));
         Monomial multipliedMonomial = new MultipliedMonomial(monomial, polynomial);
-    } //Broken
+    }
 }

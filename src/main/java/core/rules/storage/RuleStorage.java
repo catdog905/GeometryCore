@@ -95,6 +95,6 @@ public class RuleStorage {
                         new RaisedInThePower(AC.getMonomial(), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 )));
-        return new Rule(facts, consequences);
+        return new Rule(facts, consequences,"pythagorean theorem");
     }
 }

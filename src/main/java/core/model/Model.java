@@ -1,13 +1,13 @@
 package core.model;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import core.Rule;
+import core.facts.DebugEquivalenceFact;
 import core.facts.Fact;
-import core.objects.GeometryObject;
 
 public class Model {
     private HashSet<Fact> facts;
@@ -19,50 +19,17 @@ public class Model {
     public HashSet<Fact> facts() {
         return facts;
     }
-
-    public boolean isEquivalentTo(Model model){
-        if (model.facts.size() != facts.size())
-            return false;
-        HashSet<Fact> theirFacts = new HashSet<>( model.facts);
-        ModelEquivalenceMaster modelEquivalenceMaster = new ModelEquivalenceMaster(getObjectToFactsHashMap(), model.getObjectToFactsHashMap());
-        for(Fact ourFact : facts){
-            boolean equivalenceFound = false;
-            if (modelEquivalenceMaster.equivalenceToFactFound(ourFact))
-                continue;
-            LinkedList<? extends GeometryObject> ourSubObjects =  ourFact.getAllSubObjects();
-            for (Fact theirFact : theirFacts){
-                if (modelEquivalenceMaster.equivalenceToFactFound(theirFact))
-                    continue;
-                if (modelEquivalenceMaster.isOurFactEquivalentToTheir(ourFact,theirFact,ourSubObjects))
-                {
-                    equivalenceFound=true;
-                    break;
-                }
-            }
-
-            if (!equivalenceFound)
-                return false;
-        }
-
-
-
-        return true;
+    public boolean containsFactsEquivalentTo(Model model){
+        return containsFactsEquivalentTo(model.facts);
     }
-
-    private HashMap<GeometryObject,LinkedList<Fact>> getObjectToFactsHashMap(){
-        HashMap<GeometryObject,LinkedList<Fact>> answer = new HashMap<>();
-        for (Fact fact:facts) {
-            for (var subObject:fact.getAllSubObjects()){
-                if (!answer.containsKey(subObject)){
-                    LinkedList<Fact> list = new LinkedList<>();
-                    list.add(fact);
-                    answer.put(subObject,list);
-                }else{
-                    answer.get(subObject).add(fact);
-                }
-            }
-        }
-        return answer;
+    public boolean containsFactsEquivalentTo(HashSet<Fact> theirFacts){
+        return containsFactsEquivalentTo(new LinkedList<>(theirFacts));
+    }
+    public boolean containsFactsEquivalentTo(LinkedList<Fact> theirFacts){
+        LinkedList<Fact> consequences = new LinkedList<>();
+        consequences.add(new DebugEquivalenceFact());
+        new Rule(theirFacts,consequences).applyToModel(this);
+        return facts.stream().anyMatch(x -> x instanceof DebugEquivalenceFact);
     }
     @Override
     public boolean equals(Object o) {
