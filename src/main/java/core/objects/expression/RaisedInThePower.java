@@ -6,7 +6,7 @@ import java.util.Map;
 
 import core.objects.GeometryObject;
 
-public class RaisedInThePower extends Monomial implements Substitutable {
+public class RaisedInThePower extends Monomial{
     public Monomial power;
     public Monomial base;
 
@@ -32,5 +32,10 @@ public class RaisedInThePower extends Monomial implements Substitutable {
     public Monomial substitute(HashMap<Monomial, Monomial> substituteTable) {
         return new RaisedInThePower(base.substitute(substituteTable),
                 power.substitute(substituteTable));
+    }
+
+    @Override
+    public Monomial expandAllBrackets() {
+        return new RaisedInThePower(base.expandAllBrackets(), power.expandAllBrackets());
     }
 }

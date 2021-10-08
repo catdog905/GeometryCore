@@ -127,7 +127,7 @@ public class ComparatorTest {
                 new Polynomial(
                         new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
-                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
+                ));// AB^2 = (2AC)^2+BC^2
         ExistFact existFact1 = new ExistFact(mine);
 
 
@@ -137,7 +137,7 @@ public class ComparatorTest {
                 new Polynomial(
                         new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
-                ));// AB.getMonomial()^2 = (2AC)^2+BC.getMonomial()^2
+                ));// AB^2 = (2AC)^2+BC^2
         ExistFact existFact2 = new ExistFact(yours);
 
 
@@ -149,7 +149,7 @@ public class ComparatorTest {
         Model model1 = new Model(original),model2 = new Model(second);
         // Commented because, as I understand, rules do not yet work properly
         // with monomials, so this gives error
-       // assert (model1.containsFactsEquivalentTo(model2));
+        //assert (model1.containsFactsEquivalentTo(model2));
     }
     @Test
     public void NonEquivalenceByGeometryNumberTest(){

@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import core.objects.GeometryObject;
 
-public class Monomial extends GeometryObject implements Substitutable {
+public class Monomial extends GeometryObject implements Substitutable, Multipliable, Expandable {
     LinkedList<Monomial> subObjects;
 
 
@@ -111,5 +112,35 @@ public class Monomial extends GeometryObject implements Substitutable {
     @Override
     public Monomial getMonomial() {
         return this;
+    }
+
+    @Override
+    public Monomial expandAllBrackets() {
+        if (subObjects.size() == 0)
+            return this;
+        return subObjects.stream().reduce(GeometryNumber.get(1),
+                (subtotal, elem) -> subtotal.multiplyWith(elem.expandAllBrackets()));
+    }
+
+    @Override
+    public Monomial multiplyWith(Monomial monomial) {
+        if (monomial instanceof Polynomial)
+            return multiplyWithPolynomial((Polynomial) monomial);
+        LinkedList<Monomial> factors = new LinkedList<>();
+        if (subObjects.size() > 0)
+            factors.addAll(subObjects);
+        else
+            factors.add(this);
+        if (monomial.subObjects.size() > 0)
+            factors.addAll(monomial.subObjects);
+        else
+            factors.add(monomial);
+        return new Monomial(factors);
+    }
+
+    private Polynomial multiplyWithPolynomial(Polynomial polynomial) {
+        return new Polynomial(polynomial.getAllSubObjects()
+                .stream().map(this::multiplyWith)
+                .collect(Collectors.toCollection(LinkedList::new)));
     }
 }

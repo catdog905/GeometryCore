@@ -2,18 +2,22 @@ package core.objects;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 import core.SubObjectsEditor;
+import core.objects.expression.GeometryNumber;
 
 public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>,
         AbleToBeMonomial, Cloneable {
     public boolean isEquivalentTo(GeometryObject object){
         if (!getClass().equals(object.getClass()))
             return false;
-        LinkedList<? extends GeometryObject> ourSubObjects = getAllSubObjects(), theirSubObjects = object.getAllSubObjects();
+        LinkedList<? extends GeometryObject> ourSubObjects = getAllSubObjects(),
+                theirSubObjects = object.getAllSubObjects();
         if (ourSubObjects.size() != theirSubObjects.size())
             return false;
-        for (Iterator<? extends GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
+        for (Iterator<? extends GeometryObject> ourObjectIterator = ourSubObjects.iterator(),
+             theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
             var ourSubject = ourObjectIterator.next();
             var theirSubject = theirObjectIterator.next();
             try {
@@ -39,8 +43,12 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         if (!(o.getClass().equals(this.getClass())))
             return false;
 
-        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects();
-        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
+        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects().stream()
+                .filter(x -> !(x == GeometryNumber.get(1)))
+                .collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects()
+                .stream().filter(x -> !(x == GeometryNumber.get(1)))
+                .collect(Collectors.toCollection(LinkedList::new));
 
 
         if (ourSubObjects.size() == 0 || ourSubObjects.size() != theirSubObjects.size()){

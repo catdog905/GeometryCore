@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import core.objects.GeometryObject;
 
@@ -44,5 +45,30 @@ public class Polynomial extends Monomial{
             newPolynomialContents.add(monomialTerm.substitute(substituteTable));
         }
         return new Polynomial(newPolynomialContents);
+    }
+
+    @Override
+    public Monomial expandAllBrackets() {
+        return new Polynomial(getAllSubObjects().stream()
+                .map(Monomial::expandAllBrackets)
+                .collect(Collectors.toCollection(LinkedList::new)));
+    }
+
+    @Override
+    public Monomial multiplyWith(Monomial monomial) {
+        if (monomial instanceof Polynomial)
+            return multiplyWithPolynomial((Polynomial) monomial);
+        return new Polynomial(getAllSubObjects()
+                .stream().map(monomial::multiplyWith)
+                .collect(Collectors.toCollection(LinkedList::new)));
+    }
+
+    private Polynomial multiplyWithPolynomial(Polynomial polynomial) {
+        LinkedList<Monomial> monomials = new LinkedList<>();
+        for (Monomial x : getAllSubObjects()) {
+            Monomial monomial = x.multiplyWith(polynomial);
+            monomials.addAll(monomial.getAllSubObjects());
+        }
+        return (Polynomial) new Polynomial(monomials);
     }
 }
