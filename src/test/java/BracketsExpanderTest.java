@@ -1,14 +1,7 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import core.objects.GeometryObject;
 import core.objects.LineSegment;
 import core.objects.expression.GeometryNumber;
 import core.objects.expression.Monomial;
@@ -28,23 +21,13 @@ public class BracketsExpanderTest {
                 new Polynomial(B.getMonomial(),C.getMonomial(),
                     new Polynomial(D.getMonomial(),E.getMonomial())
         ));
-        Monomial newExpression = expression.expandAllBrackets();
-
-        long count = 0L;
-        for (GeometryObject x : newExpression.getAllSubObjects()) {
-            List<List<GeometryObject>> bigList =
-                x.getAllSubObjects().stream().map(y -> (List<GeometryObject>)y.getAllSubObjects()).collect(Collectors.toList());
-            List<GeometryObject> list = bigList.stream()
-                    .map(y -> y.stream().filter(z -> z instanceof LineSegment).findAny().get())
-                    .collect(Collectors.toList());
-            if ((list.containsAll(Arrays.asList(A, B, D)))
-                    || (list.containsAll(Arrays.asList(A, C, D)))
-                    || (list.containsAll(Arrays.asList(A, B, E)))
-                    || (list.containsAll(Arrays.asList(A, C, E)))) {
-                count++;
-            }
-        }
-        assertEquals(4, count);
+        Monomial expandedExpression = expression.expandAllBrackets();
+        Monomial expectedMonomial = new Polynomial(
+                new Monomial(A.getMonomial(), B.getMonomial()),
+                new Monomial(A.getMonomial(), C.getMonomial()),
+                new Monomial(A.getMonomial(), D.getMonomial()),
+                new Monomial(A.getMonomial(), E.getMonomial()));
+        assertEquals(expectedMonomial, expandedExpression);
     }
 
     @Test
@@ -54,17 +37,21 @@ public class BracketsExpanderTest {
         LineSegment C = new LineSegment();
         LineSegment D = new LineSegment();
         LineSegment E = new LineSegment();
-        Monomial expression = new Monomial(
+        Monomial expandedExpression = new Monomial(
                 A.getMonomial(),
                 B.getMonomial(),
                 C.getMonomial(),
                 D.getMonomial(),
                 E.getMonomial()
         );
-        Monomial newExpression = expression.expandAllBrackets();
-
-        assertTrue(newExpression.getAllSubObjects().stream().map(x -> x.getAllSubObjects().get(0))
-                .collect(Collectors.toCollection(LinkedList::new)).containsAll(Arrays.asList(A, B, C, D, E)));
+        Monomial expectedMonomial = new Monomial(
+                A.getMonomial(),
+                B.getMonomial(),
+                C.getMonomial(),
+                D.getMonomial(),
+                E.getMonomial()
+        );
+        assertEquals(expectedMonomial, expandedExpression);
     }
 
     @Test
@@ -73,10 +60,9 @@ public class BracketsExpanderTest {
         LineSegment B = new LineSegment();
         LineSegment C = new LineSegment();
         LineSegment D = new LineSegment();
-        LineSegment E = new LineSegment();
         LineSegment F = new LineSegment();
         LineSegment G = new LineSegment();
-        Monomial expression = new Monomial(
+        Monomial expandedExpression = new Monomial(
                 A.getMonomial(),
                 new Polynomial(
                         B.getMonomial(),
@@ -88,25 +74,16 @@ public class BracketsExpanderTest {
                                 G.getMonomial()
                         )
                 )
+        ).expandAllBrackets();
+        Monomial expectedMonomial = new Polynomial(
+                new Monomial(A.getMonomial(), B.getMonomial(), D.getMonomial()),
+                new Monomial(A.getMonomial(), B.getMonomial(), F.getMonomial()),
+                new Monomial(A.getMonomial(), B.getMonomial(), G.getMonomial()),
+                new Monomial(A.getMonomial(), C.getMonomial(), D.getMonomial()),
+                new Monomial(A.getMonomial(), C.getMonomial(), F.getMonomial()),
+                new Monomial(A.getMonomial(), C.getMonomial(), G.getMonomial())
         );
-        Monomial newExpression = expression.expandAllBrackets();
-        long count = 0L;
-        for (GeometryObject x : newExpression.getAllSubObjects()) {
-            List<List<GeometryObject>> bigList =
-                    x.getAllSubObjects().stream().map(y -> (List<GeometryObject>)y.getAllSubObjects()).collect(Collectors.toList());
-            List<GeometryObject> list = bigList.stream()
-                    .map(y -> y.stream().filter(z -> z instanceof LineSegment).findAny().get())
-                    .collect(Collectors.toList());
-            if ((list.containsAll(Arrays.asList(A, B, D)))
-                    || (list.containsAll(Arrays.asList(A, B, F)))
-                    || (list.containsAll(Arrays.asList(A, B, G)))
-                    || (list.containsAll(Arrays.asList(A, C, D)))
-                    || (list.containsAll(Arrays.asList(A, C, F)))
-                    || (list.containsAll(Arrays.asList(A, C, G)))) {
-                count++;
-            }
-        }
-        assertEquals(6, count);
+        assertEquals(expectedMonomial, expandedExpression);
     }
 
     @Test
@@ -122,20 +99,12 @@ public class BracketsExpanderTest {
                         GeometryNumber.get(2)
                 )
         );
-        Monomial newExpression = expression.expandAllBrackets();
+        Monomial expandedExpression = expression.expandAllBrackets();
 
-        long count = 0L;
-        for (GeometryObject x : newExpression.getAllSubObjects()) {
-            List<List<GeometryObject>> bigList =
-                    x.getAllSubObjects().stream().map(y -> (List<GeometryObject>)y.getAllSubObjects()).collect(Collectors.toList());
-            List<GeometryObject> list = bigList.stream()
-                    .map(y -> y.stream().filter(z -> z instanceof LineSegment).findAny().get())
-                    .collect(Collectors.toList());
-            if ((list.containsAll(Arrays.asList(A)))
-                    || (list.containsAll(Arrays.asList(B)))) {
-                count++;
-            }
-        }
-        assertEquals(2, count);
+        Monomial expectedMonomial = new Monomial(
+                new RaisedInThePower(A.getMonomial(), GeometryNumber.get(2)),
+                new RaisedInThePower(B.getMonomial(), GeometryNumber.get(2))
+        );
+        assertEquals(expectedMonomial, expandedExpression);
     }
 }

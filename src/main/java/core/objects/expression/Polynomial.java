@@ -49,9 +49,15 @@ public class Polynomial extends Monomial{
 
     @Override
     public Monomial expandAllBrackets() {
-        return new Polynomial(getAllSubObjects().stream()
-                .map(Monomial::expandAllBrackets)
-                .collect(Collectors.toCollection(LinkedList::new)));
+        LinkedList<Monomial> monomials = new LinkedList<>();
+        for (Monomial monomial : getAllSubObjects()) {
+            Monomial expandAllBrackets = monomial.expandAllBrackets();
+            if (expandAllBrackets instanceof Polynomial)
+                monomials.addAll(expandAllBrackets.getAllSubObjects());
+            else
+                monomials.add(expandAllBrackets);
+        }
+        return new Polynomial(monomials);
     }
 
     @Override

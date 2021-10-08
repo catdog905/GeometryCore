@@ -36,6 +36,14 @@ public class RaisedInThePower extends Monomial{
 
     @Override
     public Monomial expandAllBrackets() {
-        return new RaisedInThePower(base.expandAllBrackets(), power.expandAllBrackets());
+        Monomial newBase = base.expandAllBrackets();
+        Monomial newPower = power.expandAllBrackets();
+        if (newBase.getAllSubObjects().size() == 0 || newBase instanceof Polynomial)
+            return new RaisedInThePower(newBase, newPower);
+
+        LinkedList<Monomial> subObjects = new LinkedList<>();
+        for (Monomial subObj : newBase.getAllSubObjects())
+            subObjects.add(new RaisedInThePower(subObj, newPower));
+        return new Monomial(subObjects);
     }
 }

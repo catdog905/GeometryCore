@@ -118,8 +118,12 @@ public class Monomial extends GeometryObject implements Substitutable, Multiplia
     public Monomial expandAllBrackets() {
         if (subObjects.size() == 0)
             return this;
-        return subObjects.stream().reduce(GeometryNumber.get(1),
-                (subtotal, elem) -> subtotal.multiplyWith(elem.expandAllBrackets()));
+        Monomial acc = subObjects.get(0).expandAllBrackets();
+        for (int i = 1; i < subObjects.size(); i++) {
+            Monomial expanded = subObjects.get(i).expandAllBrackets();
+            acc = acc.multiplyWith(expanded);
+        }
+        return acc;
     }
 
     @Override
