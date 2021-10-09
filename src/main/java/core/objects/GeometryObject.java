@@ -2,10 +2,8 @@ package core.objects;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 import core.SubObjectsEditor;
-import core.objects.expression.GeometryNumber;
 
 public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>,
         AbleToBeMonomial, Cloneable {
@@ -43,12 +41,12 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         if (!(o.getClass().equals(this.getClass())))
             return false;
 
-        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects().stream()
+        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects();/*.stream()
                 .filter(x -> !(x == GeometryNumber.get(1)))
-                .collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects()
+                .collect(Collectors.toCollection(LinkedList::new));*/
+        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();/*
                 .stream().filter(x -> !(x == GeometryNumber.get(1)))
-                .collect(Collectors.toCollection(LinkedList::new));
+                .collect(Collectors.toCollection(LinkedList::new));*/
 
 
         if (ourSubObjects.size() == 0 || ourSubObjects.size() != theirSubObjects.size()){

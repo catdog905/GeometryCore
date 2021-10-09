@@ -26,8 +26,8 @@ public class MultipliedMonomialTest {
                 GeometryNumber.get(3));
         Monomial monomial2 = GeometryNumber.get(1);
         Monomial multipliedMonomial = monomial1.multiplyWith(monomial2);
-        Monomial expectedMonomial = new Monomial(GeometryNumber.get(2), GeometryNumber.get(3),
-                GeometryNumber.get(3));
+        Monomial expectedMonomial = new Monomial(GeometryNumber.get(1),
+                GeometryNumber.get(2), GeometryNumber.get(3), GeometryNumber.get(3));
         assertEquals(expectedMonomial, multipliedMonomial);
     }
 

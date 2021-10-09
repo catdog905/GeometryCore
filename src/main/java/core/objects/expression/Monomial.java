@@ -60,9 +60,11 @@ public class Monomial extends GeometryObject implements Substitutable, Multiplia
         subObjects = new LinkedList<>(Arrays.asList(factor1, factor2));
     }
 
-    public static <T, E extends MonomialEnveloper> E buildOf(T toEnvelop, Class<T> tClass, Class<E> eClass) {
+    public static <T, E extends MonomialEnveloper> E buildOf(
+            T toEnvelop, Class<T> tClass, Class<E> eClass) {
         E search = (E) MonomialStorage.getInstance().monomials.stream()
-                .filter(x -> x.getClass() == eClass && x.toEnvelop().equals(toEnvelop)).findAny().orElse(null);
+                .filter(x -> x.getClass() == eClass && x.toEnvelop().equals(toEnvelop))
+                .findAny().orElse(null);
         if (search == null) {
             E obj = null;
             try {
@@ -146,5 +148,10 @@ public class Monomial extends GeometryObject implements Substitutable, Multiplia
         return new Polynomial(polynomial.getAllSubObjects()
                 .stream().map(this::multiplyWith)
                 .collect(Collectors.toCollection(LinkedList::new)));
+    }
+
+    @Override
+    public String toString() {
+        return getUniqueStructureString();
     }
 }

@@ -36,9 +36,14 @@ public class SubstitutorTest {
         substituteTable.put(AC.getMonomial(),GeometryNumber.get(33));
         Monomial answerAB =  ((Monomial)equation.left).substitute(substituteTable);
         Monomial answerBC_and_AC = ((Monomial)equation.right).substitute(substituteTable);
-        String expectedStructureAB = "RaisedInThePower[GeometryNumber, GeometryNumber]",
-                expectedStructureBC_and_AC = "Polynomial[RaisedInThePower[GeometryNumber, GeometryNumber, GeometryNumber], RaisedInThePower[GeometryNumber, GeometryNumber]]";
-        assertEquals(answerAB.getUniqueStructureString(),expectedStructureAB);
-        assertEquals(answerBC_and_AC.getUniqueStructureString(),expectedStructureBC_and_AC);
+        Monomial expectedAB = new RaisedInThePower(
+                GeometryNumber.get(11), num2
+        );
+        Monomial expectedBCandAC = new Polynomial(
+                new RaisedInThePower(new Monomial(GeometryNumber.get(33),num2), num2),
+                new RaisedInThePower(GeometryNumber.get(22), num2)
+        );
+        assertEquals(expectedAB, answerAB);
+        assertEquals(expectedBCandAC, answerBC_and_AC);
     }
 }
