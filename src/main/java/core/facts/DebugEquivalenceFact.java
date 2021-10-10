@@ -5,14 +5,14 @@ import java.util.Map;
 
 import core.objects.GeometryObject;
 
-public class DebugEquivalenceFact  extends Fact{
+public class DebugEquivalenceFact extends Fact {
     @Override
-    public LinkedList<GeometryObject> getAllSubObjects() {
+    public LinkedList<? extends GeometryObject> getAllSubObjects() {
         return new LinkedList<>();
     }
 
     @Override
     public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new DebugEquivalenceFact();
+        return null;
     }
 }

@@ -27,7 +27,7 @@ public class IntersectionFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new IntersectionFact(intersectionObjects.stream().map(correspondence::get)
                 .collect(Collectors.toCollection(LinkedList::new)),
                 (Vertex) correspondence.get(intersectVertex));

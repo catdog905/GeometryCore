@@ -6,7 +6,6 @@ import java.util.LinkedList;
 
 import core.Rule;
 import core.facts.BelongFact;
-import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
 import core.facts.InscribedFact;
@@ -14,16 +13,16 @@ import core.facts.IntersectionFact;
 import core.facts.PerpendicularityFact;
 import core.facts.RightAngledFact;
 import core.facts.TouchedFact;
+import core.facts.equation.EqualityFact;
 import core.objects.Angle;
 import core.objects.Circle;
 import core.objects.LineSegment;
-import core.objects.Polynomial;
-import core.objects.RaisedInThePower;
 import core.objects.Triangle;
 import core.objects.Vertex;
-import core.objects.numbers.Degree;
-import core.objects.numbers.GeometryNumber;
-import core.objects.numbers.NumberValue;
+import core.objects.expression.Degree;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
 
 public class RuleStorage {
     public HashSet<Rule> rules = new HashSet<>();
@@ -104,7 +103,7 @@ public class RuleStorage {
 
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new ExistFact(triangle));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new RightAngledFact(triangle));
@@ -123,16 +122,17 @@ public class RuleStorage {
 
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new RightAngledFact(triangle));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
 
+        GeometryNumber num2 = GeometryNumber.get(2);
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(
-                new RaisedInThePower(new NumberValue(AB, null), GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
+                        new RaisedInThePower(AC.getMonomial(), num2),
+                        new RaisedInThePower(BC.getMonomial(), num2)
                 )));
-        return new Rule(facts, consequences);
+        return new Rule(facts, consequences,"pythagorean theorem");
     }
 
     private Rule belongingOfInnerSegmentsToOuter() {
@@ -192,8 +192,8 @@ public class RuleStorage {
         facts.add(new BelongFact(C, a));
 
         LinkedList<Fact> consequences = new LinkedList<>();
-        consequences.add(new EqualityFact(ACD, Degree.createNumber(90)));
-        consequences.add(new EqualityFact(BCD, Degree.createNumber(90)));
+        consequences.add(new EqualityFact(ACD, Degree.get(90)));
+        consequences.add(new EqualityFact(BCD, Degree.get(90)));
         return new Rule(facts, consequences);
     }
 
@@ -296,13 +296,13 @@ public class RuleStorage {
         LinkedList<Fact> consequences = new LinkedList<>();
         LinkedList<Fact> facts = new LinkedList<>();
         facts.add(new EqualityFact(
-                new RaisedInThePower(new NumberValue(AB, null), GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), GeometryNumber.get(2)),
                 new Polynomial(
-                        new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
+                        new RaisedInThePower(AC.getMonomial(), GeometryNumber.get(2)),
+                        new RaisedInThePower(BC.getMonomial(), GeometryNumber.get(2))
                 )));
         consequences.add(new RightAngledFact(triangle));
-        consequences.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        consequences.add(new EqualityFact(ACB, Degree.get(90)));
         return new Rule(facts, consequences);
     }
 }

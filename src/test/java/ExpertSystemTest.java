@@ -8,25 +8,26 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.ExpertSystem;
-import core.Model;
+import core.Rule;
 import core.facts.BelongFact;
-import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
 import core.facts.InscribedFact;
 import core.facts.PerpendicularityFact;
 import core.facts.RightAngledFact;
 import core.facts.TouchedFact;
+import core.facts.equation.EqualityFact;
+import core.model.Model;
 import core.objects.Angle;
 import core.objects.Circle;
 import core.objects.LineSegment;
-import core.objects.Polynomial;
-import core.objects.RaisedInThePower;
 import core.objects.Triangle;
 import core.objects.Vertex;
-import core.objects.numbers.Degree;
-import core.objects.numbers.GeometryNumber;
-import core.objects.numbers.NumberValue;
+import core.objects.expression.Degree;
+import core.objects.expression.GeometryNumber;
+import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
+import core.rules.storage.RuleStorage;
 
 public class ExpertSystemTest{
     @Test
@@ -46,11 +47,13 @@ public class ExpertSystemTest{
         facts.add(new BelongFact(C, BC));
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
+        RuleStorage.getInstance().rules.stream().filter(x ->((Rule)x).name.equals("pythagorean theorem") ).findFirst().get().outputBenchmarks();
+
 
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(BC, AC, AB)))));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 
     @Test
@@ -74,8 +77,8 @@ public class ExpertSystemTest{
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(BC, AC, AB)))));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
-        assertEquals(7, model.getFacts().size());
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
+        assertEquals(7, model.facts().size());
     }
 
     @Test
@@ -89,14 +92,13 @@ public class ExpertSystemTest{
         Angle ACB = new Angle(new LinkedList(Arrays.asList(AC, BC)));
         HashSet<Fact> facts = new HashSet<>();
         facts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)))));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
+        // facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
+        // facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
-        HashSet<Fact> checkFacts = new HashSet<>(facts);
-        checkFacts.add(new RightAngledFact(new Triangle(AB, AC, BC)));
-        Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.facts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 
     @Test
@@ -110,19 +112,21 @@ public class ExpertSystemTest{
         Angle ACB = new Angle(new LinkedList(Arrays.asList(AC,  BC)));
         HashSet<Fact> facts = new HashSet<>();
         facts.add(new RightAngledFact(new Triangle(new HashSet<>(Arrays.asList(AB, AC, BC)))));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
+        //facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
+        //facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
 
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new EqualityFact(
-                new RaisedInThePower(new NumberValue(AB, null), GeometryNumber.createNumber(2)),
+                new RaisedInThePower(AB.getMonomial(), GeometryNumber.get(2)),
                 new Polynomial(
-                        new RaisedInThePower(new NumberValue(AC, null), GeometryNumber.createNumber(2)),
-                        new RaisedInThePower(new NumberValue(BC, null), GeometryNumber.createNumber(2))
+                        new RaisedInThePower(AC.getMonomial(), GeometryNumber.get(2)),
+                        new RaisedInThePower(BC.getMonomial(), GeometryNumber.get(2))
                 )));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 
     @Test
@@ -144,7 +148,7 @@ public class ExpertSystemTest{
 
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
-        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
+        assertTrue(model.facts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 
     @Test
@@ -178,7 +182,7 @@ public class ExpertSystemTest{
 
         Model model = new Model(facts);
         ExpertSystem.ForwardPass(model);
-        assertTrue(model.getFacts().stream().anyMatch(x -> x instanceof RightAngledFact));
+        assertTrue(model.facts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
 
     @Test
@@ -203,7 +207,7 @@ public class ExpertSystemTest{
         checkFacts.add(new EqualityFact(new LineSegment(touchPlace1, center),
                 new LineSegment(touchPlace2, center)));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
 
     }
 
@@ -223,7 +227,7 @@ public class ExpertSystemTest{
         checkFacts.add(new BelongFact(new LineSegment(A, C), AB));
         checkFacts.add(new BelongFact(new LineSegment(B, C), AB));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 
     @Test
@@ -257,7 +261,7 @@ public class ExpertSystemTest{
         checkFacts.add(new BelongFact(new LineSegment(C, P), BC));
         checkFacts.add(new BelongFact(new LineSegment(B, P), BC));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 
     @Test
@@ -277,7 +281,7 @@ public class ExpertSystemTest{
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new PerpendicularityFact(AB, new LineSegment(touchPlace, center)));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 
     @Test
@@ -307,7 +311,7 @@ public class ExpertSystemTest{
                 new Triangle(new LineSegment(A, B), BC, AC),
                 new Triangle(new LineSegment(A1, B1), BC1, AC1)));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 
     @Test
@@ -336,6 +340,6 @@ public class ExpertSystemTest{
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new EqualityFact(triangle, triangle1));
         Model checkModel = new Model(checkFacts);
-        assertTrue(checkModel.isEquivalentTo(model));
+        assertTrue(model.containsFactsEquivalentTo(checkModel));
     }
 }

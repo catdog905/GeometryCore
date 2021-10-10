@@ -5,14 +5,14 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.Rule;
-import core.facts.EqualityFact;
 import core.facts.ExistFact;
 import core.facts.Fact;
+import core.facts.equation.EqualityFact;
 import core.objects.Angle;
 import core.objects.LineSegment;
 import core.objects.Triangle;
 import core.objects.Vertex;
-import core.objects.numbers.Degree;
+import core.objects.expression.Degree;
 
 public class EqualityTriangleRules {
     public HashSet<Rule> get() {
@@ -301,8 +301,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, A1B1));
         facts.add(new EqualityFact(BC, B1C1));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
-        facts.add(new EqualityFact(A1C1B1, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
+        facts.add(new EqualityFact(A1C1B1, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -327,8 +327,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle));
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, BC));
-        facts.add(new EqualityFact(ADB, Degree.createNumber(90)));
-        facts.add(new EqualityFact(CDB, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ADB, Degree.get(90)));
+        facts.add(new EqualityFact(CDB, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -353,8 +353,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle));
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, CD));
-        facts.add(new EqualityFact(ADB, Degree.createNumber(90)));
-        facts.add(new EqualityFact(CBD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ADB, Degree.get(90)));
+        facts.add(new EqualityFact(CBD, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -379,8 +379,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle));
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, BC));
-        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
-        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BAD, Degree.get(90)));
+        facts.add(new EqualityFact(BCD, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -405,8 +405,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle));
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, CD));
-        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
-        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BAD, Degree.get(90)));
+        facts.add(new EqualityFact(BCD, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -437,8 +437,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(AB, A1B1));
         facts.add(new EqualityFact(ABC, A1B1C1));
-        facts.add(new EqualityFact(ACB, Degree.createNumber(90)));
-        facts.add(new EqualityFact(A1C1B1, Degree.createNumber(90)));
+        facts.add(new EqualityFact(ACB, Degree.get(90)));
+        facts.add(new EqualityFact(A1C1B1, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -465,8 +465,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle));
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(ADB, CDB));
-        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
-        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BAD, Degree.get(90)));
+        facts.add(new EqualityFact(BCD, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));
@@ -493,8 +493,8 @@ public class EqualityTriangleRules {
         facts.add(new ExistFact(triangle));
         facts.add(new ExistFact(triangle1));
         facts.add(new EqualityFact(ADB, CBD));
-        facts.add(new EqualityFact(BAD, Degree.createNumber(90)));
-        facts.add(new EqualityFact(BCD, Degree.createNumber(90)));
+        facts.add(new EqualityFact(BAD, Degree.get(90)));
+        facts.add(new EqualityFact(BCD, Degree.get(90)));
 
         LinkedList<Fact> consequences = new LinkedList<>();
         consequences.add(new EqualityFact(triangle, triangle1));

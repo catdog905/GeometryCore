@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
+import core.objects.expression.Monomial;
+import core.objects.expression.MonomialEnveloper;
+
 public class LineSegment extends GeometryObject {
     public LinkedList<Vertex> vertexes;
     public LineSegment(HashSet<Vertex> vertexes) {
@@ -16,7 +19,7 @@ public class LineSegment extends GeometryObject {
     }
 
     @Override
-    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         HashSet<Vertex> newObjects = new HashSet<>();
         for (Vertex obj : vertexes) {
             newObjects.add((Vertex) correspondence.get(obj));
@@ -29,5 +32,10 @@ public class LineSegment extends GeometryObject {
         if (vertexes == null)
             return new LinkedList<>();
         return new LinkedList<>(vertexes);
+    }
+
+    @Override
+    public Monomial getMonomial() {
+        return Monomial.buildOf(this, LineSegment.class, MonomialEnveloper.class);
     }
 }

@@ -1,27 +1,27 @@
 package core.objects;
 
-import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import core.SubObjectsEditor;
 
-public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>, Cloneable {
-
-    static int idGiver = 0;
-    public int id = 0;
-    public GeometryObject(){
-        id = idGiver++;
+public abstract class GeometryObject implements SubObjectsEditor<GeometryObject, GeometryObject>,
+        AbleToBeMonomial, Cloneable {
+    public boolean isEquivalentTo(GeometryObject object){
+        if (!getClass().equals(object.getClass()))
+            return false;
+        LinkedList<? extends GeometryObject> ourSubObjects = getAllSubObjects(), theirSubObjects = object.getAllSubObjects();
+        if (ourSubObjects.size() != theirSubObjects.size())
+            return false;
+        for (Iterator<? extends GeometryObject> ourObjectIterator = ourSubObjects.iterator(), theirObjectIterator = theirSubObjects.iterator(); theirObjectIterator.hasNext(); ) {
+            var ourSubject = ourObjectIterator.next();
+            var theirSubject = theirObjectIterator.next();
+            if (!ourSubject.isEquivalentTo(theirSubject))
+                return false;
+        }
+        return true;
     }
 
-    @Override
-    public String toString(){
-        String[] wordsInClass = getClass().toString().split(" ");
-        wordsInClass = wordsInClass[wordsInClass.length-1].split("\\.");
-        return wordsInClass[wordsInClass.length-1]+"#"+Integer.toString(id);
-    }
-    public static void idRestart(){
-        idGiver=0;
-    }
     @Override
     public boolean equals(Object o) {
 
@@ -35,8 +35,8 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
         if (!(o.getClass().equals(this.getClass())))
             return false;
 
-        LinkedList<GeometryObject> ourSubObjects = this.getAllSubObjects();
-        LinkedList<GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
+        LinkedList<? extends GeometryObject> ourSubObjects = this.getAllSubObjects();
+        LinkedList<? extends GeometryObject> theirSubObjects=((GeometryObject)o).getAllSubObjects();
 
 
         if (ourSubObjects.size() == 0 || ourSubObjects.size() != theirSubObjects.size()){
@@ -48,24 +48,5 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
     @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
-    }
-
-    public LinkedList<GeometryObject> getAllSubBasicObjects() {
-        if (getAllSubObjects().size() == 0)
-            return new LinkedList<>(Arrays.asList(this));
-        LinkedList<GeometryObject> list = new LinkedList<>();
-        for (GeometryObject curObj : getAllSubObjects())
-            list.addAll(curObj.getAllSubBasicObjects());
-        return list;
-    }
-
-    public LinkedList<GeometryObject> getAllSubObjectsInTree() {
-        if (getAllSubObjects().size() == 0)
-            return new LinkedList<>(Arrays.asList(this));
-        LinkedList<GeometryObject> list = new LinkedList<>();
-        for (GeometryObject curObj : getAllSubObjects())
-            list.addAll(curObj.getAllSubBasicObjects());
-        list.add(this);
-        return list;
     }
 }

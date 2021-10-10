@@ -1,9 +1,10 @@
-package core.facts;
+package core.facts.equation;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
+import core.facts.Fact;
 import core.objects.GeometryObject;
 
 public class EqualityFact extends Fact {
@@ -20,7 +21,7 @@ public class EqualityFact extends Fact {
     }
 
     @Override
-    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new EqualityFact(correspondence.get(left), correspondence.get(right));
     }
 }

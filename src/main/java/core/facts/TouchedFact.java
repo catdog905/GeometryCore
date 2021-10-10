@@ -28,7 +28,7 @@ public class TouchedFact extends Fact{
     }
 
     @Override
-    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         LinkedList<GeometryObject> list = new LinkedList<>();
         for (GeometryObject obj : objects)
             list.add(correspondence.get(obj));

@@ -25,7 +25,7 @@ public class PerpendicularityFact extends Fact{
     }
 
     @Override
-    public Fact createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new PerpendicularityFact(objects.stream().map(x -> (LineSegment) correspondence.get(x))
                 .collect(Collectors.toCollection(LinkedList::new)));
     }

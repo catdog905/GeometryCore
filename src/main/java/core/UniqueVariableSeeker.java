@@ -3,15 +3,14 @@ package core;
 import java.util.HashSet;
 
 import core.objects.GeometryObject;
-import core.objects.Monomial;
-import core.objects.numbers.NumberValue;
-import core.objects.Polynomial;
+import core.objects.expression.Monomial;
+import core.objects.expression.Polynomial;
 
 public class UniqueVariableSeeker {
 
     // The functions assumes that variable can be encountered only once, otherwise there will be
     // undefined behavior
-    public static HashSet<Monomial> findAllMonomialsWithUniqueVariable(NumberValue variable, Monomial equation) {
+    public static HashSet<Monomial> findAllMonomialsWithUniqueVariable(Monomial variable, Monomial equation) {
         HashSet<Monomial> answer;
         if (equation instanceof Polynomial) {
             //Polynomial
@@ -24,7 +23,7 @@ public class UniqueVariableSeeker {
                     return answer;
                 }
             }
-        } else if (equation instanceof NumberValue) {
+        } else if (equation.getAllSubObjects().size() == 0) {
             //A number, finally
             if (variable.equals(equation)) {
                 answer = new HashSet<>();

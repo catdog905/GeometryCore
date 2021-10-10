@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
+import core.objects.expression.Monomial;
+import core.objects.expression.MonomialEnveloper;
+
 public class Circle extends GeometryObject{
     private Vertex center;
 
@@ -20,7 +23,12 @@ public class Circle extends GeometryObject{
     }
 
     @Override
-    public GeometryObject createNewSimilarCorrespondenceObject(Map<GeometryObject, GeometryObject> correspondence) {
+    public GeometryObject createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
         return new Circle((Vertex)correspondence.get(center));
+    }
+
+    @Override
+    public Monomial getMonomial() {
+        return Monomial.buildOf(this, Circle.class, MonomialEnveloper.class);
     }
 }
