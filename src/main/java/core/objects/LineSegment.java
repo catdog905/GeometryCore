@@ -9,7 +9,7 @@ import core.objects.expression.Monomial;
 import core.objects.expression.MonomialEnveloper;
 
 public class LineSegment extends GeometryObject {
-    public HashSet<Vertex> vertexes;
+    public HashSet<Vertex> vertexes = new HashSet<>();
     public LineSegment(HashSet<Vertex> vertexes) {
         this.vertexes = vertexes;
     }

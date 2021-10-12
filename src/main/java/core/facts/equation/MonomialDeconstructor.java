@@ -43,11 +43,13 @@ public class MonomialDeconstructor {
 
         if (equationSideToDeconstruct instanceof RaisedInThePower) {
             Monomial reverseRITP_power = new RaisedInThePower(
-                    new LinkedList<>(Collections.singletonList((Monomial) monomialsOnDeconstructableSide.getLast()))
+                    new Monomial(new LinkedList<>(
+                            Collections.singletonList(
+                                    (Monomial) monomialsOnDeconstructableSide.getLast())))
                     , GeometryNumber.get(-1)
             );
-            initialOppositeSide = new RaisedInThePower(
-                    new LinkedList<>(Collections.singletonList(initialOppositeSide)), reverseRITP_power
+            initialOppositeSide = new RaisedInThePower(new Monomial(
+                    new LinkedList<>(Collections.singletonList(initialOppositeSide))), reverseRITP_power
             );
             // We do not want to iterate through the last subObject of RaisedInThePower [the power]
             iterationsToMake--;
@@ -63,8 +65,8 @@ public class MonomialDeconstructor {
                 assert (elementWithVariable == null);
                 elementWithVariable = monomialTerm;
             } else {
-                monomialsForNewOppositeSide.add(new RaisedInThePower(
-                        new LinkedList<>(Collections.singletonList(monomialTerm)),
+                monomialsForNewOppositeSide.add(new RaisedInThePower(new Monomial(
+                        new LinkedList<>(Collections.singletonList(monomialTerm))),
                         GeometryNumber.get(-1))
                 );
             }
