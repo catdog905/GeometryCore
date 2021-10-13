@@ -29,11 +29,11 @@ public class ExpressorTest {
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
         GeometryNumber num2 = GeometryNumber.get(2);
-        EqualityFact equation = new EqualityFact(
-                new RaisedInThePower(new LinkedList<>(Collections.singletonList(new RaisedInThePower(AB.getMonomial(), num2)))
+        EqualityFact equation =  new EqualityFact(
+                new RaisedInThePower(new Monomial(new RaisedInThePower(AB.getMonomial(),num2))
                         , num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(BC.getMonomial(), num2)), num2),
+                        new RaisedInThePower(new Monomial(BC.getMonomial(),num2), num2),
                         new RaisedInThePower(AC.getMonomial(), num2)
                 ));
         Monomial equationLeft = (Monomial) equation.left;
@@ -48,37 +48,36 @@ public class ExpressorTest {
         assertEquals(answerBC.size(), 3);
         assertEquals(answerAC.size(), 3);
     }
-
     @Test
     public void polynomialDeconstructorTest() {
         GeometryNumber num2 = GeometryNumber.get(2);
         GeometryNumber variable = GeometryNumber.get(1);
-        Polynomial left = new Polynomial(variable, num2);
-        Polynomial right = new Polynomial(GeometryNumber.get(3), GeometryNumber.get(4));
+        Polynomial left = new Polynomial(variable,num2);
+        Polynomial right =  new Polynomial(GeometryNumber.get(3),GeometryNumber.get(4));
         HashSet<Monomial> mon = new HashSet<>();
-        mon.add((Monomial) variable);
-        PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor(left, right, mon);
+        mon.add((Monomial)variable);
+        PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor(left,right,mon);
         String expectedStructureLeft = "GeometryNumber",
                 expectedStructureRight = "Polynomial[GeometryNumber, GeometryNumber, Monomial[GeometryNumber, GeometryNumber]]";
-        assertEquals(expectedStructureLeft, polynomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
-        assertEquals(expectedStructureRight, polynomialDeconstructor.getOppositeSide().getUniqueStructureString());
+        assertEquals(expectedStructureLeft,polynomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
+        assertEquals(expectedStructureRight,polynomialDeconstructor.getOppositeSide().getUniqueStructureString());
     }
-
     @Test
     public void MonomialDeconstructorTest() {
         GeometryNumber num2 = GeometryNumber.get(2);
         GeometryNumber variable = GeometryNumber.get(1);
-        Monomial left = new Monomial(variable, num2);
-        Polynomial right = new Polynomial(GeometryNumber.get(3), GeometryNumber.get(4));
+        Monomial left = new Monomial(variable,num2);
+        Polynomial right =  new Polynomial(GeometryNumber.get(3),GeometryNumber.get(4));
         HashSet<Monomial> mon = new HashSet<>();
-        mon.add((Monomial) variable);
-        MonomialDeconstructor monomialDeconstructor = new MonomialDeconstructor(left, right, mon);
+        mon.add((Monomial)variable);
+        MonomialDeconstructor monomialDeconstructor = new MonomialDeconstructor(left,right,mon);
         String expectedStructureLeft = "GeometryNumber",
                 expectedStructureRight = "Monomial[Polynomial[GeometryNumber, GeometryNumber], RaisedInThePower[GeometryNumber, GeometryNumber]]";
-        assertEquals(expectedStructureLeft, monomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
-        assertEquals(expectedStructureRight, monomialDeconstructor.getOppositeSide().getUniqueStructureString());
+        assertEquals(expectedStructureLeft,monomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
+        assertEquals(expectedStructureRight,monomialDeconstructor.getOppositeSide().getUniqueStructureString());
 
     }
+
 
     @Test
     public void multpleVariablesTest() {
@@ -193,7 +192,6 @@ public class ExpressorTest {
         assertEquals(answerAC, expectedStructureAC);
         assertEquals(answerAB, expectedStructureAB);
     }
-
     @Test
     public void expressorTest() {
         Vertex A = new Vertex();
@@ -203,17 +201,19 @@ public class ExpressorTest {
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
         GeometryNumber num2 = GeometryNumber.get(2);
-        EqualityFact equation = new EqualityFact(
+        EqualityFact equation =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(), num2)), num2),
+                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB^2 = (2AC)^2+BC^2
         Monomial answerAB = (Monomial) new ExpressedVariableFromEquation(equation, AB.getMonomial()).right;
         Monomial answerAC = (Monomial) new ExpressedVariableFromEquation(equation, AC.getMonomial()).right;
         Monomial answerBC = (Monomial) new ExpressedVariableFromEquation(equation, BC.getMonomial()).right;
 
-        final String expectedStructureAB = "RaisedInThePower[Polynomial[RaisedInThePower[MonomialEnveloper, GeometryNumber, GeometryNumber], RaisedInThePower[MonomialEnveloper, GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]]", expectedStructureAC = "Monomial[RaisedInThePower[Polynomial[RaisedInThePower[MonomialEnveloper, GeometryNumber], Monomial[RaisedInThePower[MonomialEnveloper, GeometryNumber], GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]]", expectedStructureBC = "RaisedInThePower[Polynomial[RaisedInThePower[MonomialEnveloper, GeometryNumber], Monomial[RaisedInThePower[MonomialEnveloper, GeometryNumber, GeometryNumber], GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]]";
+        final String expectedStructureAB = "RaisedInThePower[Polynomial[RaisedInThePower[MonomialEnveloper, GeometryNumber, GeometryNumber], RaisedInThePower[MonomialEnveloper, GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]]"
+                ,expectedStructureAC = "Monomial[RaisedInThePower[Polynomial[RaisedInThePower[MonomialEnveloper, GeometryNumber], Monomial[RaisedInThePower[MonomialEnveloper, GeometryNumber], GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]]"
+                ,expectedStructureBC = "RaisedInThePower[Polynomial[RaisedInThePower[MonomialEnveloper, GeometryNumber], Monomial[RaisedInThePower[MonomialEnveloper, GeometryNumber, GeometryNumber], GeometryNumber]], RaisedInThePower[GeometryNumber, GeometryNumber]]";
 
         assertEquals(expectedStructureAB, answerAB.getUniqueStructureString());
 

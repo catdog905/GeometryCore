@@ -5,10 +5,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import core.objects.GeometryObject;
 
-public class Monomial extends GeometryObject implements Substitutable {
+public class Monomial extends GeometryObject implements Substitutable, Multipliable, Expandable {
     LinkedList<Monomial> subObjects;
 
 
@@ -59,9 +60,11 @@ public class Monomial extends GeometryObject implements Substitutable {
         subObjects = new LinkedList<>(Arrays.asList(factor1, factor2));
     }
 
-    public static <T, E extends MonomialEnveloper> E buildOf(T toEnvelop, Class<T> tClass, Class<E> eClass) {
+    public static <T, E extends MonomialEnveloper> E buildOf(
+            T toEnvelop, Class<T> tClass, Class<E> eClass) {
         E search = (E) MonomialStorage.getInstance().monomials.stream()
-                .filter(x -> x.getClass() == eClass && x.toEnvelop().equals(toEnvelop)).findAny().orElse(null);
+                .filter(x -> x.getClass() == eClass && x.toEnvelop().equals(toEnvelop))
+                .findAny().orElse(null);
         if (search == null) {
             E obj = null;
             try {
@@ -111,5 +114,44 @@ public class Monomial extends GeometryObject implements Substitutable {
     @Override
     public Monomial getMonomial() {
         return this;
+    }
+
+    @Override
+    public Monomial expandAllBrackets() {
+        if (subObjects.size() == 0)
+            return this;
+        Monomial acc = subObjects.get(0).expandAllBrackets();
+        for (int i = 1; i < subObjects.size(); i++) {
+            Monomial expanded = subObjects.get(i).expandAllBrackets();
+            acc = acc.multiplyWith(expanded);
+        }
+        return acc;
+    }
+
+    @Override
+    public Monomial multiplyWith(Monomial monomial) {
+        if (monomial instanceof Polynomial)
+            return multiplyWithPolynomial((Polynomial) monomial);
+        LinkedList<Monomial> factors = new LinkedList<>();
+        if (subObjects.size() > 0)
+            factors.addAll(subObjects);
+        else
+            factors.add(this);
+        if (monomial.subObjects.size() > 0)
+            factors.addAll(monomial.subObjects);
+        else
+            factors.add(monomial);
+        return new Monomial(factors);
+    }
+
+    private Polynomial multiplyWithPolynomial(Polynomial polynomial) {
+        return new Polynomial(polynomial.getAllSubObjects()
+                .stream().map(this::multiplyWith)
+                .collect(Collectors.toCollection(LinkedList::new)));
+    }
+
+    @Override
+    public String toString() {
+        return getUniqueStructureString();
     }
 }
