@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.HashSet;
 
-import core.UniqueVariableSeeker;
+import core.VariableSeeker;
 import core.facts.equation.EqualityFact;
 import core.facts.equation.ExpressedVariableFromEquation;
 import core.facts.equation.MonomialDeconstructor;
@@ -26,63 +26,69 @@ public class ExpressorTest {
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
         GeometryNumber num2 = GeometryNumber.get(2);
-        EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(new Monomial(new RaisedInThePower(AB.getMonomial(),num2))
+        EqualityFact equation = new EqualityFact(
+                new RaisedInThePower(new Monomial(new RaisedInThePower(AB.getMonomial(), num2))
                         , num2),
                 new Polynomial(
-                        new RaisedInThePower(new Monomial(BC.getMonomial(),num2), num2),
+                        new RaisedInThePower(new Monomial(BC.getMonomial(), num2), num2),
                         new RaisedInThePower(AC.getMonomial(), num2)
                 ));
-        Monomial equationLeft = (Monomial)equation.left;
-        Monomial equationRight = (Monomial)equation.right;
-        assert(UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(AB.getMonomial(),equationRight) == null);
-        assert(UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(BC.getMonomial(),equationLeft) == null);
-        assert(UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(AC.getMonomial(),equationLeft) == null);
-        var answerAB = UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(AB.getMonomial(),equationLeft);
-        var answerBC = UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(BC.getMonomial(),equationRight);
-        var answerAC = UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(AC.getMonomial(),equationRight);
-        assertEquals(answerAB.size(),4);
-        assertEquals(answerBC.size(),4);
-        assertEquals(answerAC.size(),3);
+        Monomial equationLeft = (Monomial) equation.left;
+        Monomial equationRight = (Monomial) equation.right;
+        assert (VariableSeeker.findAllMonomialsWithVariable(AB.getMonomial(), equationRight) == null);
+        assert (VariableSeeker.findAllMonomialsWithVariable(BC.getMonomial(), equationLeft) == null);
+        assert (VariableSeeker.findAllMonomialsWithVariable(AC.getMonomial(), equationLeft) == null);
+        var answerAB = VariableSeeker.findAllMonomialsWithVariable(AB.getMonomial(), equationLeft);
+        var answerBC = VariableSeeker.findAllMonomialsWithVariable(BC.getMonomial(), equationRight);
+        var answerAC = VariableSeeker.findAllMonomialsWithVariable(AC.getMonomial(), equationRight);
+        assertEquals(answerAB.size(), 4);
+        assertEquals(answerBC.size(), 4);
+        assertEquals(answerAC.size(), 3);
     }
 
     @Test
     public void polynomialDeconstructorTest() {
         GeometryNumber num2 = GeometryNumber.get(2);
         GeometryNumber variable = GeometryNumber.get(1);
-        Polynomial left = new Polynomial(variable,num2);
-        Polynomial right =  new Polynomial(GeometryNumber.get(3),GeometryNumber.get(4));
+        Polynomial left = new Polynomial(variable, num2);
+        Polynomial right = new Polynomial(GeometryNumber.get(3), GeometryNumber.get(4));
         HashSet<Monomial> mon = new HashSet<>();
-        mon.add((Monomial)variable);
-        PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor(left,right,mon);
-        String expectedStructureLeft = "GeometryNumber",
-                expectedStructureRight = "Polynomial[GeometryNumber, GeometryNumber, Monomial[GeometryNumber, GeometryNumber]]";
-        assertEquals(expectedStructureLeft,polynomialDeconstructor.getLeftoversOfDeconstructable().getUniqueStructureString());
-        assertEquals(expectedStructureRight,polynomialDeconstructor.getOppositeSide().getUniqueStructureString());
+        mon.add((Monomial) variable);
+        // [1]+2 = 3+4 => [1] = 3+4-2
+        PolynomialDeconstructor polynomialDeconstructor = new PolynomialDeconstructor(left, right, mon);
+        Monomial expectedLeft = (Monomial) variable;
+        Monomial expectedRight = new Polynomial(
+                GeometryNumber.get(3),
+                GeometryNumber.get(4),
+                new Monomial(GeometryNumber.get(-1), num2)
+        );
+        assertEquals(expectedLeft, polynomialDeconstructor.getLeftoversOfDeconstructable());
+        assertEquals(expectedRight, polynomialDeconstructor.getOppositeSide());
     }
+
     @Test
     public void MonomialDeconstructorTest() {
         GeometryNumber num2 = GeometryNumber.get(2);
         GeometryNumber variable = GeometryNumber.get(1);
-        Monomial left = new Monomial(variable,num2);
-        Polynomial right =  new Polynomial(GeometryNumber.get(3),GeometryNumber.get(4));
+        Monomial left = new Monomial(variable, num2);
+        Polynomial right = new Polynomial(GeometryNumber.get(3), GeometryNumber.get(4));
+        // [1]*2 = 3+4 => [1] = (3+4)*2^(-1)
         HashSet<Monomial> mon = new HashSet<>();
-        mon.add((Monomial)variable);
-        MonomialDeconstructor monomialDeconstructor = new MonomialDeconstructor(left,right,mon);
-
-        Monomial rightExpected = new Monomial(
-                new Polynomial(
-                        GeometryNumber.get(3),
-                        GeometryNumber.get(4)
-                ),
-                new RaisedInThePower(new Monomial(num2), GeometryNumber.get(-1))
+        mon.add((Monomial) variable);
+        MonomialDeconstructor monomialDeconstructor = new MonomialDeconstructor(left, right, mon);
+        Monomial expectedLeft = (Monomial) variable;
+        Monomial expectedRight = new Monomial(
+                new Polynomial(GeometryNumber.get(3), GeometryNumber.get(4)),
+                new RaisedInThePower(GeometryNumber.get(2), GeometryNumber.get(-1))
         );
-        assertEquals(GeometryNumber.get(1),monomialDeconstructor.getLeftoversOfDeconstructable());
-        assertEquals(rightExpected,monomialDeconstructor.getOppositeSide());
+        assertEquals(expectedLeft, monomialDeconstructor.getLeftoversOfDeconstructable());
+        assertEquals(expectedRight, monomialDeconstructor.getOppositeSide());
 
     }
+
+
     @Test
-    public void expressorABTest() {
+    public void multpleVariablesTest() {
         Vertex A = new Vertex();
         Vertex B = new Vertex();
         Vertex C = new Vertex();
@@ -90,94 +96,181 @@ public class ExpressorTest {
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
         GeometryNumber num2 = GeometryNumber.get(2);
-        EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(AB.getMonomial(), num2),
+        EqualityFact equation = new EqualityFact(
+                GeometryNumber.get(69),
                 new Polynomial(
-                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
-                        new RaisedInThePower(BC.getMonomial(), num2)
-                ));// AB^2 = (2AC)^2+BC^2
-        Monomial answerAB = (Monomial) new ExpressedVariableFromEquation(equation, AB.getMonomial()).right;
-        Monomial expectedAnswer = new RaisedInThePower(
-                new Monomial(new Polynomial(
-                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
-                        new RaisedInThePower(BC.getMonomial(), num2)
-                )),
-                new RaisedInThePower(new Monomial(GeometryNumber.get(2)), GeometryNumber.get(-1))
-        );
-        assertEquals(expectedAnswer, answerAB);
-    }
-    @Test
-    public void expressorACTest() {
-        Vertex A = new Vertex();
-        Vertex B = new Vertex();
-        Vertex C = new Vertex();
-        LineSegment AB = new LineSegment(A, B);
-        LineSegment BC = new LineSegment(B, C);
-        LineSegment AC = new LineSegment(A, C);
-        GeometryNumber num2 = GeometryNumber.get(2);
-        EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(AB.getMonomial(), num2),
-                new Polynomial(
-                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
-                        new RaisedInThePower(BC.getMonomial(), num2)
-                ));// AB^2 = (2AC)^2+BC^2
-
-        Monomial answerAC = (Monomial) new ExpressedVariableFromEquation(equation, AC.getMonomial()).right;
-        Monomial expectedAnswer = new Monomial(
-                new RaisedInThePower(
-                        new Monomial(new Polynomial(
-                                new RaisedInThePower(AB.getMonomial(), num2),
-                                new Monomial(
-                                        GeometryNumber.get(-1),
-                                        new RaisedInThePower(BC.getMonomial(), num2)
-                                )
-                        )),
-                        new RaisedInThePower(new Monomial(num2), GeometryNumber.get(-1))
-                ),
-                new RaisedInThePower(new Monomial(num2), GeometryNumber.get(-1))
-        );
-
-        assertEquals(expectedAnswer, answerAC);
-    }
-
-    @Test
-    public void expressorBCTest() {
-        Vertex A = new Vertex();
-        Vertex B = new Vertex();
-        Vertex C = new Vertex();
-        LineSegment AB = new LineSegment(A, B);
-        LineSegment BC = new LineSegment(B, C);
-        LineSegment AC = new LineSegment(A, C);
-        GeometryNumber num2 = GeometryNumber.get(2);
-        EqualityFact equation =  new EqualityFact(
-                new RaisedInThePower(AB.getMonomial(), num2),
-                new Polynomial(
-                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
-                        new RaisedInThePower(BC.getMonomial(), num2)
-                ));// AB^2 = (2AC)^2+BC^2
-        Monomial answerBC = (Monomial) new ExpressedVariableFromEquation(equation, BC.getMonomial()).right;
-
-        Monomial answerExpected = new RaisedInThePower(
-                new Monomial(new Polynomial(
-                        new RaisedInThePower(
-                                AB.getMonomial(),
-                                num2
+                        new Monomial(
+                                GeometryNumber.get(3),
+                                new RaisedInThePower(AC.getMonomial(), num2),
+                                BC.getMonomial()
                         ),
                         new Monomial(
-                                GeometryNumber.get(-1),
-                                new RaisedInThePower(
+                                new RaisedInThePower(AC.getMonomial(), num2),
+                                BC.getMonomial(),
+                                AB.getMonomial()
+                        ),
+                        AB.getMonomial()
+                ));// 69 = 3(AC^2)*BC +(AC^2)*BC*AB + AB
+
+
+        // BC = (69 - AB)*(3[AC^2] + AB[AC^2])^[-1]
+        // AC = {(69 - AB)*(3*BC + AB*BC)^[-1]}^[1/2]
+        // AB = (69 - 3(AC^2)*BC)*((AC^2)*BC + 1)^[-1]
+
+
+        Monomial answerAB = (Monomial) new ExpressedVariableFromEquation(equation, AB.getMonomial()).right;
+        Monomial answerAC = (Monomial) new ExpressedVariableFromEquation(equation, AC.getMonomial()).right;
+        Monomial answerBC = (Monomial) new ExpressedVariableFromEquation(equation, BC.getMonomial()).right;
+
+        Monomial expectedStructureAB = new Monomial(
+                new Polynomial(
+                        GeometryNumber.get(69),
+                        new Monomial(
+                                new Monomial(
+                                        GeometryNumber.get(3),
+                                        BC.getMonomial(),
+                                        new RaisedInThePower(
+                                                AC.getMonomial(),
+                                                GeometryNumber.get(2)
+                                        )
+                                )
+                                , GeometryNumber.get(-1)
+                        )
+                ),
+                new RaisedInThePower(
+                        new Polynomial(
+                                new Monomial(
+                                        BC.getMonomial(),
+                                        new RaisedInThePower(
+                                                AC.getMonomial(),
+                                                GeometryNumber.get(2)
+                                        )
+                                ),
+                                GeometryNumber.get(1)
+                        )
+                        , GeometryNumber.get(-1)
+                )
+        );
+        Monomial expectedStructureAC = new RaisedInThePower(
+                new Monomial(
+                        new Polynomial(
+                                GeometryNumber.get(69),
+                                new Monomial(AB.getMonomial(), GeometryNumber.get(-1))
+                        ),
+                        new RaisedInThePower(
+                                new Polynomial(
                                         new Monomial(
-                                                num2,
-                                                AC.getMonomial()
+                                                GeometryNumber.get(3),
+                                                BC.getMonomial()
                                         ),
-                                        num2
+                                        new Monomial(
+                                                AB.getMonomial(),
+                                                BC.getMonomial()
+                                        )
+                                )
+                                , GeometryNumber.get(-1)
+                        )
+                ),
+                new RaisedInThePower(GeometryNumber.get(2), GeometryNumber.get(-1))
+        );
+        Monomial expectedStructureBC = new Monomial(
+                new Polynomial(
+                        GeometryNumber.get(69),
+                        new Monomial(AB.getMonomial(), GeometryNumber.get(-1))
+                ),
+                new RaisedInThePower(
+                        new Polynomial(
+                                new Monomial(
+                                        GeometryNumber.get(3),
+                                        new RaisedInThePower(
+                                                AC.getMonomial(),
+                                                GeometryNumber.get(2)
+                                        )
+                                ),
+                                new Monomial(
+                                        AB.getMonomial(),
+                                        new RaisedInThePower(AC.getMonomial(), GeometryNumber.get(2))
                                 )
                         )
-                )),
-                new RaisedInThePower(new Monomial(num2), GeometryNumber.get(-1))
+                        , GeometryNumber.get(-1)
+                )
         );
-
-        assertEquals(answerExpected, answerBC);
+        assertEquals(answerBC, expectedStructureBC);
+        assertEquals(answerAC, expectedStructureAC);
+        assertEquals(answerAB, expectedStructureAB);
     }
 
+    @Test
+    public void expressorTest() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment AC = new LineSegment(A, C);
+        GeometryNumber num2 = GeometryNumber.get(2);
+        EqualityFact equation = new EqualityFact(
+                new RaisedInThePower(AB.getMonomial(), num2),
+                new Polynomial(
+                        new Monomial(
+                                new RaisedInThePower(AC.getMonomial(), num2),
+                                GeometryNumber.get(4)
+                        ),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ));// AB^2 = 4*(AC)^2+BC^2
+        //AC = {(AB^2-BC^2)*4^[-1]}^(2^[-1])
+        Monomial answerAB = (Monomial) new ExpressedVariableFromEquation(equation, AB.getMonomial()).right;
+        Monomial answerAC = (Monomial) new ExpressedVariableFromEquation(equation, AC.getMonomial()).right;
+        Monomial answerBC = (Monomial) new ExpressedVariableFromEquation(equation, BC.getMonomial()).right;
+
+        Monomial expectedAB = new RaisedInThePower(
+                new Polynomial(
+                        new Monomial(
+                                new RaisedInThePower(AC.getMonomial(), num2),
+                                GeometryNumber.get(4)
+                        ),
+                        new RaisedInThePower(BC.getMonomial(), num2)
+                ),
+                new RaisedInThePower(GeometryNumber.get(2), GeometryNumber.get(-1)));
+        Monomial expectedAC = new RaisedInThePower(
+                new Monomial(
+                        new Polynomial(
+                                new RaisedInThePower(
+                                        AB.getMonomial(),
+                                        GeometryNumber.get(2)
+                                ),
+                                new Monomial(
+                                        GeometryNumber.get(-1),
+                                        new RaisedInThePower(
+                                                BC.getMonomial(),
+                                                GeometryNumber.get(2)
+                                        )
+                                )
+                        ),
+                        new RaisedInThePower(
+                                GeometryNumber.get(4),
+                                GeometryNumber.get(-1)
+                        )
+                ),
+                new RaisedInThePower(GeometryNumber.get(2), GeometryNumber.get(-1)));
+        // AB^2 = 4*(AC)^2+BC^2
+        // BC = [AB^2 - 4*(AC)^2]^[2^(-1)]
+        Monomial expectedBC = new RaisedInThePower(
+                new Polynomial(
+                        new RaisedInThePower(AB.getMonomial(), num2),
+                        new Monomial(
+                                new Monomial(
+                                        new RaisedInThePower(AC.getMonomial(), num2),
+                                        GeometryNumber.get(4)
+                                ),
+                                GeometryNumber.get(-1)
+                        )
+                ),
+                new RaisedInThePower(GeometryNumber.get(2), GeometryNumber.get(-1)));
+        assertEquals(expectedAB, answerAB);
+
+        assertEquals(expectedAC, answerAC);
+
+        assertEquals(expectedBC, answerBC);
+    }
 }
