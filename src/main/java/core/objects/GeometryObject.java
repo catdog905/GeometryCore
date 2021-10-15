@@ -49,4 +49,18 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
+
+    //For Debug
+    private String name;
+    public GeometryObject setDebugName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        if (name != null)
+            return name;
+        return super.toString();
+    }
 }
