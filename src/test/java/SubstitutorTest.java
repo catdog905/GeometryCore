@@ -2,9 +2,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import core.facts.equation.EqualityFact;
 import core.objects.LineSegment;
@@ -15,6 +13,7 @@ import core.objects.expression.Polynomial;
 import core.objects.expression.RaisedInThePower;
 
 public class SubstitutorTest {
+
     @Test
     public void substitutorTest(){
 
@@ -28,7 +27,7 @@ public class SubstitutorTest {
         EqualityFact equation =  new EqualityFact(
                 new RaisedInThePower(AB.getMonomial(), num2),
                 new Polynomial(
-                        new RaisedInThePower(new LinkedList<>(Arrays.asList(AC.getMonomial(),num2)), num2),
+                        new RaisedInThePower(new Monomial(AC.getMonomial(),num2), num2),
                         new RaisedInThePower(BC.getMonomial(), num2)
                 ));// AB^2 = (2AC)^2+BC^2
         HashMap<Monomial,Monomial> substituteTable = new HashMap<>();
@@ -37,9 +36,14 @@ public class SubstitutorTest {
         substituteTable.put(AC.getMonomial(),GeometryNumber.get(33));
         Monomial answerAB =  ((Monomial)equation.left).substitute(substituteTable);
         Monomial answerBC_and_AC = ((Monomial)equation.right).substitute(substituteTable);
-        String expectedStructureAB = "RaisedInThePower[GeometryNumber, GeometryNumber]",
-                expectedStructureBC_and_AC = "Polynomial[RaisedInThePower[GeometryNumber, GeometryNumber, GeometryNumber], RaisedInThePower[GeometryNumber, GeometryNumber]]";
-        assertEquals(answerAB.getUniqueStructureString(),expectedStructureAB);
-        assertEquals(answerBC_and_AC.getUniqueStructureString(),expectedStructureBC_and_AC);
+        Monomial expectedAB = new RaisedInThePower(
+                GeometryNumber.get(11), num2
+        );
+        Monomial expectedBCandAC = new Polynomial(
+                new RaisedInThePower(new Monomial(GeometryNumber.get(33),num2), num2),
+                new RaisedInThePower(GeometryNumber.get(22), num2)
+        );
+        assertEquals(expectedAB, answerAB);
+        assertEquals(expectedBCandAC, answerBC_and_AC);
     }
 }

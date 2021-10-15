@@ -29,4 +29,9 @@ public class MonomialEnveloper<T> extends Monomial {
     public T toEnvelop() {
         return toEnvelop;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return this == o;
+    }
 }

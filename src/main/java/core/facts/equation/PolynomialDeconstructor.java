@@ -7,6 +7,7 @@ import core.objects.expression.GeometryNumber;
 import core.objects.GeometryObject;
 import core.objects.expression.Monomial;
 import core.objects.expression.Polynomial;
+import core.objects.expression.RaisedInThePower;
 
 public class PolynomialDeconstructor {
     private LinkedList<Monomial> monomialsForNewOppositeSide;
@@ -41,25 +42,61 @@ public class PolynomialDeconstructor {
     }
 
     private void deconstruct() {
-        Monomial elementWithVariable = null;
-
+        LinkedList<Monomial> elementsWithVariable = new LinkedList<Monomial>();
         for (GeometryObject term : equationSideToDeconstruct.getAllSubObjects()) {
             Monomial monomialTerm = (Monomial) term;
 
             if (monomialsWithVariable.contains(monomialTerm)) {
-
-                assert (elementWithVariable == null);
-                elementWithVariable = monomialTerm;
+                if (monomialTerm instanceof Polynomial){
+                    throw new RuntimeException("Unexpected polynomial in simplified expression! " +
+                            "Expressor cannot deal with that.");
+                }
+                elementsWithVariable.add( monomialTerm);
                 continue;
             }
 
             monomialsForNewOppositeSide.add(new Monomial(monomialTerm, GeometryNumber.get(-1)));
         }
-        leftoversOfDeconstructable = elementWithVariable;
+        Monomial realElementWithVariable = null;
+        Monomial toDivideBy = null;
+        if (elementsWithVariable.size() == 1){
+            realElementWithVariable = elementsWithVariable.getFirst();
+        }else {
+            LinkedList<Monomial> futurePolynomial = new LinkedList<>();
+            for (Monomial monomialToDestruct : elementsWithVariable) {
+                LinkedList<Monomial> futureMonomial = new LinkedList<>();
+                for (Monomial subObject : monomialToDestruct.getAllSubObjects()) {
+                    if (monomialsWithVariable.contains(subObject)){
+                        realElementWithVariable = subObject;
+                    }else{
+                        futureMonomial.add(subObject);
+                    }
+                }
+                if (futureMonomial.isEmpty()){
+                    futurePolynomial.add(GeometryNumber.get(1));
+                }
+                else if (futureMonomial.size() == 1){
+                    futurePolynomial.add(futureMonomial.getFirst());
+                }else{
+                    futurePolynomial.add(new Monomial(futureMonomial));
+                }
+            }
+
+            if (futurePolynomial.size() == 1){
+                toDivideBy =  futurePolynomial.getFirst();
+            }else if (futurePolynomial.size() > 1){
+                toDivideBy = new Polynomial(futurePolynomial);
+            }
+        }
+        leftoversOfDeconstructable = realElementWithVariable;
         if (monomialsForNewOppositeSide.size() == 1) {
             oppositeSide = monomialsForNewOppositeSide.getFirst();
         } else {
             oppositeSide = new Polynomial(monomialsForNewOppositeSide);
+        }
+        if (toDivideBy != null){
+            toDivideBy = new RaisedInThePower(toDivideBy,GeometryNumber.get(-1));
+            oppositeSide = new Monomial(oppositeSide,toDivideBy);
         }
     }
 }

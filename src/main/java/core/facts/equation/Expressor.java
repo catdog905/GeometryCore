@@ -2,7 +2,7 @@ package core.facts.equation;
 
 import java.util.HashSet;
 
-import core.UniqueVariableSeeker;
+import core.VariableSeeker;
 import core.objects.expression.Monomial;
 import core.objects.expression.Polynomial;
 
@@ -17,15 +17,15 @@ public class Expressor {
         // New equation right = some expression
         Monomial newRight;
 
-        HashSet<Monomial> monomialsWithVariable = UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(variable, equationRight);
+        HashSet<Monomial> monomialsWithVariable = VariableSeeker.findAllMonomialsWithVariable(variable, equationRight);
         if (monomialsWithVariable != null) {
             newLeft = equationRight;
             newRight = equationLeft;
 
             // We assume that variable is only on one side
-            assert (UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(variable, equationLeft) == null);
+            assert (VariableSeeker.findAllMonomialsWithVariable(variable, equationLeft) == null);
         } else {
-            monomialsWithVariable = UniqueVariableSeeker.findAllMonomialsWithUniqueVariable(variable, equationLeft);
+            monomialsWithVariable = VariableSeeker.findAllMonomialsWithVariable(variable, equationLeft);
 
             // We assume that variable exists
             assert (monomialsWithVariable != null);
