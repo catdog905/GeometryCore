@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.ExpertSystem;
-import core.Rule;
+import core.rule.Rule;
 import core.facts.BelongFact;
 import core.facts.ExistFact;
 import core.facts.Fact;

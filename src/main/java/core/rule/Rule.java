@@ -1,4 +1,4 @@
-package core;
+package core.rule;
 
 import java.util.Arrays;
 import java.util.LinkedList;

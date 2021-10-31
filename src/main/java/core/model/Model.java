@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import core.Rule;
+import core.rule.Rule;
 import core.facts.DebugEquivalenceFact;
 import core.facts.Fact;
 

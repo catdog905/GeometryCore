@@ -3,7 +3,7 @@ package core.rules.storage;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import core.Rule;
+import core.rule.Rule;
 import core.facts.BelongFact;
 import core.facts.Fact;
 import core.facts.IntersectionFact;
