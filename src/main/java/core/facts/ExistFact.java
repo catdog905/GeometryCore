@@ -24,4 +24,9 @@ public class ExistFact extends Fact{
         correspondence.put(object, newObj);
         return new ExistFact(newObj);
     }
+
+    @Override
+    public int hashCode() {
+        return object.hashCode();
+    }
 }

@@ -13,10 +13,7 @@ public class Node {
         this(new ExistFact(geometryObject));
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Node))
-            return false;
+    public boolean isomorphic(Node obj) {
         return fact.object.getClass().equals(((Node) obj).fact.object.getClass());
     }
 }
