@@ -122,7 +122,24 @@ public class Graph {
         return newBranch;
     }
 
-    public LinkedList<Correspondence> dfs(Graph mask, Node curModelNode, Node curMaskNode,
+    public LinkedList<Correspondence> getAllSubGraphsIsomorphicToMask(MaskGraph mask) {
+        LinkedList<Correspondence> correspondenceList = new LinkedList<>();
+        LinkedList<Node> usedStarts = new LinkedList<>();
+        for (Node node : getNodes())
+            if (node.equals(mask.getStartNode()) && !usedStarts.contains(node)) {
+                LinkedList<Correspondence> curCorrespondences = dfs(mask, node, mask.getStartNode(),
+                        new LinkedList<>(), new LinkedList<>(), new HashMap<>());
+                correspondenceList.addAll(curCorrespondences);
+                for (Correspondence correspondence : curCorrespondences) {
+                    usedStarts.addAll(mask.similarStartNodes.stream()
+                            .map(x -> correspondence.maskToModelCorrespondence.get(x))
+                            .collect(Collectors.toCollection(LinkedList::new)));
+                }
+            }
+        return correspondenceList;
+    }
+
+    public LinkedList<Correspondence> dfs(MaskGraph mask, Node curModelNode, Node curMaskNode,
                                  LinkedList<Node> usedModelNodes,
                                  LinkedList<Node> usedMaskNodes,
                                  HashMap<Node, Node> maskToModelNodesMatch) {
@@ -175,7 +192,7 @@ public class Graph {
         return resultSubGraphList;
     }
 
-    private class Correspondence {
+    public class Correspondence {
         public Graph modelSubGraph;
         public HashMap<Node, Node> maskToModelCorrespondence;
 
