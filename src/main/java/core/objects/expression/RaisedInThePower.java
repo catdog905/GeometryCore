@@ -46,4 +46,9 @@ public class RaisedInThePower extends Monomial{
             subObjects.add(new RaisedInThePower(subObj, newPower));
         return new Monomial(subObjects);
     }
+
+    @Override
+    public Monomial addSimilarTerms() {
+        return new RaisedInThePower(base.addSimilarTerms(),power.addSimilarTerms());
+    }
 }
