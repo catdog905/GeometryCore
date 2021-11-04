@@ -5,7 +5,7 @@ import core.facts.Fact;
 public class Edge {
     public Node from;
     public Node to;
-    private Fact fact;
+    public Fact fact;
     public Class type;
 
     public Edge(Node from, Node to, Fact fact) {

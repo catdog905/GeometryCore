@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -8,6 +9,7 @@ import core.facts.ExistFact;
 import core.facts.Fact;
 import core.model.Model;
 import core.objects.LineSegment;
+import core.objects.Triangle;
 import core.objects.Vertex;
 import core.rule.Graph;
 import core.rule.MaskGraph;
@@ -15,61 +17,65 @@ import core.rule.ModelGraph;
 import core.rule.Rule;
 
 public class GraphTest {
-    //@Test
-    //public void getAllIsomorphicSubGraphsIn4TrianglesTest() {
-    //    Vertex A = new Vertex();
-    //    Vertex B = new Vertex();
-    //    Vertex C = new Vertex();
-    //    Vertex D = new Vertex();
-    //    Vertex E = new Vertex();
-    //    Vertex F = new Vertex();
-    //    LineSegment AB = new LineSegment(A, B);
-    //    LineSegment BC = new LineSegment(B, C);
-    //    LineSegment CD = new LineSegment(C, D);
-    //    LineSegment DE = new LineSegment(D, E);
-    //    LineSegment FE = new LineSegment(F, E);
-    //    LineSegment AF = new LineSegment(A, F);
-    //    LineSegment BF= new LineSegment(B, F);
-    //    LineSegment BD = new LineSegment(B, D);
-    //    LineSegment DF = new LineSegment(D, F);
-    //    HashSet<Fact> facts = new HashSet<>();
-    //    facts.add(new BelongFact(A, AB));
-    //    facts.add(new BelongFact(A, AF));
-    //    facts.add(new BelongFact(C, BC));
-    //    facts.add(new BelongFact(C, CD));
-    //    facts.add(new BelongFact(E, FE));
-    //    facts.add(new BelongFact(E, DE));
-    //    facts.add(new BelongFact(B, AB));
-    //    facts.add(new BelongFact(B, BF));
-    //    facts.add(new BelongFact(B, BD));
-    //    facts.add(new BelongFact(B, BC));
-    //    facts.add(new BelongFact(D, CD));
-    //    facts.add(new BelongFact(D, BD));
-    //    facts.add(new BelongFact(D, DF));
-    //    facts.add(new BelongFact(D, DE));
-    //    facts.add(new BelongFact(F, AF));
-    //    facts.add(new BelongFact(F, BF));
-    //    facts.add(new BelongFact(F, DF));
-    //    facts.add(new BelongFact(F, FE));
-    //    Model model = new Model(facts);
-//
-    //    Vertex M = new Vertex();
-    //    Vertex N = new Vertex();
-    //    Vertex K = new Vertex();
-    //    LineSegment MN = new LineSegment(M, N);
-    //    LineSegment MK = new LineSegment(M, K);
-    //    LineSegment NK = new LineSegment(N, K);
-    //    HashSet<Fact> maskFacts = new HashSet<>();
-    //    maskFacts.add(new BelongFact(M, MN));
-    //    maskFacts.add(new BelongFact(M, MK));
-    //    maskFacts.add(new BelongFact(N, MN));
-    //    maskFacts.add(new BelongFact(N, NK));
-    //    maskFacts.add(new BelongFact(K, NK));
-    //    maskFacts.add(new BelongFact(K, MK));
-    //    Model maskModel = new Model(maskFacts);
-//
-    //    LinkedList<Graph> result = new Graph(model).getAllIsomorphicSubGraphs(new Graph(maskModel));
-    //}
+    @Test
+    public void getAllIsomorphicSubGraphsIn4TrianglesTest() {
+        Vertex A = new Vertex();
+        Vertex B = new Vertex();
+        Vertex C = new Vertex();
+        Vertex D = new Vertex();
+        Vertex E = new Vertex();
+        Vertex F = new Vertex();
+        LineSegment AB = new LineSegment(A, B);
+        LineSegment BC = new LineSegment(B, C);
+        LineSegment CD = new LineSegment(C, D);
+        LineSegment DE = new LineSegment(D, E);
+        LineSegment FE = new LineSegment(F, E);
+        LineSegment AF = new LineSegment(A, F);
+        LineSegment BF= new LineSegment(B, F);
+        LineSegment BD = new LineSegment(B, D);
+        LineSegment DF = new LineSegment(D, F);
+        HashSet<Fact> facts = new HashSet<>();
+        facts.add(new BelongFact(A, AB));
+        facts.add(new BelongFact(A, AF));
+        facts.add(new BelongFact(C, BC));
+        facts.add(new BelongFact(C, CD));
+        facts.add(new BelongFact(E, FE));
+        facts.add(new BelongFact(E, DE));
+        facts.add(new BelongFact(B, AB));
+        facts.add(new BelongFact(B, BF));
+        facts.add(new BelongFact(B, BD));
+        facts.add(new BelongFact(B, BC));
+        facts.add(new BelongFact(D, CD));
+        facts.add(new BelongFact(D, BD));
+        facts.add(new BelongFact(D, DF));
+        facts.add(new BelongFact(D, DE));
+        facts.add(new BelongFact(F, AF));
+        facts.add(new BelongFact(F, BF));
+        facts.add(new BelongFact(F, DF));
+        facts.add(new BelongFact(F, FE));
+        Model model = new Model(facts);
+
+        Vertex M = new Vertex();
+        Vertex N = new Vertex();
+        Vertex K = new Vertex();
+        LineSegment MN = new LineSegment(M, N);
+        LineSegment MK = new LineSegment(M, K);
+        LineSegment NK = new LineSegment(N, K);
+        HashSet<Fact> maskFacts = new HashSet<>();
+        maskFacts.add(new BelongFact(M, MN));
+        maskFacts.add(new BelongFact(M, MK));
+        maskFacts.add(new BelongFact(N, MN));
+        maskFacts.add(new BelongFact(N, NK));
+        maskFacts.add(new BelongFact(K, NK));
+        maskFacts.add(new BelongFact(K, MK));
+        Triangle triangle = new Triangle(MN, MK, NK);
+        Fact newFact = new ExistFact(triangle);
+        Rule rule = new Rule(new LinkedList<>(maskFacts), new LinkedList<>(Arrays.asList(newFact)));
+        MaskGraph maskGraph = new MaskGraph(rule);
+        ModelGraph modelGraph = new ModelGraph(model);
+        LinkedList<Graph.Correspondence> correspondences =
+                modelGraph.getAllSubGraphsIsomorphicToMask(maskGraph);
+    }
 
     @Test
     public void getAllIsomorphicSubGraphsIn1TrianglesTest() {
@@ -113,11 +119,14 @@ public class GraphTest {
         maskFacts.add(new BelongFact(N, NK));
         maskFacts.add(new BelongFact(K, NK));
         maskFacts.add(new BelongFact(K, MK));
-        Rule rule = new Rule(new LinkedList<>(maskFacts), new LinkedList<>());
+        Triangle triangle = new Triangle(MN, MK, NK);
+        Fact newFact = new ExistFact(triangle);
+        Rule rule = new Rule(new LinkedList<>(maskFacts), new LinkedList<>(Arrays.asList(newFact)));
         MaskGraph maskGraph = new MaskGraph(rule);
         ModelGraph modelGraph = new ModelGraph(model);
         LinkedList<Graph.Correspondence> correspondences =
                 modelGraph.getAllSubGraphsIsomorphicToMask(maskGraph);
+        Model newModel = new Model(maskGraph.getConsequencesGraph(correspondences.get(0)));
 
     }
 

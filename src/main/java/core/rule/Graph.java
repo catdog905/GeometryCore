@@ -22,9 +22,8 @@ public class Graph {
         }
     }
 
-    public Graph(LinkedList<Edge> edges) {
-        this(new LinkedList<>(new HashSet<>(edges.stream().map(x -> x.from)
-                .collect(Collectors.toCollection(LinkedList::new)))), edges);
+    public Graph(GraphContent content) {
+        this(content.nodes, content.edges);
     }
 
     public Graph(Node node) {
@@ -39,7 +38,7 @@ public class Graph {
         this.adjacencyList = adjacencyList;
     }
 
-    public static LinkedList<Edge> getEdgesFromFactsList(Collection<Fact> list) {
+    public static GraphContent getGraphFromFactsList(Collection<Fact> list) {
         LinkedList<Fact> notExistFacts = list.stream().filter(x -> !(x instanceof ExistFact))
                 .collect(Collectors.toCollection(LinkedList::new));
         LinkedList<Edge> edges = new LinkedList<>();
@@ -48,6 +47,10 @@ public class Graph {
             for (GeometryObject object : fact.getAllSubObjects()) {
                 nodes.putIfAbsent(object, new Node(object));
             }
+        }
+        for (Fact fact :  list.stream().filter(x -> x instanceof ExistFact)
+                .collect(Collectors.toCollection(LinkedList::new))) {
+            nodes.putIfAbsent(((ExistFact)fact).object, new Node(((ExistFact)fact).object));
         }
         for (Fact fact : notExistFacts) {
             LinkedList<? extends GeometryObject> subObjects = fact.getAllSubObjects();
@@ -59,7 +62,7 @@ public class Graph {
                 }
             }
         }
-        return edges;
+        return new GraphContent(new LinkedList<>(nodes.values()), edges);
     }
 
     public LinkedList<Edge> getEdges(Node node) {
@@ -158,8 +161,11 @@ public class Graph {
                                  HashMap<Node, Node> maskToModelNodesMatch,
                                  HashMap<Edge, Edge> maskToModelEdgesMatch) {
         if (usedMaskNodes.containsAll(getToNodes(mask.getEdges(curMaskNode)))) {
+            HashMap<Node, Node> newMaskToModelNodesMatch =
+                    new HashMap<>(maskToModelNodesMatch);
+            newMaskToModelNodesMatch.put(curMaskNode, curModelNode);
             return new LinkedList<>(Arrays.asList(new Correspondence(new Graph(curModelNode),
-                    maskToModelNodesMatch, maskToModelEdgesMatch)));
+                    newMaskToModelNodesMatch, maskToModelEdgesMatch)));
         }
         HashMap<Class, LinkedList<Edge>> modelNodeTypedHashMapOfEdge
                 = getTypedHashMapOfEdges(getEdges(curModelNode).stream()

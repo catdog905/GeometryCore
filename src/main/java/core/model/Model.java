@@ -4,16 +4,24 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import core.rule.Rule;
 import core.facts.DebugEquivalenceFact;
 import core.facts.Fact;
+import core.rule.Graph;
+import core.rule.Rule;
 
 public class Model {
     private HashSet<Fact> facts;
 
     public Model(HashSet<Fact> facts) {
         this.facts = facts;
+    }
+
+    public Model(Graph graph) {
+        this((HashSet<Fact>) Stream.concat(graph.getEdges().stream().map(x -> x.fact),
+                graph.getNodes().stream().map(x -> x.getFact()))
+            .collect(Collectors.toCollection(HashSet::new)));
     }
 
     public HashSet<Fact> facts() {

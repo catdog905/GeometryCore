@@ -16,4 +16,8 @@ public class Node {
     public boolean isomorphic(Node obj) {
         return fact.object.getClass().equals(((Node) obj).fact.object.getClass());
     }
+
+    public ExistFact getFact() {
+        return fact;
+    }
 }
