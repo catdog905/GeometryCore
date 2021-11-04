@@ -13,7 +13,7 @@ import core.facts.Fact;
 import core.objects.GeometryObject;
 
 public class Graph {
-    private HashMap<Node, LinkedList<Edge>> adjacencyList = new HashMap<>();
+    protected HashMap<Node, LinkedList<Edge>> adjacencyList = new HashMap<>();
     public Graph(LinkedList<Node> nodes, LinkedList<Edge> edges) {
         for (Node node : nodes) {
             LinkedList<Edge> tempList = edges.stream().filter(x -> x.from == node)
@@ -118,7 +118,10 @@ public class Graph {
             newGraph.addNode(node2, edges);
         }
         maskToModelMatch.putAll(branch2.maskToModelCorrespondence);
-        return new Correspondence(newGraph, maskToModelMatch);
+        HashMap<Edge, Edge> maskToModelEdgesMatch =
+                new HashMap<>(branch1.maskToModelEdgesCorrespondence);
+        maskToModelEdgesMatch.putAll(branch2.maskToModelEdgesCorrespondence);
+        return new Correspondence(newGraph, maskToModelMatch, maskToModelEdgesMatch);
     }
 
     private Graph mergeBranches(Node mergeNode, Graph branch) {
@@ -138,7 +141,7 @@ public class Graph {
         for (Node node : getNodes())
             if (node.isomorphic(mask.getStartNode()) && !usedStarts.contains(node)) {
                 LinkedList<Correspondence> curCorrespondences = dfs(mask, node, mask.getStartNode(),
-                        new LinkedList<>(), new LinkedList<>(), new HashMap<>());
+                        new LinkedList<>(), new LinkedList<>(), new HashMap<>(), new HashMap<>());
                 correspondenceList.addAll(curCorrespondences);
                 for (Correspondence correspondence : curCorrespondences) {
                     usedStarts.addAll(mask.similarStartNodes.stream()
@@ -152,10 +155,11 @@ public class Graph {
     public LinkedList<Correspondence> dfs(MaskGraph mask, Node curModelNode, Node curMaskNode,
                                  LinkedList<Node> usedModelNodes,
                                  LinkedList<Node> usedMaskNodes,
-                                 HashMap<Node, Node> maskToModelNodesMatch) {
+                                 HashMap<Node, Node> maskToModelNodesMatch,
+                                 HashMap<Edge, Edge> maskToModelEdgesMatch) {
         if (usedMaskNodes.containsAll(getToNodes(mask.getEdges(curMaskNode)))) {
             return new LinkedList<>(Arrays.asList(new Correspondence(new Graph(curModelNode),
-                    maskToModelNodesMatch)));
+                    maskToModelNodesMatch, maskToModelEdgesMatch)));
         }
         HashMap<Class, LinkedList<Edge>> modelNodeTypedHashMapOfEdge
                 = getTypedHashMapOfEdges(getEdges(curModelNode).stream()
@@ -172,26 +176,37 @@ public class Graph {
         LinkedList<LinkedList<Correspondence>> modelCorrespondenceParts = new LinkedList<>();
         for (Map.Entry<Class, LinkedList<Edge>> entry : maskNodeTypedHashMapOfEdge.entrySet()) {
             LinkedList<Correspondence> curClassSubGraphs = new LinkedList<>();
-            for (Edge maskEdge : entry.getValue())
+            HashSet<Edge> maskEdges = new HashSet<>(entry.getValue());
+            for (Map.Entry<Edge, HashSet<Edge>> edgeEntry : mask.similarEdges.entrySet()){
+                HashSet<Edge> finalMaskEdges = maskEdges;
+                maskEdges = maskEdges.stream().map(x -> {
+                    if (edgeEntry.getValue().contains(x) && finalMaskEdges.contains(edgeEntry.getKey()))
+                        return edgeEntry.getKey();
+                    else
+                        return x;
+                }).collect(Collectors.toCollection(HashSet::new));
+            }
+            for (Edge maskEdge : maskEdges)
                 for (Edge modelEdge : modelNodeTypedHashMapOfEdge.get(entry.getKey())){
                     LinkedList<Node> newUsedModelNodes = new LinkedList<>(usedModelNodes);
                     LinkedList<Node> newUsedMaskNodes = new LinkedList<>(usedMaskNodes);
                     newUsedModelNodes.add(curModelNode);
                     newUsedMaskNodes.add(curMaskNode);
-                    HashMap<Node, Node> newMaskToModelNodesMatch = new HashMap<>();
+                    HashMap<Node, Node> newMaskToModelNodesMatch =
+                            new HashMap<>(maskToModelNodesMatch);
                     newMaskToModelNodesMatch.put(curMaskNode, curModelNode);
+                    HashMap<Edge, Edge> newMaskToModelEdgesMatch =
+                            new HashMap<>(maskToModelEdgesMatch);
+                    newMaskToModelEdgesMatch.put(maskEdge, modelEdge);
                     curClassSubGraphs.addAll(dfs(mask, modelEdge.to, maskEdge.to, newUsedModelNodes,
-                            newUsedMaskNodes, newMaskToModelNodesMatch));
+                            newUsedMaskNodes, newMaskToModelNodesMatch, newMaskToModelEdgesMatch));
                 }
             modelCorrespondenceParts.add(curClassSubGraphs);
         }
         LinkedList<Correspondence> resultSubGraphList = modelCorrespondenceParts.get(0).stream()
-                .map(x -> {
-                    HashMap<Node, Node> newCorrespondence = new HashMap<>(x.maskToModelCorrespondence);
-                    newCorrespondence.put(curMaskNode, curModelNode);
-                    return new Correspondence(
-                            mergeBranches(curModelNode, x.modelSubGraph), newCorrespondence);
-                })
+                .map(x -> new Correspondence(
+                            mergeBranches(curModelNode, x.modelSubGraph), x.maskToModelCorrespondence,
+                            x.maskToModelEdgesCorrespondence))
                 .collect(Collectors.toCollection(LinkedList::new));
         for (int i = 1; i < modelCorrespondenceParts.size(); i++) {
             LinkedList<Correspondence> newResultSubGraphList = new LinkedList<>();
@@ -209,10 +224,13 @@ public class Graph {
     public class Correspondence {
         public Graph modelSubGraph;
         public HashMap<Node, Node> maskToModelCorrespondence;
+        public HashMap<Edge, Edge> maskToModelEdgesCorrespondence;
 
-        public Correspondence(Graph modelSubGraph, HashMap<Node, Node> maskToModelCorrespondence) {
+        public Correspondence(Graph modelSubGraph, HashMap<Node, Node> maskToModelCorrespondence,
+                              HashMap<Edge, Edge> maskToModelEdgesCorrespondence) {
             this.modelSubGraph = modelSubGraph;
             this.maskToModelCorrespondence = maskToModelCorrespondence;
+            this.maskToModelEdgesCorrespondence = maskToModelEdgesCorrespondence;
         }
     }
 }
