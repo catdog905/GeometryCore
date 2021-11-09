@@ -121,12 +121,20 @@ public class GraphTest {
         maskFacts.add(new BelongFact(K, MK));
         Triangle triangle = new Triangle(MN, MK, NK);
         Fact newFact = new ExistFact(triangle);
-        Rule rule = new Rule(new LinkedList<>(maskFacts), new LinkedList<>(Arrays.asList(newFact)));
+        Rule rule = new Rule(new LinkedList<>(maskFacts), new LinkedList<>(Arrays.asList(
+                new ExistFact(triangle),
+                new BelongFact(M, triangle),
+                new BelongFact(N, triangle),
+                new BelongFact(K, triangle),
+                new BelongFact(MN, triangle),
+                new BelongFact(MK, triangle),
+                new BelongFact(NK, triangle))));
         MaskGraph maskGraph = new MaskGraph(rule);
         ModelGraph modelGraph = new ModelGraph(model);
         LinkedList<Graph.Correspondence> correspondences =
                 modelGraph.getAllSubGraphsIsomorphicToMask(maskGraph);
-        Model newModel = new Model(maskGraph.getConsequencesGraph(correspondences.get(0)));
+        modelGraph.addSubGraph(maskGraph.getConsequencesGraph(correspondences.get(0)));
+
 
     }
 

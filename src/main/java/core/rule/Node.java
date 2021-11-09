@@ -20,4 +20,14 @@ public class Node {
     public ExistFact getFact() {
         return fact;
     }
+
+    @Override
+    public int hashCode() {
+        return fact.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj.equals(fact);
+    }
 }

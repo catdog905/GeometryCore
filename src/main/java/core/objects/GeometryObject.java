@@ -73,4 +73,12 @@ public abstract class GeometryObject implements SubObjectsEditor<GeometryObject,
             return name;
         return super.toString();
     }
+
+    @Override
+    public int hashCode() {
+        if (getAllSubObjects().size() == 0)
+            return super.hashCode();
+        return getAllSubObjects().stream().map(GeometryObject::hashCode)
+                .reduce(0, Integer::sum);
+    }
 }

@@ -94,7 +94,7 @@ public class Graph {
     }
 
     public void addNode(Node node, LinkedList<Edge> edges) {
-        adjacencyList.put(node, new LinkedList<>());
+        adjacencyList.putIfAbsent(node, new LinkedList<>());
         for (Edge edge : edges) {
             if (adjacencyList.containsKey(edge.from))
                 adjacencyList.get(edge.from).add(edge);

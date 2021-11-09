@@ -13,4 +13,11 @@ public class ModelGraph extends Graph {
         LinkedList<Correspondence> correspondences = getAllSubGraphsIsomorphicToMask(maskGraph);
 
     }
+
+
+    public void addSubGraph(Graph graph) {
+        for (Node node : graph.getNodes()) {
+            addNode(node, graph.getEdges(node));
+        }
+    }
 }
