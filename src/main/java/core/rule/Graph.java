@@ -175,8 +175,11 @@ public class Graph {
                 = getTypedHashMapOfEdges(mask.getEdges(curMaskNode).stream()
                     .filter(x -> !usedMaskNodes.contains(x.to))
                     .collect(Collectors.toCollection(LinkedList::new)));
-        for (Map.Entry<Class, LinkedList<Edge>> entry : modelNodeTypedHashMapOfEdge.entrySet()) {
-            if (entry.getValue().size() < maskNodeTypedHashMapOfEdge.get(entry.getKey()).size())
+        if (!modelNodeTypedHashMapOfEdge.keySet().containsAll(maskNodeTypedHashMapOfEdge.keySet())) {
+            return new LinkedList<>();
+        }
+        for (Map.Entry<Class, LinkedList<Edge>> entry : maskNodeTypedHashMapOfEdge.entrySet()) {
+            if (entry.getValue().size() > modelNodeTypedHashMapOfEdge.get(entry.getKey()).size())
                 return new LinkedList<>();
         }
         LinkedList<LinkedList<Correspondence>> modelCorrespondenceParts = new LinkedList<>();

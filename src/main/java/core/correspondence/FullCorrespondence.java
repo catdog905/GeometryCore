@@ -43,7 +43,7 @@ public class FullCorrespondence extends HashMap<GeometryObject, GeometryObject> 
                 else
                     count.put(predict, 1);
             }
-            GeometryObject correspondenceObj = correspondenceObj = count.entrySet().stream()
+            GeometryObject correspondenceObj = count.entrySet().stream()
                         .max(Comparator.comparing(x -> x.getValue())).get().getKey();
             for (int j = i + 1; j < sortedFullCorr.size(); j++)
                 sortedFullCorr.get(j).getValue().remove(correspondenceObj);

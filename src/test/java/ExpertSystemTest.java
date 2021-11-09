@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.ExpertSystem;
+import core.facts.IntersectionFact;
 import core.rule.Rule;
 import core.facts.BelongFact;
 import core.facts.ExistFact;
@@ -39,14 +40,17 @@ public class ExpertSystemTest{
         LineSegment BC = new LineSegment(B, C);
         LineSegment AC = new LineSegment(A, C);
         HashSet<Fact> facts = new HashSet<>();
-        facts.add(new BelongFact(A, AB));
-        facts.add(new BelongFact(B, AB));
-        facts.add(new BelongFact(A, AC));
-        facts.add(new BelongFact(B, BC));
-        facts.add(new BelongFact(C, AC));
-        facts.add(new BelongFact(C, BC));
+        facts.add(new ExistFact(A));
+        facts.add(new ExistFact(B));
+        facts.add(new ExistFact(C));
+        facts.add(new ExistFact(AB));
+        facts.add(new ExistFact(AC));
+        facts.add(new ExistFact(BC));
+        facts.add(new IntersectionFact(A, AC, AB));
+        facts.add(new IntersectionFact(B, BC, AB));
+        facts.add(new IntersectionFact(C, AC, BC));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
         RuleStorage.getInstance().rules.stream().filter(x ->((Rule)x).name.equals("pythagorean theorem") ).findFirst().get().outputBenchmarks();
 
 

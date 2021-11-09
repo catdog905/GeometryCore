@@ -29,19 +29,19 @@ public class RuleStorage {
     private static RuleStorage singleton = null;
 
     private RuleStorage() {
-        rules.addAll(new EqualityTriangleRules().get());
-        rules.addAll(new SegmentsIntersectionRules().get());
+        //rules.addAll(new EqualityTriangleRules().get());
+        //rules.addAll(new SegmentsIntersectionRules().get());
         rules.add(findTriangle());
-        rules.add(triangleTo6BelongingFact());
-        rules.add(rightTriangle());
-        rules.add(pythagoreanTheorem());
-        rules.add(belongingOfInnerSegmentsToOuter());
-        rules.add(perpendicularityOfRadiusAndTouchedLineSegment());
-        rules.add(perpendicularLinesCreatesAngles90Degree());
-        rules.add(touchedLineSegmentOfInscribedCircleInTriangle());
-        rules.add(equalsDistanceFromCenterToTouchedIntersectsLines());
-        rules.add(equalsDistanceFromCenterToTouchedNotIntersectsLines());
-        rules.add(belongingPointsToExistLine());
+        //rules.add(triangleTo6BelongingFact());
+        //rules.add(rightTriangle());
+        //rules.add(pythagoreanTheorem());
+        //rules.add(belongingOfInnerSegmentsToOuter());
+        //rules.add(perpendicularityOfRadiusAndTouchedLineSegment());
+        //rules.add(perpendicularLinesCreatesAngles90Degree());
+        //rules.add(touchedLineSegmentOfInscribedCircleInTriangle());
+        //rules.add(equalsDistanceFromCenterToTouchedIntersectsLines());
+        //rules.add(equalsDistanceFromCenterToTouchedNotIntersectsLines());
+        //rules.add(belongingPointsToExistLine());
         //rules.add(reversePythagoreanTheorem());
     }
 
