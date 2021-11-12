@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import core.objects.GeometryObject;
 
-public class Monomial extends GeometryObject implements Substitutable, Multipliable, Expandable {
+public class Monomial extends GeometryObject implements Substitutable, Multipliable, Expandable, AbleToAddSimilarTerms {
     LinkedList<Monomial> subObjects;
 
 
@@ -153,5 +153,16 @@ public class Monomial extends GeometryObject implements Substitutable, Multiplia
     @Override
     public String toString() {
         return getUniqueStructureString();
+    }
+
+    @Override
+    public Monomial addSimilarTerms() {
+        if (subObjects.isEmpty())
+            return this;
+        LinkedList<Monomial> newMonomial = new LinkedList<>();
+        for (Monomial subObject : subObjects){
+            newMonomial.add(subObject.addSimilarTerms());
+        }
+        return new Monomial(newMonomial);
     }
 }
