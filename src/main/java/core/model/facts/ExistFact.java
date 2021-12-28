@@ -20,6 +20,13 @@ public class ExistFact extends Fact{
 
     @Override
     public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        return new ExistFact(object.createNewSimilarObject(correspondence)); //TODO: fix hack
+        GeometryObject newObj = object.createNewSimilarObject(correspondence);
+        correspondence.put(object, newObj);
+        return new ExistFact(newObj);
+    }
+
+    @Override
+    public int hashCode() {
+        return object.hashCode();
     }
 }

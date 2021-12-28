@@ -31,6 +31,8 @@ public class LineSegment extends GeometryObject {
 
     @Override
     public LinkedList<GeometryObject> getAllSubObjects() {
+        if (vertexes == null)
+            return new LinkedList<>();
         return new LinkedList<>(vertexes);
     }
 

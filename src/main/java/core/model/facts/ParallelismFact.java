@@ -20,10 +20,10 @@ public class ParallelismFact extends Fact {
 
     @Override
     public Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence) {
-        HashSet<GeometryObject> newObjects = new HashSet<>();
+        LinkedList<GeometryObject> newObjects = new LinkedList<>();
         for (GeometryObject obj : geometryObjects) {
             newObjects.add(correspondence.get(obj));
         }
-        return new ParallelismFact(newObjects);
+        return new ParallelismFact(new HashSet<>(newObjects));
     }
 }

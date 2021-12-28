@@ -1,4 +1,4 @@
-package core;
+package core.rule;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -7,9 +7,8 @@ import java.util.stream.Collectors;
 
 import core.correspondence.CorrespondenceWithoutNullElements;
 import core.correspondence.FactMatcher;
-import core.correspondence.FullCorrespondence;
-import core.model.facts.Fact;
 import core.model.Model;
+import core.model.facts.Fact;
 import core.model.facts.objects.GeometryObject;
 import core.model.facts.objects.benchmark.Benchmarkable;
 
@@ -45,15 +44,16 @@ public class Rule implements Benchmarkable{
         System.out.println();
     }
 
-    public void applyToModel(Model model) {
+    public Model applyToModel(Model model) {
         startExecution("applying rule");
-        LinkedList<Map<GeometryObject, GeometryObject>> correspondenceList = findAllMatchedFactsSequences(
-                new LinkedList<>(model.facts()), new CorrespondenceWithoutNullElements(), 0);
-        for (Map<GeometryObject, GeometryObject> correspondence : correspondenceList) {
-            model.facts().addAll(createConsequencesFacts(
-                    (new FullCorrespondence(correspondence))));
-        }
+        MaskGraph maskGraph = new MaskGraph(this);
+        ModelGraph modelGraph = new ModelGraph(model);
+        LinkedList<Graph.Correspondence> correspondences =
+                modelGraph.getAllSubGraphsIsomorphicToMask(maskGraph);
+        for (Graph.Correspondence correspondence : correspondences)
+            modelGraph.addSubGraph(maskGraph.getConsequencesGraph(correspondence));
         endExecution("applying rule");
+        return new Model(modelGraph);
     }
 
     private LinkedList<Fact> createConsequencesFacts(Map<GeometryObject, GeometryObject> correspondence) {

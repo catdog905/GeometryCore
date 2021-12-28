@@ -1,5 +1,6 @@
 package core.model.facts.objects;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -14,6 +15,10 @@ public class Angle extends GeometryObject {
             throw new IllegalArgumentException();
         }
         this.geometryObjects = geometryObjects;
+    }
+
+    public Angle(LineSegment... objects) {
+        this(new LinkedList<>(Arrays.asList(objects)));
     }
 
     @Override

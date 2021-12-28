@@ -25,5 +25,4 @@ public abstract class Fact {
 
     public abstract LinkedList<? extends GeometryObject> getAllSubObjects();
     public abstract Fact createNewSimilarObject(Map<GeometryObject, GeometryObject> correspondence);
-
 }
