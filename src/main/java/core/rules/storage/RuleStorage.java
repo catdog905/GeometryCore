@@ -5,19 +5,19 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.Rule;
-import core.facts.BelongFact;
-import core.facts.ExistFact;
-import core.facts.Fact;
-import core.facts.RightAngledFact;
-import core.facts.equation.EqualityFact;
-import core.objects.Angle;
-import core.objects.LineSegment;
-import core.objects.Triangle;
-import core.objects.Vertex;
-import core.objects.expression.Degree;
-import core.objects.expression.GeometryNumber;
-import core.objects.expression.Polynomial;
-import core.objects.expression.RaisedInThePower;
+import core.model.facts.BelongFact;
+import core.model.facts.ExistFact;
+import core.model.facts.Fact;
+import core.model.facts.RightAngledFact;
+import core.model.facts.equation.EqualityFact;
+import core.model.facts.objects.Angle;
+import core.model.facts.objects.LineSegment;
+import core.model.facts.objects.Triangle;
+import core.model.facts.objects.Vertex;
+import core.model.facts.objects.expression.monomials.Degree;
+import core.model.facts.objects.expression.monomials.GeometryNumber;
+import core.model.facts.objects.expression.monomials.Polynomial;
+import core.model.facts.objects.expression.monomials.RaisedInThePower;
 
 public class RuleStorage {
     public HashSet<Rule> rules = new HashSet<>();

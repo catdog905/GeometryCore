@@ -6,14 +6,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import core.Rule;
-import core.facts.DebugEquivalenceFact;
-import core.facts.Fact;
+import core.model.facts.DebugEquivalenceFact;
+import core.model.facts.Fact;
 
 public class Model {
-    private HashSet<Fact> facts;
+    final private HashSet<Fact> facts;
 
     public Model(HashSet<Fact> facts) {
         this.facts = facts;
+    }
+    public Model(Model model) {
+        this.facts = new HashSet<>(model.facts);
     }
 
     public HashSet<Fact> facts() {
@@ -55,7 +58,7 @@ public class Model {
                 ourFacts.containsAll(theirFacts);
     }
 
-    public void deleteRepeatingFacts(){
+    public Model deleteRepeatingFacts(){
         HashSet<Fact> newFacts = new HashSet<>(facts);
         for (Fact fact: facts) {
             if (!newFacts.contains(fact))
@@ -68,6 +71,6 @@ public class Model {
 
             newFacts.removeAll(allSimilarFacts);
         }
-       facts=newFacts;
+       return new Model(newFacts);
     }
 }

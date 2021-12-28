@@ -1,6 +1,6 @@
 package core.correspondence;
 
-import core.objects.GeometryObject;
+import core.model.facts.objects.GeometryObject;
 
 public class Pair {
     public GeometryObject key, value;

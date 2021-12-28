@@ -10,17 +10,17 @@ import java.util.stream.Collectors;
 
 import core.ExpertSystem;
 import core.Rule;
-import core.facts.BelongFact;
-import core.facts.ExistFact;
-import core.facts.Fact;
-import core.facts.RightAngledFact;
-import core.facts.equation.EqualityFact;
+import core.model.facts.BelongFact;
+import core.model.facts.ExistFact;
+import core.model.facts.Fact;
+import core.model.facts.RightAngledFact;
+import core.model.facts.equation.EqualityFact;
 import core.model.Model;
-import core.objects.Angle;
-import core.objects.LineSegment;
-import core.objects.Triangle;
-import core.objects.Vertex;
-import core.objects.expression.Degree;
+import core.model.facts.objects.Angle;
+import core.model.facts.objects.LineSegment;
+import core.model.facts.objects.Triangle;
+import core.model.facts.objects.Vertex;
+import core.model.facts.objects.expression.monomials.Degree;
 import core.rules.storage.RuleStorage;
 
 public class ExpertSystemTest{
@@ -40,7 +40,7 @@ public class ExpertSystemTest{
         facts.add(new BelongFact(C, AC));
         facts.add(new BelongFact(C, BC));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
         RuleStorage.getInstance().rules.stream().filter(x ->((Rule)x).name.equals("pythagorean theorem") ).findFirst().get().outputBenchmarks();
 
         assertTrue(model.facts().stream().anyMatch(x -> x instanceof ExistFact &&
@@ -65,7 +65,7 @@ public class ExpertSystemTest{
         facts.add(new BelongFact(C, AC));
         facts.add(new BelongFact(C, BC));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
 
         assertEquals(1, model.facts().stream().filter(x -> x instanceof ExistFact &&
                 ((Triangle) ((ExistFact) x).object).lineSegments.contains(AB) &&
@@ -88,7 +88,7 @@ public class ExpertSystemTest{
         // facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
         // facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
 
         assertTrue(model.facts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
@@ -108,7 +108,7 @@ public class ExpertSystemTest{
         //facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
         //facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
 
 
 
