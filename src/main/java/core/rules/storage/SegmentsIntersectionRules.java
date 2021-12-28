@@ -3,12 +3,12 @@ package core.rules.storage;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import core.model.facts.BelongFact;
+import core.model.facts.Fact;
+import core.model.facts.IntersectionFact;
+import core.model.facts.objects.LineSegment;
+import core.model.facts.objects.Vertex;
 import core.rule.Rule;
-import core.facts.BelongFact;
-import core.facts.Fact;
-import core.facts.IntersectionFact;
-import core.objects.LineSegment;
-import core.objects.Vertex;
 
 public class SegmentsIntersectionRules {
     public HashSet<Rule> get() {

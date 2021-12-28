@@ -8,9 +8,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import core.facts.ExistFact;
-import core.facts.Fact;
-import core.objects.GeometryObject;
+import core.model.facts.ExistFact;
+import core.model.facts.Fact;
+import core.model.facts.objects.GeometryObject;
+
 
 public class Graph {
     protected HashMap<Node, LinkedList<Edge>> adjacencyList = new HashMap<>();

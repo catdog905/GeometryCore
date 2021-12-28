@@ -3,7 +3,7 @@ package core.correspondence;
 import java.util.HashMap;
 import java.util.Map;
 
-import core.objects.GeometryObject;
+import core.model.facts.objects.GeometryObject;
 
 public class CorrespondenceWithoutNullElements extends HashMap<GeometryObject, GeometryObject> {
     public CorrespondenceWithoutNullElements(Map<GeometryObject, GeometryObject> correspondence) {

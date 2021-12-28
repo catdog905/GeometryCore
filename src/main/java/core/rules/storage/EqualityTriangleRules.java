@@ -4,15 +4,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 
+import core.model.facts.ExistFact;
+import core.model.facts.Fact;
+import core.model.facts.equation.EqualityFact;
+import core.model.facts.objects.Angle;
+import core.model.facts.objects.LineSegment;
+import core.model.facts.objects.Triangle;
+import core.model.facts.objects.Vertex;
+import core.model.facts.objects.expression.monomials.Degree;
 import core.rule.Rule;
-import core.facts.ExistFact;
-import core.facts.Fact;
-import core.facts.equation.EqualityFact;
-import core.objects.Angle;
-import core.objects.LineSegment;
-import core.objects.Triangle;
-import core.objects.Vertex;
-import core.objects.expression.Degree;
 
 public class EqualityTriangleRules {
     public HashSet<Rule> get() {

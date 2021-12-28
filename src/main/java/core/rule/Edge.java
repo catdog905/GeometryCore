@@ -1,6 +1,7 @@
 package core.rule;
 
-import core.facts.Fact;
+
+import core.model.facts.Fact;
 
 public class Edge {
     public Node from;

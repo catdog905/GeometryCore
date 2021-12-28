@@ -7,10 +7,10 @@ import java.util.stream.Collectors;
 
 import core.correspondence.CorrespondenceWithoutNullElements;
 import core.correspondence.FactMatcher;
-import core.facts.Fact;
 import core.model.Model;
-import core.objects.GeometryObject;
-import core.objects.benchmark.Benchmarkable;
+import core.model.facts.Fact;
+import core.model.facts.objects.GeometryObject;
+import core.model.facts.objects.benchmark.Benchmarkable;
 
 /*
 all consequences facts have to be from this.facts scope

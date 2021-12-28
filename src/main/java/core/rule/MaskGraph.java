@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import core.correspondence.CorrespondenceWithoutNullElements;
 import core.correspondence.FullCorrespondence;
-import core.objects.GeometryObject;
+import core.model.facts.objects.GeometryObject;
 
 public class MaskGraph extends Graph {
     private final Node startNode;

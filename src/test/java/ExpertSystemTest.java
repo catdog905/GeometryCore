@@ -8,26 +8,26 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import core.ExpertSystem;
-import core.facts.IntersectionFact;
-import core.rule.Rule;
-import core.facts.BelongFact;
-import core.facts.ExistFact;
-import core.facts.Fact;
-import core.facts.InscribedFact;
-import core.facts.PerpendicularityFact;
-import core.facts.RightAngledFact;
-import core.facts.TouchedFact;
-import core.facts.equation.EqualityFact;
+import core.model.facts.BelongFact;
+import core.model.facts.ExistFact;
+import core.model.facts.Fact;
+import core.model.facts.InscribedFact;
+import core.model.facts.IntersectionFact;
+import core.model.facts.PerpendicularityFact;
+import core.model.facts.RightAngledFact;
+import core.model.facts.TouchedFact;
+import core.model.facts.equation.EqualityFact;
 import core.model.Model;
-import core.objects.Angle;
-import core.objects.Circle;
-import core.objects.LineSegment;
-import core.objects.Triangle;
-import core.objects.Vertex;
-import core.objects.expression.Degree;
-import core.objects.expression.GeometryNumber;
-import core.objects.expression.Polynomial;
-import core.objects.expression.RaisedInThePower;
+import core.model.facts.objects.Angle;
+import core.model.facts.objects.Circle;
+import core.model.facts.objects.LineSegment;
+import core.model.facts.objects.Triangle;
+import core.model.facts.objects.Vertex;
+import core.model.facts.objects.expression.monomials.Degree;
+import core.model.facts.objects.expression.monomials.GeometryNumber;
+import core.model.facts.objects.expression.monomials.Polynomial;
+import core.model.facts.objects.expression.monomials.RaisedInThePower;
+import core.rule.Rule;
 import core.rules.storage.RuleStorage;
 
 public class ExpertSystemTest{
@@ -76,7 +76,7 @@ public class ExpertSystemTest{
         facts.add(new BelongFact(C, AC));
         facts.add(new BelongFact(C, BC));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
 
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new ExistFact(new Triangle(new HashSet<>(Arrays.asList(BC, AC, AB)))));
@@ -100,7 +100,7 @@ public class ExpertSystemTest{
         // facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
         // facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
 
         assertTrue(model.facts().stream().anyMatch(x -> x instanceof RightAngledFact));
     }
@@ -120,7 +120,7 @@ public class ExpertSystemTest{
         //facts.add(new EqualityFact(AB, new NumberEnveloper(4)));
         //facts.add(new EqualityFact(AB, new NumberEnveloper(3)));
         Model model = new Model(facts);
-        ExpertSystem.ForwardPass(model);
+        model = ExpertSystem.ForwardPass(model);
 
         HashSet<Fact> checkFacts = new HashSet<>(facts);
         checkFacts.add(new EqualityFact(

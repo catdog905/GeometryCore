@@ -2,9 +2,9 @@ package core.correspondence;
 
 import java.util.LinkedList;
 
-import core.facts.Fact;
-import core.objects.GeometryObject;
-import core.objects.expression.GeometryNumber;
+import core.model.facts.Fact;
+import core.model.facts.objects.GeometryObject;
+import core.model.facts.objects.expression.monomials.GeometryNumber;
 
 public class FactMatcher {
     private Fact ruleFact;

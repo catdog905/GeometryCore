@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import core.objects.GeometryObject;
+import core.model.facts.objects.GeometryObject;
 
 public class FullCorrespondence extends HashMap<GeometryObject, GeometryObject> {
 

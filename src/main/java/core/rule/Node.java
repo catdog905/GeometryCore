@@ -1,7 +1,8 @@
 package core.rule;
 
-import core.facts.ExistFact;
-import core.objects.GeometryObject;
+
+import core.model.facts.ExistFact;
+import core.model.facts.objects.GeometryObject;
 
 public class Node {
     private ExistFact fact;
